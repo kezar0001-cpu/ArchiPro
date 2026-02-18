@@ -107,12 +107,12 @@
 
 ## Current Status
 - [x] Phase 1 — Design tokens defined (v2: grayscale)
-- [ ] Phase 1 — Tailwind v4 theme reconfigured to grayscale
-- [ ] Phase 2 — Sanity Studio initialized
-- [ ] Phase 2 — Content schemas created
-- [ ] Phase 3 — Nav component (grayscale update)
-- [ ] Phase 3 — Hero component (video background)
-- [ ] Phase 3 — Project Card
-- [ ] Phase 3 — Footer
-- [ ] Phase 4 — Routing setup
-- [ ] Phase 5 — SEO & Deployment
+- [x] Phase 1 — Tailwind v4 theme reconfigured to grayscale
+- [x] Phase 2 — Sanity Studio initialized (project ID: uk1engd4)
+- [x] Phase 2 — Content schemas created (heroContent, project)
+- [x] Phase 3 — Nav component (grayscale update)
+- [x] Phase 3 — Hero component (video background)
+- [x] Phase 3 — Project Card (brutal-hover, 4:3 aspect, grayscale filter)
+- [x] Phase 3 — Footer (black bg, white text, social icons)
+- [x] Phase 4 — Routing setup (/, /work/:slug, /about, /studio)
+- [ ] Phase 5 — **SEO & Deployment ← NEXT**
