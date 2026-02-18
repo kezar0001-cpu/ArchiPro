@@ -1,1 +1,148 @@
 @import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════
+   DESIGN SYSTEM — Neo-Brutalist "Paper & Ink"
+   ═══════════════════════════════════════════════════════════ */
+
+@theme {
+  /* ── Color Palette ── */
+  --color-paper: #FBFBFB;
+  --color-ink: #0A0A0A;
+  --color-accent: #FF5F00;
+  --color-accent-alt: #CCFF00;
+  --color-muted: #6B6B6B;
+  --color-grid-line: #E0E0E0;
+
+  /* ── Typography ── */
+  --font-sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* ── Shadows ── */
+  --shadow-brutal: 4px 4px 0 0 var(--color-ink);
+  --shadow-brutal-sm: 2px 2px 0 0 var(--color-ink);
+  --shadow-brutal-lg: 6px 6px 0 0 var(--color-ink);
+  --shadow-brutal-accent: 4px 4px 0 0 var(--color-accent);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BASE RESETS & GLOBALS
+   ═══════════════════════════════════════════════════════════ */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-paper);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   12-COLUMN BLUEPRINT GRID
+   ═══════════════════════════════════════════════════════════ */
+
+.blueprint-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1rem;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Visible grid overlay for architectural feel */
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1rem;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  opacity: 0.25;
+}
+
+.grid-overlay>div {
+  border-left: 1px solid var(--color-grid-line);
+  border-right: 1px solid var(--color-grid-line);
+  height: 100vh;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════ */
+
+.brutal-border {
+  border: 3px solid var(--color-ink);
+}
+
+.brutal-shadow {
+  box-shadow: var(--shadow-brutal);
+}
+
+.brutal-shadow-sm {
+  box-shadow: var(--shadow-brutal-sm);
+}
+
+.brutal-shadow-lg {
+  box-shadow: var(--shadow-brutal-lg);
+}
+
+.brutal-shadow-accent {
+  box-shadow: var(--shadow-brutal-accent);
+}
+
+/* Snap hover: shadow collapses, element translates into shadow position */
+.brutal-hover {
+  transition: transform 0.15s cubic-bezier(0.33, 1, 0.68, 1),
+    box-shadow 0.15s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.brutal-hover:hover {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 0 var(--color-ink);
+}
+
+/* Divider: horizontal rule, Neo-Brutalist style */
+.brutal-divider {
+  border: none;
+  height: 3px;
+  background-color: var(--color-ink);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-paper);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-ink);
+}
