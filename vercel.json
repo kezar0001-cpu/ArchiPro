@@ -1,5 +1,11 @@
 {
     "alias": [
         "hadilalduleimi.com"
+    ],
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/index.html"
+        }
     ]
 }
