@@ -7,7 +7,6 @@ import Footer from './components/Footer';
 import { getHeroContent, getFeaturedProjects } from './lib/queries';
 
 // Lazy-load pages to keep the main bundle small
-const StudioPage = lazy(() => import('./components/StudioPage'));
 const ProjectPage = lazy(() => import('./pages/ProjectPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 
@@ -63,7 +62,9 @@ function HomePage() {
                   No projects yet — Add content in Sanity Studio
                 </p>
                 <a
-                  href="/studio"
+                  href="https://studio.hadilalduleimi.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-block mt-4 px-6 py-3 bg-black text-white font-mono text-xs tracking-[0.15em] uppercase border-[3px] border-black brutal-shadow-sm brutal-hover"
                 >
                   Open Studio
@@ -78,7 +79,7 @@ function HomePage() {
   );
 }
 
-function StudioLoader() {
+function PageLoader() {
   return (
     <div
       style={{
@@ -95,7 +96,7 @@ function StudioLoader() {
         textTransform: 'uppercase',
       }}
     >
-      Loading Studio…
+      Loading...
     </div>
   );
 }
@@ -108,7 +109,7 @@ function App() {
         <Route
           path="/work/:slug"
           element={
-            <Suspense fallback={<StudioLoader />}>
+            <Suspense fallback={<PageLoader />}>
               <ProjectPage />
             </Suspense>
           }
@@ -116,16 +117,8 @@ function App() {
         <Route
           path="/about"
           element={
-            <Suspense fallback={<StudioLoader />}>
+            <Suspense fallback={<PageLoader />}>
               <AboutPage />
-            </Suspense>
-          }
-        />
-        <Route
-          path="/studio"
-          element={
-            <Suspense fallback={<StudioLoader />}>
-              <StudioPage />
             </Suspense>
           }
         />
