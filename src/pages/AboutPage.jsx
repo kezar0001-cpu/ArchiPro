@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Linkedin, Instagram } from 'lucide-react';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import { getAllSiteContent } from '../lib/queries';
@@ -31,7 +31,8 @@ function parseExperience(raw) {
         const company = headerParts[2] || '';
         const bullets = lines
             .slice(1)
-            .map((l) => l.replace(/^[•\-]\s*/, '').trim())
+            .filter((l) => l.trim().startsWith('•') || l.trim().startsWith('-') || l.trim().length > 0)
+            .map((l) => l.replace(/^[\s•\-]+/, '').trim())
             .filter(Boolean);
         entries.push({ title, period, company, bullets });
     });
@@ -55,9 +56,10 @@ function SectionLabel({ children }) {
             style={{
                 fontSize: '11px',
                 color: '#555',
-                letterSpacing: '0.2em',
+                letterSpacing: '0.25em',
                 borderLeft: '2px solid #fff',
                 paddingLeft: '10px',
+                lineHeight: 1.6,
             }}
         >
             {children}
@@ -127,7 +129,8 @@ export default function AboutPage() {
     const photoUrl = sc.profile_photo_path ? getPublicUrl('profile-photo', sc.profile_photo_path) : null;
     const cvUrl = sc.resume_file_path ? getPublicUrl('resume-documents', sc.resume_file_path) : null;
 
-    const specialisations = [...designSkills, ...profSkills];
+    const linkedinUrl = sc.social_linkedin || sc.linkedin_url || null;
+    const instagramUrl = sc.social_instagram || sc.instagram_url || null;
 
     if (loading) {
         return (
@@ -142,8 +145,8 @@ export default function AboutPage() {
             <Nav />
 
             {/* ── PAGE HEADER ── */}
-            <section className="pt-36 pb-16 section-px bg-black">
-                <div className="max-w-[1400px] mx-auto">
+            <section className="pt-36 pb-0 section-px bg-black">
+                <div className="max-w-[1400px] mx-auto" style={{ marginBottom: '48px' }}>
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -168,11 +171,10 @@ export default function AboutPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
-                    className="max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-[30%_1fr]"
-                    style={{ border: '1px solid #222' }}
+                    className="max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-[33%_1fr]"
                 >
                     {/* ════════ LEFT SIDEBAR ════════ */}
-                    <aside style={{ background: '#0a0a0a', borderRight: '1px solid #222' }}>
+                    <aside style={{ background: '#0a0a0a', borderRight: '1px solid #222', paddingRight: '0' }}>
                         {/* Profile Photo */}
                         <div className="overflow-hidden" style={{ aspectRatio: '2/3' }}>
                             {photoUrl ? (
@@ -291,27 +293,63 @@ export default function AboutPage() {
                                 {interestsList.map((s, i) => <PillTag key={i}>{s}</PillTag>)}
                             </div>
                         </div>
+
+                        {/* Links Block */}
+                        {(linkedinUrl || instagramUrl) && (
+                            <>
+                                <Divider />
+                                <div className="px-6 py-6">
+                                    <SidebarLabel>Links</SidebarLabel>
+                                    <div className="flex flex-col gap-3">
+                                        {linkedinUrl && (
+                                            <a
+                                                href={linkedinUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-2 hover:text-white transition-colors"
+                                                style={{ color: '#888' }}
+                                            >
+                                                <Linkedin size={16} strokeWidth={1.5} />
+                                                <span className="font-mono" style={{ fontSize: '12px', letterSpacing: '0.1em' }}>LinkedIn</span>
+                                            </a>
+                                        )}
+                                        {instagramUrl && (
+                                            <a
+                                                href={instagramUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-2 hover:text-white transition-colors"
+                                                style={{ color: '#888' }}
+                                            >
+                                                <Instagram size={16} strokeWidth={1.5} />
+                                                <span className="font-mono" style={{ fontSize: '12px', letterSpacing: '0.1em' }}>Instagram</span>
+                                            </a>
+                                        )}
+                                    </div>
+                                </div>
+                            </>
+                        )}
                     </aside>
 
                     {/* ════════ MAIN CONTENT ════════ */}
-                    <div className="bg-black" style={{ paddingLeft: '40px', paddingRight: '24px', paddingTop: '32px', paddingBottom: '32px' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
-                            {/* PROFILE */}
-                            <div>
-                                <SectionLabel>Profile</SectionLabel>
-                                <p
-                                    className="font-sans"
-                                    style={{ color: '#ddd', fontSize: '15px', lineHeight: 1.8 }}
-                                >
-                                    {summary}
-                                </p>
-                            </div>
+                    <div className="bg-black" style={{ paddingLeft: '40px', paddingRight: '24px' }}>
 
-                            <Divider />
+                        {/* PROFILE */}
+                        <div style={{ paddingTop: '40px', paddingBottom: '40px' }}>
+                            <SectionLabel>Profile</SectionLabel>
+                            <p
+                                className="font-sans"
+                                style={{ color: '#ddd', fontSize: '15px', lineHeight: 1.8 }}
+                            >
+                                {summary}
+                            </p>
+                        </div>
+                        <Divider />
 
-                            {/* EXPERIENCE */}
-                            {experience.length > 0 && (
-                                <div>
+                        {/* EXPERIENCE */}
+                        {experience.length > 0 && (
+                            <>
+                                <div style={{ paddingTop: '40px', paddingBottom: '40px' }}>
                                     <SectionLabel>Experience</SectionLabel>
                                     <div>
                                         {experience.map((exp, idx) => (
@@ -319,17 +357,27 @@ export default function AboutPage() {
                                                 {idx > 0 && (
                                                     <hr className="border-0 my-6" style={{ borderTop: '1px solid #1a1a1a' }} />
                                                 )}
-                                                <h4 className="font-sans font-bold text-white mb-1" style={{ fontSize: '16px' }}>
+                                                <h4
+                                                    className="font-sans font-bold text-white"
+                                                    style={{ fontSize: '16px', marginBottom: '4px' }}
+                                                >
                                                     {exp.title}
                                                 </h4>
-                                                <div className="flex items-baseline justify-between mb-3">
+                                                <div
+                                                    style={{
+                                                        display: 'flex',
+                                                        justifyContent: 'space-between',
+                                                        alignItems: 'baseline',
+                                                        marginBottom: '12px',
+                                                    }}
+                                                >
                                                     {exp.company && (
                                                         <span className="font-mono" style={{ fontSize: '13px', color: '#aaa' }}>
                                                             {exp.company}
                                                         </span>
                                                     )}
                                                     {exp.period && (
-                                                        <span className="font-mono shrink-0 ml-4" style={{ fontSize: '12px', color: '#555' }}>
+                                                        <span className="font-mono" style={{ fontSize: '12px', color: '#555', flexShrink: 0, marginLeft: '16px' }}>
                                                             {exp.period}
                                                         </span>
                                                     )}
@@ -351,13 +399,14 @@ export default function AboutPage() {
                                         ))}
                                     </div>
                                 </div>
-                            )}
+                                <Divider />
+                            </>
+                        )}
 
-                            <Divider />
-
-                            {/* EDUCATION */}
-                            {education.length > 0 && (
-                                <div>
+                        {/* EDUCATION */}
+                        {education.length > 0 && (
+                            <>
+                                <div style={{ paddingTop: '40px', paddingBottom: '40px' }}>
                                     <SectionLabel>Education</SectionLabel>
                                     <div>
                                         {education.map((edu, idx) => (
@@ -368,12 +417,12 @@ export default function AboutPage() {
                                                 <h4 className="font-sans font-bold text-white mb-1" style={{ fontSize: '15px' }}>
                                                     {edu.degree}
                                                 </h4>
-                                                <div className="flex items-baseline justify-between">
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                                                     <span className="font-mono" style={{ fontSize: '13px', color: '#aaa' }}>
                                                         {edu.institution}
                                                     </span>
                                                     {edu.period && (
-                                                        <span className="font-mono shrink-0 ml-4" style={{ fontSize: '13px', color: '#555' }}>
+                                                        <span className="font-mono" style={{ fontSize: '13px', color: '#555', flexShrink: 0, marginLeft: '16px' }}>
                                                             {edu.period}
                                                         </span>
                                                     )}
@@ -382,44 +431,30 @@ export default function AboutPage() {
                                         ))}
                                     </div>
                                 </div>
-                            )}
+                                <Divider />
+                            </>
+                        )}
 
-                            <Divider />
-
-                            {/* SPECIALISATIONS */}
-                            {specialisations.length > 0 && (
-                                <div>
-                                    <SectionLabel>Specialisations</SectionLabel>
-                                    <div className="grid grid-cols-2 gap-1">
-                                        {specialisations.map((s, i) => <PillTag key={i}>{s}</PillTag>)}
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* DOWNLOAD CV */}
-                            {cvUrl && (
-                                <>
-                                    <Divider />
-                                    <div>
-                                        <a
-                                            href={cvUrl}
-                                            download
-                                            className="block w-full text-center font-mono uppercase transition-all duration-300 hover:bg-white hover:text-black"
-                                            style={{
-                                                border: '1px solid #fff',
-                                                background: 'transparent',
-                                                color: '#fff',
-                                                padding: '14px 0',
-                                                fontSize: '13px',
-                                                letterSpacing: '0.15em',
-                                            }}
-                                        >
-                                            ↓ Download CV
-                                        </a>
-                                    </div>
-                                </>
-                            )}
-                        </div>
+                        {/* DOWNLOAD CV */}
+                        {cvUrl && (
+                            <div style={{ paddingTop: '40px', paddingBottom: '40px' }}>
+                                <a
+                                    href={cvUrl}
+                                    download
+                                    className="block w-full text-center font-mono uppercase transition-all duration-300 hover:bg-white hover:text-black"
+                                    style={{
+                                        border: '1px solid #fff',
+                                        background: 'transparent',
+                                        color: '#fff',
+                                        padding: '14px 0',
+                                        fontSize: '13px',
+                                        letterSpacing: '0.15em',
+                                    }}
+                                >
+                                    ↓ Download CV
+                                </a>
+                            </div>
+                        )}
                     </div>
                 </motion.div>
             </section>
