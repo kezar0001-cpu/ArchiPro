@@ -9,12 +9,13 @@ const navLinks = [
     { label: 'CONTACT', hash: 'contact' },
 ];
 
-export default function Nav() {
+export default function Nav({ contactEmail }) {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
     const isHome = location.pathname === '/';
+    const email = contactEmail || 'hello@hadilalduleimi.com';
 
     function handleNavClick(e, hash) {
         e.preventDefault();
@@ -81,7 +82,7 @@ export default function Nav() {
                         {/* CTA */}
                         <li>
                             <a
-                                href="mailto:hello@hadilalduleimi.com"
+                                href={`mailto:${email}`}
                                 id="nav-cta"
                                 className={`inline-flex items-center gap-1 px-4 py-2
                            font-mono text-sm tracking-[0.1em] uppercase
@@ -145,7 +146,7 @@ export default function Nav() {
                         ))}
 
                         <motion.a
-                            href="mailto:hello@hadilalduleimi.com"
+                            href={`mailto:${email}`}
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.45 }}

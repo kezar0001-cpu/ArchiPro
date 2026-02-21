@@ -8,13 +8,15 @@ import { getAllSiteContent } from '../lib/queries';
  * CMS-driven social links and contact email.
  * Falls back to defaults when no CMS data is available.
  */
-export default function Footer() {
+export default function Footer({ siteContent }) {
     const currentYear = new Date().getFullYear();
-    const [sc, setSc] = useState({});
+    const [sc, setSc] = useState(siteContent || {});
 
     useEffect(() => {
-        getAllSiteContent().then(setSc).catch(() => {});
-    }, []);
+        if (!siteContent) {
+            getAllSiteContent().then(setSc).catch(() => {});
+        }
+    }, [siteContent]);
 
     const contactEmail = sc.contact_email || 'hello@hadilalduleimi.com';
     const linkedinUrl = sc.social_linkedin || 'https://linkedin.com/in/hadilalduleimi';
@@ -75,10 +77,10 @@ export default function Footer() {
                     </div>
                 </div>
 
-                {/* Bottom Legal Text */}
+                {/* Bottom */}
                 <div className="mt-6 pt-6 border-t-[3px] border-white/20">
                     <p className="font-mono text-[10px] text-grey text-center tracking-[0.15em] uppercase">
-                        Built with React · Vite · Tailwind CSS · Supabase · Deployed on Vercel
+                        Designed & Built by Hadil Al-Duleimi
                     </p>
                 </div>
             </div>

@@ -83,7 +83,7 @@ export default function ProjectPage() {
             <Nav />
 
             {/* Hero Section */}
-            <section className="pt-24 pb-12 px-8 bg-black">
+            <section className="pt-28 pb-12 px-8 bg-black">
                 <div className="max-w-[1440px] mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}

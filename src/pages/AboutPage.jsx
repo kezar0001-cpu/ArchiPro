@@ -79,14 +79,14 @@ export default function AboutPage() {
         <div className="min-h-screen bg-grey-light">
             <Nav />
 
-            <div className="pt-24 pb-16 px-4 md:px-8">
+            <div className="pt-28 pb-16 px-4 md:px-8">
                 <div className="max-w-[900px] mx-auto">
                     {/* Resume Card */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
-                        className="bg-white brutal-border brutal-shadow"
+                        className="bg-white brutal-border brutal-shadow-sm"
                     >
                         {/* ═══ Header: Photo + Name + Summary ═══ */}
                         <div className="p-8 md:p-12 pb-8">
@@ -120,7 +120,7 @@ export default function AboutPage() {
                         {/* ═══ Interests ═══ */}
                         {interests && (
                             <div className="px-8 md:px-12 py-6 border-t-[2px] border-black/10">
-                                <div className="grid grid-cols-[160px_1fr] gap-4 items-start">
+                                <div className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-2 md:gap-4 items-start">
                                     <h2 className="font-sans font-bold text-sm text-black uppercase tracking-wide">
                                         Interests
                                     </h2>
@@ -133,7 +133,7 @@ export default function AboutPage() {
 
                         {/* ═══ Contact ═══ */}
                         <div className="px-8 md:px-12 py-6 border-t-[2px] border-black/10">
-                            <div className="grid grid-cols-[160px_1fr] gap-4 items-start">
+                            <div className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-2 md:gap-4 items-start">
                                 <h2 className="font-sans font-bold text-sm text-black uppercase tracking-wide">
                                     Contact
                                 </h2>

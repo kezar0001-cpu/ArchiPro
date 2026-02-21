@@ -27,13 +27,16 @@ export default function WorkPage() {
             <Nav />
 
             {/* Hero */}
-            <section className="pt-32 pb-16 px-8 bg-black">
+            <section className="pt-28 pb-16 px-8 bg-black">
                 <div className="max-w-[1440px] mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                     >
+                        <span className="font-mono text-[10px] text-grey tracking-[0.2em] uppercase block mb-4">
+                            Portfolio
+                        </span>
                         <h1 className="font-sans font-bold text-white uppercase text-6xl md:text-8xl tracking-[-0.02em] mb-6">
                             WORK<span className="text-grey">.</span>
                         </h1>
