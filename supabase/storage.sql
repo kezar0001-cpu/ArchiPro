@@ -87,6 +87,17 @@ CREATE POLICY "Editors delete resume-documents"
         AND public.has_role('editor')
     );
 
+-- ── contact-attachments bucket ──
+INSERT INTO storage.buckets (id, name, public) VALUES ('contact-attachments', 'contact-attachments', true);
+
+CREATE POLICY "Public read contact-attachments"
+    ON storage.objects FOR SELECT
+    USING (bucket_id = 'contact-attachments');
+
+CREATE POLICY "Anyone upload contact-attachments"
+    ON storage.objects FOR INSERT
+    WITH CHECK (bucket_id = 'contact-attachments');
+
 -- ── profile-photo bucket ──
 INSERT INTO storage.buckets (id, name, public) VALUES ('profile-photo', 'profile-photo', true);
 

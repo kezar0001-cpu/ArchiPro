@@ -1,15 +1,56 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Send, Linkedin, Instagram } from 'lucide-react';
+import { Send, Linkedin, Instagram, Paperclip, X } from 'lucide-react';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import { getAllSiteContent } from '../lib/queries';
+import { supabase } from '../lib/supabase';
 
 export default function ContactPage() {
     const [sc, setSc] = useState({});
     const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
     const [submitted, setSubmitted] = useState(false);
+    const [attachment, setAttachment] = useState(null);
+    const [attachError, setAttachError] = useState('');
+    const [uploading, setUploading] = useState(false);
+    const fileInputRef = useRef(null);
+
+    const ALLOWED_TYPES = [
+        'application/pdf',
+        'image/jpeg', 'image/png', 'image/gif', 'image/webp',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'application/zip',
+    ];
+    const MAX_SIZE_MB = 10;
+
+    function handleFileChange(e) {
+        const file = e.target.files[0];
+        setAttachError('');
+        if (!file) { setAttachment(null); return; }
+        if (!ALLOWED_TYPES.includes(file.type)) {
+            setAttachError('File type not supported. Please upload a PDF, image, Word, Excel, or ZIP file.');
+            setAttachment(null);
+            e.target.value = '';
+            return;
+        }
+        if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+            setAttachError(`File too large. Maximum size is ${MAX_SIZE_MB}MB.`);
+            setAttachment(null);
+            e.target.value = '';
+            return;
+        }
+        setAttachment(file);
+    }
+
+    function clearAttachment() {
+        setAttachment(null);
+        setAttachError('');
+        if (fileInputRef.current) fileInputRef.current.value = '';
+    }
 
     useEffect(() => {
         getAllSiteContent()
@@ -28,10 +69,32 @@ export default function ContactPage() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
-        const mailtoLink = `mailto:${contactEmail}?subject=${encodeURIComponent(formData.subject || 'Portfolio Enquiry')}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`)}`;
+        setUploading(true);
+        let attachmentLine = '';
+
+        if (attachment) {
+            const ext = attachment.name.split('.').pop();
+            const path = `contact/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+            const { error } = await supabase.storage
+                .from('contact-attachments')
+                .upload(path, attachment, { cacheControl: '3600', upsert: false });
+
+            if (error) {
+                setAttachError('Upload failed — please try again or email the file directly.');
+                setUploading(false);
+                return;
+            }
+
+            const { data } = supabase.storage.from('contact-attachments').getPublicUrl(path);
+            attachmentLine = `\n\nAttachment: ${attachment.name}\n${data.publicUrl}`;
+        }
+
+        const body = `Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}${attachmentLine}`;
+        const mailtoLink = `mailto:${contactEmail}?subject=${encodeURIComponent(formData.subject || 'Portfolio Enquiry')}&body=${encodeURIComponent(body)}`;
         window.location.href = mailtoLink;
+        setUploading(false);
         setSubmitted(true);
     }
 
@@ -216,7 +279,7 @@ export default function ContactPage() {
                                     </a>
                                     <div className="mt-8 text-center">
                                         <button
-                                            onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', subject: '', message: '' }); }}
+                                            onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', subject: '', message: '' }); clearAttachment(); }}
                                             className="font-mono text-xs tracking-[0.15em] uppercase transition-colors"
                                             style={{ color: '#999' }}
                                         >
@@ -303,6 +366,71 @@ export default function ContactPage() {
                                         />
                                     </div>
 
+                                    {/* Attachment */}
+                                    <div>
+                                        <label className="font-mono uppercase block" style={{ fontSize: '11px', color: '#999', letterSpacing: '0.15em', marginBottom: '8px' }}>
+                                            Attachment <span style={{ color: '#bbb' }}>(optional — max 10MB)</span>
+                                        </label>
+                                        {attachment ? (
+                                            <div
+                                                className="flex items-center gap-3"
+                                                style={{ padding: '10px 12px', border: '1px solid #ccc', background: '#fafafa' }}
+                                            >
+                                                <Paperclip size={14} strokeWidth={2} style={{ color: '#888', flexShrink: 0 }} />
+                                                <span className="font-mono flex-1 truncate" style={{ fontSize: '13px', color: '#111' }}>
+                                                    {attachment.name}
+                                                </span>
+                                                <span className="font-mono" style={{ fontSize: '11px', color: '#999', flexShrink: 0 }}>
+                                                    {(attachment.size / 1024 / 1024).toFixed(1)}MB
+                                                </span>
+                                                <button
+                                                    type="button"
+                                                    onClick={clearAttachment}
+                                                    className="flex items-center justify-center transition-colors"
+                                                    style={{ color: '#999', minWidth: '24px', minHeight: '24px' }}
+                                                    onMouseEnter={e => { e.currentTarget.style.color = '#111'; }}
+                                                    onMouseLeave={e => { e.currentTarget.style.color = '#999'; }}
+                                                    aria-label="Remove attachment"
+                                                >
+                                                    <X size={14} strokeWidth={2.5} />
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <button
+                                                type="button"
+                                                onClick={() => fileInputRef.current?.click()}
+                                                className="flex items-center gap-2 font-mono uppercase transition-all duration-200"
+                                                style={{
+                                                    fontSize: '11px',
+                                                    letterSpacing: '0.15em',
+                                                    padding: '10px 16px',
+                                                    border: '1px dashed #ccc',
+                                                    color: '#888',
+                                                    background: 'transparent',
+                                                    width: '100%',
+                                                    minHeight: '44px',
+                                                }}
+                                                onMouseEnter={e => { e.currentTarget.style.borderColor = '#111'; e.currentTarget.style.color = '#111'; }}
+                                                onMouseLeave={e => { e.currentTarget.style.borderColor = '#ccc'; e.currentTarget.style.color = '#888'; }}
+                                            >
+                                                <Paperclip size={14} strokeWidth={2} />
+                                                Attach a file
+                                            </button>
+                                        )}
+                                        <input
+                                            ref={fileInputRef}
+                                            type="file"
+                                            accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,.doc,.docx,.xls,.xlsx,.zip"
+                                            onChange={handleFileChange}
+                                            className="hidden"
+                                        />
+                                        {attachError && (
+                                            <p className="font-mono mt-2" style={{ fontSize: '11px', color: '#c00', letterSpacing: '0.05em' }}>
+                                                {attachError}
+                                            </p>
+                                        )}
+                                    </div>
+
                                     {/* Message */}
                                     <div>
                                         <label className="font-mono uppercase block" style={{ fontSize: '11px', color: '#999', letterSpacing: '0.15em', marginBottom: '8px' }}>
@@ -332,20 +460,27 @@ export default function ContactPage() {
                                     {/* Submit */}
                                     <button
                                         type="submit"
-                                        className="w-full font-mono uppercase transition-all duration-300"
+                                        disabled={uploading}
+                                        className="w-full font-mono uppercase transition-all duration-300 flex items-center justify-center gap-3"
                                         style={{
-                                            background: '#111',
+                                            background: uploading ? '#555' : '#111',
                                             color: '#fff',
                                             border: 'none',
                                             padding: '18px',
                                             fontSize: '12px',
                                             letterSpacing: '0.2em',
                                             minHeight: '56px',
+                                            cursor: uploading ? 'not-allowed' : 'pointer',
                                         }}
-                                        onMouseEnter={e => { e.currentTarget.style.background = '#333'; }}
-                                        onMouseLeave={e => { e.currentTarget.style.background = '#111'; }}
+                                        onMouseEnter={e => { if (!uploading) e.currentTarget.style.background = '#333'; }}
+                                        onMouseLeave={e => { if (!uploading) e.currentTarget.style.background = '#111'; }}
                                     >
-                                        Send Message
+                                        {uploading ? (
+                                            <>
+                                                <span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                                Uploading...
+                                            </>
+                                        ) : 'Send Message'}
                                     </button>
                                 </form>
                             )}
