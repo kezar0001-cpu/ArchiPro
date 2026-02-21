@@ -22,12 +22,18 @@ export default function WorkPage() {
             .finally(() => setLoading(false));
     }, []);
 
+    // Pad grid to at least 3 items with placeholder cards
+    const MIN_CARDS = 3;
+    const placeholderCount = !loading && projects.length > 0 && projects.length < MIN_CARDS
+        ? MIN_CARDS - projects.length
+        : 0;
+
     return (
         <div className="min-h-screen bg-grey-light">
             <Nav />
 
             {/* Hero */}
-            <section className="pt-28 pb-16 section-px bg-black">
+            <section className="pt-36 pb-16 section-px bg-black">
                 <div className="max-w-[1400px] mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -61,9 +67,34 @@ export default function WorkPage() {
                             </p>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: '2px' }}>
                             {projects.map((project) => (
                                 <ProjectCard key={project.id} project={project} />
+                            ))}
+                            {Array.from({ length: placeholderCount }).map((_, i) => (
+                                <div
+                                    key={`placeholder-${i}`}
+                                    className="brutal-border bg-white overflow-hidden opacity-60"
+                                >
+                                    <div className="aspect-[4/3] bg-grey-light flex items-center justify-center">
+                                        <span className="font-mono text-xs text-grey tracking-[0.2em] uppercase">
+                                            Coming Soon
+                                        </span>
+                                    </div>
+                                    <div className="p-6 border-t-[3px] border-black">
+                                        <div className="flex gap-2 mb-3">
+                                            <span className="font-mono text-[10px] text-grey/50 tracking-[0.15em] uppercase px-2 py-1 border-[2px] border-grey/30">
+                                                TBA
+                                            </span>
+                                        </div>
+                                        <h3 className="font-sans font-bold text-xl text-grey/40 tracking-[-0.01em] mb-2 uppercase">
+                                            New Project
+                                        </h3>
+                                        <p className="font-sans text-sm text-grey/30 leading-relaxed">
+                                            Details coming soon
+                                        </p>
+                                    </div>
+                                </div>
                             ))}
                         </div>
                     )}

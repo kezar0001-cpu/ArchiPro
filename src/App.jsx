@@ -252,7 +252,6 @@ function HomePage() {
       </main>
       <Footer siteContent={siteContent} />
       <BackToTop />
-      <CustomCursor />
     </>
   );
 }
@@ -301,6 +300,7 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <ScrollToTop />
+        <CustomCursor />
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<HomePage />} />
