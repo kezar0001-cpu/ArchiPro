@@ -481,33 +481,40 @@ export default function AboutPage() {
                 </motion.div>
             </section>
 
+            {/* section divider */}
+            <div style={{ height: '1px', background: '#1a1a1a' }} />
+
             {/* ── CTA ── */}
-            <section className="section-px py-24 bg-black border-t border-white/10">
-                <div className="max-w-[1400px] mx-auto text-center">
+            <section className="bg-black section-px" style={{ paddingTop: '60px', paddingBottom: '60px' }}>
+                <div className="max-w-[1400px] mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        <span className="font-mono text-[10px] text-grey tracking-[0.25em] uppercase block mb-4">
-                            Get in Touch
-                        </span>
-                        <h2 className="font-sans font-bold text-4xl md:text-5xl text-white mb-6 uppercase tracking-[0.02em]">
-                            Let's Collaborate<span className="text-grey">.</span>
-                        </h2>
-                        <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase mb-10 max-w-lg mx-auto">
-                            {sc.contact_cta || 'Ready to bring your project to life?'}
-                        </p>
-                        <a
-                            href={`mailto:${email}`}
-                            className="inline-flex items-center gap-3 px-10 py-5 bg-white text-black
-                                font-mono text-sm tracking-[0.15em] uppercase border-[3px] border-white
-                                brutal-shadow btn-fill btn-fill-dark"
-                        >
-                            {email}
-                            <ArrowUpRight size={18} strokeWidth={3} />
-                        </a>
+                        <div className="flex flex-col items-center" style={{ gap: '16px' }}>
+                            <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase">
+                                004 — Contact
+                            </span>
+                            <h2 className="font-sans font-bold text-5xl md:text-7xl text-white tracking-[0.04em] uppercase text-center">
+                                LET'S WORK<br />TOGETHER<span className="text-grey">.</span>
+                            </h2>
+                            <p className="font-mono text-sm text-grey tracking-[0.25em] uppercase text-center max-w-lg">
+                                {sc.contact_cta || 'Ready to bring your project to life?'}
+                            </p>
+                            <div style={{ marginTop: '16px' }}>
+                                <a
+                                    href={`mailto:${email}`}
+                                    className="inline-flex items-center gap-3 px-10 py-5 bg-white text-black
+                                        font-mono text-sm tracking-[0.15em] uppercase border-[3px] border-white
+                                        brutal-shadow btn-fill btn-fill-dark"
+                                >
+                                    {email}
+                                    <ArrowUpRight size={18} strokeWidth={3} />
+                                </a>
+                            </div>
+                        </div>
                     </motion.div>
                 </div>
             </section>
