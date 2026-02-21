@@ -101,7 +101,7 @@ function HomePage() {
         </div>
 
         {/* ── Featured Projects ── */}
-        <section id="work" className="relative bg-grey-light py-40 section-px">
+        <section id="work" className="relative bg-black py-40 section-px">
           <div className="max-w-[1400px] mx-auto grid grid-cols-12 gap-x-6">
             <motion.div
               variants={sectionVariants}
@@ -113,7 +113,7 @@ function HomePage() {
               <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase block mb-4">
                 002 — Work
               </span>
-              <h2 className="font-sans font-bold text-5xl md:text-6xl text-black tracking-[-0.02em] uppercase mb-4">
+              <h2 className="font-sans font-bold text-5xl md:text-6xl text-white tracking-[-0.02em] uppercase mb-4">
                 WORK<span className="text-grey">.</span>
               </h2>
               <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase">
@@ -121,7 +121,7 @@ function HomePage() {
               </p>
             </motion.div>
 
-            <div className="col-span-12 grid grid-cols-1 md:grid-cols-2 gap-8 reveal-stagger">
+            <div className="col-span-12" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1px', background: '#333' }}>
               {projects.map((project, idx) => (
                 <motion.div
                   key={project.id}
@@ -129,14 +129,25 @@ function HomePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-50px' }}
                   transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.33, 1, 0.68, 1] }}
+                  className="bg-black"
                 >
                   <ProjectCard project={project} />
                 </motion.div>
               ))}
+              {!loading && projects.length === 1 && (
+                <div className="bg-black flex flex-col items-center justify-center py-20 px-8" style={{ border: '1px solid #333' }}>
+                  <span className="font-mono text-[10px] tracking-[0.25em] uppercase block mb-4" style={{ color: '#444' }}>
+                    New Project
+                  </span>
+                  <p className="font-mono text-sm uppercase tracking-[0.2em] text-center" style={{ color: '#333' }}>
+                    Coming Soon
+                  </p>
+                </div>
+              )}
             </div>
 
             {!loading && projects.length === 0 && (
-              <div className="col-span-12 text-center py-16 border-[3px] border-black brutal-shadow bg-white">
+              <div className="col-span-12 text-center py-16" style={{ border: '1px solid #333' }}>
                 <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase">
                   No projects yet — Check back soon
                 </p>
