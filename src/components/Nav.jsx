@@ -75,7 +75,7 @@ export default function Nav({ contactEmail }) {
                         : 'bg-transparent border-b-[3px] border-transparent'
                     }`}
             >
-                <div className="max-w-[1440px] mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
+                <div className="max-w-[1400px] mx-auto section-px h-16 flex items-center justify-between">
                     {/* Logotype */}
                     <a
                         href="/"

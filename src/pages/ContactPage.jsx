@@ -48,8 +48,8 @@ export default function ContactPage() {
             <Nav contactEmail={contactEmail} />
 
             {/* Hero */}
-            <section className="pt-28 pb-16 px-8 bg-black">
-                <div className="max-w-[1440px] mx-auto">
+            <section className="pt-28 pb-16 section-px bg-black">
+                <div className="max-w-[1400px] mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -69,7 +69,7 @@ export default function ContactPage() {
             </section>
 
             {/* Contact Content */}
-            <section className="px-4 md:px-8 py-20">
+            <section className="section-px py-20">
                 <div className="max-w-5xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
                         {/* Contact Info */}

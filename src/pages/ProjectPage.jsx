@@ -83,8 +83,8 @@ export default function ProjectPage() {
             <Nav />
 
             {/* Hero Section */}
-            <section className="pt-28 pb-12 px-8 bg-black">
-                <div className="max-w-[1440px] mx-auto">
+            <section className="pt-28 pb-12 section-px bg-black">
+                <div className="max-w-[1400px] mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -125,9 +125,9 @@ export default function ProjectPage() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="px-8 py-12"
+                    className="section-px py-12"
                 >
-                    <div className="max-w-[1440px] mx-auto">
+                    <div className="max-w-[1400px] mx-auto">
                         <div className="brutal-border brutal-shadow overflow-hidden bg-white">
                             <img
                                 src={thumbnailUrl}
@@ -145,7 +145,7 @@ export default function ProjectPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.4 }}
-                    className="px-8 py-16"
+                    className="section-px py-16"
                 >
                     <div className="max-w-3xl mx-auto text-center">
                         <h2 className="font-sans font-bold text-2xl text-black mb-4 uppercase">
@@ -164,7 +164,7 @@ export default function ProjectPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.5 }}
-                    className="px-8 pb-16"
+                    className="section-px pb-16"
                 >
                     <div className="max-w-4xl mx-auto">
                         <div className="brutal-border brutal-shadow bg-white p-8 md:p-12 text-center">
@@ -181,8 +181,8 @@ export default function ProjectPage() {
 
             {/* Gallery */}
             {project.images && project.images.length > 0 && (
-                <section className="px-8 py-16 bg-white border-y-[3px] border-black">
-                    <div className="max-w-[1440px] mx-auto">
+                <section className="section-px py-16 bg-white border-y-[3px] border-black">
+                    <div className="max-w-[1400px] mx-auto">
                         <h2 className="font-sans font-bold text-2xl text-black mb-8 uppercase text-center">
                             Gallery
                         </h2>
@@ -210,8 +210,8 @@ export default function ProjectPage() {
             )}
 
             {/* CTA */}
-            <section className="px-8 py-20 bg-grey-light">
-                <div className="max-w-[1440px] mx-auto text-center">
+            <section className="section-px py-20 bg-grey-light">
+                <div className="max-w-[1400px] mx-auto text-center">
                     <h2 className="font-sans font-bold text-4xl md:text-5xl text-black mb-6 uppercase">
                         Let's Work Together<span className="text-grey">.</span>
                     </h2>

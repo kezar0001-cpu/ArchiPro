@@ -30,7 +30,7 @@ export default function Footer({ siteContent }) {
 
     return (
         <footer className="bg-black text-white border-t-[3px] border-black">
-            <div className="max-w-[1440px] mx-auto px-8 py-8">
+            <div className="max-w-[1400px] mx-auto section-px py-8">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                     {/* Left: Copyright + Domain */}
                     <div className="flex flex-col md:flex-row items-center gap-3 md:gap-6">

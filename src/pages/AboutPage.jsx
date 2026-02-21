@@ -79,7 +79,7 @@ export default function AboutPage() {
         <div className="min-h-screen bg-grey-light">
             <Nav />
 
-            <div className="pt-28 pb-16 px-4 md:px-8">
+            <div className="pt-28 pb-16 section-px">
                 <div className="max-w-[900px] mx-auto">
                     {/* Resume Card */}
                     <motion.div

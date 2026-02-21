@@ -98,8 +98,8 @@ function HomePage() {
         </div>
 
         {/* ── Featured Projects ── */}
-        <section id="work" className="relative bg-grey-light py-40 px-8">
-          <div className="max-w-[1440px] mx-auto grid grid-cols-12 gap-x-6">
+        <section id="work" className="relative bg-grey-light py-40 section-px">
+          <div className="max-w-[1400px] mx-auto grid grid-cols-12 gap-x-6">
             <motion.div
               variants={sectionVariants}
               initial="hidden"
@@ -162,8 +162,8 @@ function HomePage() {
         </section>
 
         {/* ── About ── */}
-        <section id="about" className="bg-white border-y-[3px] border-black py-40 px-8">
-          <div className="max-w-[1440px] mx-auto">
+        <section id="about" className="bg-white border-y-[3px] border-black py-40 section-px">
+          <div className="max-w-[1400px] mx-auto">
             <motion.div
               variants={sectionVariants}
               initial="hidden"
@@ -219,8 +219,8 @@ function HomePage() {
         </section>
 
         {/* ── Contact ── */}
-        <section id="contact" className="bg-black py-40 px-8">
-          <div className="max-w-[1440px] mx-auto">
+        <section id="contact" className="bg-black py-40 section-px">
+          <div className="max-w-[1400px] mx-auto">
             <motion.div
               variants={sectionVariants}
               initial="hidden"
@@ -272,8 +272,8 @@ function NotFoundPage() {
   return (
     <div className="min-h-screen bg-grey-light">
       <Nav />
-      <div className="pt-32 pb-20 px-8">
-        <div className="max-w-[1440px] mx-auto text-center">
+      <div className="pt-32 pb-20 section-px">
+        <div className="max-w-[1400px] mx-auto text-center">
           <h1 className="font-sans font-bold text-[10rem] md:text-[14rem] text-black leading-none tracking-[-0.04em]">
             404
           </h1>

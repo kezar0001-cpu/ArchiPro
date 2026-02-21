@@ -27,8 +27,8 @@ export default function WorkPage() {
             <Nav />
 
             {/* Hero */}
-            <section className="pt-28 pb-16 px-8 bg-black">
-                <div className="max-w-[1440px] mx-auto">
+            <section className="pt-28 pb-16 section-px bg-black">
+                <div className="max-w-[1400px] mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -48,8 +48,8 @@ export default function WorkPage() {
             </section>
 
             {/* Projects Grid */}
-            <section className="px-8 py-20">
-                <div className="max-w-[1440px] mx-auto">
+            <section className="section-px py-20">
+                <div className="max-w-[1400px] mx-auto">
                     {loading ? (
                         <div className="flex items-center justify-center py-16">
                             <div className="w-12 h-12 border-[3px] border-black border-t-transparent rounded-full animate-spin" />

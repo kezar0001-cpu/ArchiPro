@@ -64,7 +64,7 @@ export default function Hero({
             <div className="hero-overlay" style={overlayStyle} />
 
             {/* ── Content ── */}
-            <div className="hero-content min-h-screen flex flex-col justify-end pb-16 pt-24 px-8 max-w-[1440px] mx-auto">
+            <div className="hero-content min-h-screen flex flex-col justify-end pb-16 pt-24 section-px max-w-[1400px] mx-auto">
                 {/* Status Badge */}
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
