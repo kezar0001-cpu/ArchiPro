@@ -29,11 +29,11 @@ export default function WorkPage() {
         : 0;
 
     return (
-        <div className="min-h-screen bg-grey-light">
+        <div className="bg-black">
             <Nav />
 
-            {/* Hero */}
-            <section className="pt-36 pb-16 section-px bg-black">
+            {/* ── PAGE HEADER ── */}
+            <section className="section-px bg-black" style={{ paddingTop: '160px', paddingBottom: '40px' }}>
                 <div className="max-w-[1400px] mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -41,59 +41,74 @@ export default function WorkPage() {
                         transition={{ duration: 0.6 }}
                     >
                         <span className="font-mono text-[10px] text-grey tracking-[0.2em] uppercase block mb-4">
-                            Portfolio
+                            002 — Work
                         </span>
-                        <h1 className="font-sans font-bold text-white uppercase text-6xl md:text-8xl tracking-[-0.02em] mb-6">
+                        <h1
+                            className="font-sans font-bold text-white uppercase tracking-[-0.02em] mb-6"
+                            style={{ fontSize: 'clamp(48px, 7vw, 80px)' }}
+                        >
                             WORK<span className="text-grey">.</span>
                         </h1>
-                        <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase">
+                        <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase mb-3">
                             All Projects
                         </p>
+                        {!loading && (
+                            <p className="font-mono" style={{ fontSize: '11px', color: '#999', letterSpacing: '0.15em' }}>
+                                SHOWING {projects.length} OF {projects.length} PROJECT{projects.length !== 1 ? 'S' : ''}
+                            </p>
+                        )}
                     </motion.div>
                 </div>
             </section>
 
-            {/* Projects Grid */}
-            <section className="section-px py-20">
-                <div className="max-w-[1400px] mx-auto">
+            {/* dark→light divider */}
+            <div style={{ height: '1px', background: '#ddd' }} />
+
+            {/* ── PROJECTS GRID ── */}
+            <section className="bg-white section-px" style={{ paddingTop: '60px', paddingBottom: '80px' }}>
+                <div className="max-w-[1100px] mx-auto">
                     {loading ? (
                         <div className="flex items-center justify-center py-16">
-                            <div className="w-12 h-12 border-[3px] border-black border-t-transparent rounded-full animate-spin" />
+                            <div className="w-12 h-12 border border-black border-t-transparent rounded-full animate-spin" />
                         </div>
                     ) : projects.length === 0 ? (
-                        <div className="text-center py-16 border-[3px] border-black brutal-shadow bg-white">
-                            <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase">
+                        <div className="text-center py-16" style={{ border: '1px solid #ddd' }}>
+                            <p className="font-mono text-sm tracking-[0.2em] uppercase" style={{ color: '#999' }}>
                                 No projects yet — Check back soon
                             </p>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: '2px' }}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: '1px', background: '#ddd' }}>
                             {projects.map((project) => (
-                                <ProjectCard key={project.id} project={project} />
+                                <div key={project.id} className="bg-white">
+                                    <ProjectCard project={project} />
+                                </div>
                             ))}
                             {Array.from({ length: placeholderCount }).map((_, i) => (
                                 <div
                                     key={`placeholder-${i}`}
-                                    className="brutal-border bg-white overflow-hidden opacity-60"
+                                    className="bg-white flex flex-col items-center justify-center relative overflow-hidden"
+                                    style={{ border: '1px dashed #ccc', minHeight: '320px' }}
                                 >
-                                    <div className="aspect-[4/3] bg-grey-light flex items-center justify-center">
-                                        <span className="font-mono text-xs text-grey tracking-[0.2em] uppercase">
-                                            Coming Soon
-                                        </span>
-                                    </div>
-                                    <div className="p-6 border-t-[3px] border-black">
-                                        <div className="flex gap-2 mb-3">
-                                            <span className="font-mono text-[10px] text-grey/50 tracking-[0.15em] uppercase px-2 py-1 border-[2px] border-grey/30">
-                                                TBA
-                                            </span>
-                                        </div>
-                                        <h3 className="font-sans font-bold text-xl text-grey/40 tracking-[-0.01em] mb-2 uppercase">
-                                            New Project
-                                        </h3>
-                                        <p className="font-sans text-sm text-grey/30 leading-relaxed">
-                                            Details coming soon
-                                        </p>
-                                    </div>
+                                    <span
+                                        className="absolute font-sans font-bold select-none pointer-events-none"
+                                        style={{ fontSize: '140px', color: 'rgba(0,0,0,0.04)', lineHeight: 1, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
+                                        aria-hidden="true"
+                                    >
+                                        +
+                                    </span>
+                                    <span
+                                        className="font-mono uppercase block mb-2 relative"
+                                        style={{ fontSize: '10px', letterSpacing: '0.25em', color: '#bbb' }}
+                                    >
+                                        Coming Soon
+                                    </span>
+                                    <p
+                                        className="font-sans font-bold uppercase text-center relative"
+                                        style={{ fontSize: '16px', color: '#aaa', lineHeight: 1.3 }}
+                                    >
+                                        New Project
+                                    </p>
                                 </div>
                             ))}
                         </div>
