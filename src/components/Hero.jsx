@@ -19,9 +19,11 @@ export default function Hero({
     headline = null,
     subheadline = null,
     overlayOpacity = 0.55,
+    heroStatus = null,
 }) {
-    const displayHeadline = headline || 'HADI LAL\nDULEIMI';
-    const displaySub = subheadline || 'LAUNCHING SOON — PORTFOLIO IN CONSTRUCTION';
+    const displayHeadline = headline || 'HADIL AL-\nDULEIMI';
+    const displaySub = subheadline || 'ARCHITECT & DESIGNER — MELBOURNE, AU';
+    const displayStatus = heroStatus || 'Available for Projects';
     const headlineLines = displayHeadline.split('\n');
 
     const now = new Date();
@@ -75,7 +77,7 @@ export default function Hero({
                         <span className="relative inline-flex rounded-full h-3 w-3 bg-white" />
                     </span>
                     <span className="font-mono text-sm text-white tracking-[0.2em] uppercase">
-                        Currently Building
+                        {displayStatus}
                     </span>
                 </motion.div>
 
@@ -170,7 +172,7 @@ export default function Hero({
                             </span>
                         </div>
                         <span className="font-sans text-sm font-semibold text-white">
-                            ● Under Construction
+                            ● {displayStatus}
                         </span>
                     </div>
                 </motion.div>

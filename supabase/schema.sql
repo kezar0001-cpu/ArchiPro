@@ -148,9 +148,10 @@ CREATE POLICY "Editors delete project_images"
 
 -- ── Seed default site content ──
 INSERT INTO site_content (key, value) VALUES
-    ('hero_headline', 'HADI LAL\nDULEIMI'),
+    ('hero_headline', 'HADIL AL-\nDULEIMI'),
     ('hero_subheadline', 'ARCHITECT & DESIGNER — MELBOURNE, AU'),
     ('hero_overlay_opacity', '0.55'),
+    ('hero_status', 'Available for Projects'),
     ('hero_video_path', ''),
     ('about_intro', 'I''m Hadil Al-Duleimi, an architect and designer based in Melbourne, Australia. With over 8 years of experience in architectural design, I specialize in creating spaces that blend functionality with innovative design.'),
     ('about_tagline', 'Architect · Designer · Melbourne'),

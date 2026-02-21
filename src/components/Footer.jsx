@@ -1,37 +1,31 @@
+import { useState, useEffect } from 'react';
 import { Github, Linkedin, Instagram, Mail } from 'lucide-react';
+import { getAllSiteContent } from '../lib/queries';
 
 /**
  * Footer — Neo-Brutalist Site Footer
  *
- * Full-width black background with white text:
- * - Left: Copyright + domain link
- * - Right: Social media icons
- * - Grayscale only (no color accents)
+ * CMS-driven social links and contact email.
+ * Falls back to defaults when no CMS data is available.
  */
 export default function Footer() {
     const currentYear = new Date().getFullYear();
+    const [sc, setSc] = useState({});
+
+    useEffect(() => {
+        getAllSiteContent().then(setSc).catch(() => {});
+    }, []);
+
+    const contactEmail = sc.contact_email || 'hello@hadilalduleimi.com';
+    const linkedinUrl = sc.social_linkedin || 'https://linkedin.com/in/hadilalduleimi';
+    const instagramUrl = sc.social_instagram || 'https://instagram.com/hadilalduleimi';
+    const githubUrl = sc.social_github || 'https://github.com/hadilalduleimi';
 
     const socialLinks = [
-        {
-            label: 'Email',
-            href: 'mailto:hello@hadilalduleimi.com',
-            icon: Mail,
-        },
-        {
-            label: 'LinkedIn',
-            href: 'https://linkedin.com/in/hadilalduleimi',
-            icon: Linkedin,
-        },
-        {
-            label: 'Instagram',
-            href: 'https://instagram.com/hadilalduleimi',
-            icon: Instagram,
-        },
-        {
-            label: 'GitHub',
-            href: 'https://github.com/hadilalduleimi',
-            icon: Github,
-        },
+        { label: 'Email', href: `mailto:${contactEmail}`, icon: Mail },
+        { label: 'LinkedIn', href: linkedinUrl, icon: Linkedin },
+        { label: 'Instagram', href: instagramUrl, icon: Instagram },
+        { label: 'GitHub', href: githubUrl, icon: Github },
     ];
 
     return (
@@ -84,7 +78,7 @@ export default function Footer() {
                 {/* Bottom Legal Text */}
                 <div className="mt-6 pt-6 border-t-[3px] border-white/20">
                     <p className="font-mono text-[10px] text-grey text-center tracking-[0.15em] uppercase">
-                        Built with React · Vite · Tailwind CSS · Sanity.io · Deployed on Vercel
+                        Built with React · Vite · Tailwind CSS · Supabase · Deployed on Vercel
                     </p>
                 </div>
             </div>

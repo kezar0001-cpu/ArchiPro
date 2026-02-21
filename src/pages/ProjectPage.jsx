@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
-import { getProjectBySlug } from '../lib/queries';
+import { getProjectBySlug, getAllSiteContent } from '../lib/queries';
 
 /**
  * ProjectPage — Individual Project Case Study
@@ -18,12 +18,17 @@ export default function ProjectPage() {
     const { slug } = useParams();
     const [project, setProject] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [sc, setSc] = useState({});
 
     useEffect(() => {
         const fetchProject = async () => {
             try {
-                const data = await getProjectBySlug(slug);
+                const [data, content] = await Promise.all([
+                    getProjectBySlug(slug),
+                    getAllSiteContent().catch(() => ({})),
+                ]);
                 setProject(data);
+                setSc(content);
             } catch (err) {
                 console.error('Error fetching project:', err);
             } finally {
@@ -33,6 +38,8 @@ export default function ProjectPage() {
 
         fetchProject();
     }, [slug]);
+
+    const contactEmail = sc.contact_email || 'hello@hadilalduleimi.com';
 
     if (loading) {
         return (
@@ -118,7 +125,7 @@ export default function ProjectPage() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="px-8 py-0"
+                    className="px-8 py-12"
                 >
                     <div className="max-w-[1440px] mx-auto">
                         <div className="brutal-border brutal-shadow overflow-hidden bg-white">
@@ -148,6 +155,27 @@ export default function ProjectPage() {
                             <p className="font-sans text-lg text-grey leading-relaxed">
                                 {project.description}
                             </p>
+                        </div>
+                    </div>
+                </motion.section>
+            )}
+
+            {/* Project Details */}
+            {project.details && (
+                <motion.section
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.5 }}
+                    className="px-8 pb-16"
+                >
+                    <div className="max-w-[1440px] mx-auto">
+                        <div className="brutal-border brutal-shadow bg-white p-8 md:p-12">
+                            <h2 className="font-sans font-bold text-2xl text-black mb-6 uppercase">
+                                Project Details
+                            </h2>
+                            <div className="font-sans text-lg text-grey leading-relaxed whitespace-pre-line">
+                                {project.details}
+                            </div>
                         </div>
                     </div>
                 </motion.section>
@@ -193,7 +221,7 @@ export default function ProjectPage() {
                         Have a project in mind?
                     </p>
                     <a
-                        href="mailto:hello@hadilalduleimi.com"
+                        href={`mailto:${contactEmail}`}
                         className="inline-flex items-center gap-2 px-8 py-4 bg-black text-white font-mono text-sm tracking-[0.15em] uppercase border-[3px] border-black brutal-shadow brutal-hover"
                     >
                         Get in Touch

@@ -46,6 +46,7 @@ function HomePage() {
   const aboutTagline = siteContent.about_tagline || 'Architect · Designer · Melbourne';
   const contactEmail = siteContent.contact_email || 'hello@hadilalduleimi.com';
   const contactCta = siteContent.contact_cta || 'Ready to bring your project to life?';
+  const heroStatus = siteContent.hero_status || null;
 
   return (
     <>
@@ -56,6 +57,7 @@ function HomePage() {
           headline={heroData?.headline}
           subheadline={heroData?.subheadline}
           overlayOpacity={heroData?.overlayOpacity}
+          heroStatus={heroStatus}
         />
         
         {/* Featured Projects Section */}

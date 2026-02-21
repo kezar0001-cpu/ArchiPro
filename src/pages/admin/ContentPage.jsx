@@ -6,10 +6,20 @@ const CONTENT_LABELS = {
     hero_headline: { label: 'Hero Headline', hint: 'Use \\n for line breaks', multiline: true },
     hero_subheadline: { label: 'Hero Subheadline', hint: 'Tagline below the headline' },
     hero_overlay_opacity: { label: 'Hero Overlay Opacity', hint: '0 to 1 (e.g. 0.55)' },
-    about_intro: { label: 'About Intro', hint: 'Main bio paragraph', multiline: true },
+    hero_status: { label: 'Hero Status Badge', hint: 'e.g. Available for Projects, Open to Work' },
+    about_intro: { label: 'Homepage About Intro', hint: 'Short bio shown on homepage #about section', multiline: true },
     about_tagline: { label: 'About Tagline', hint: 'e.g. Architect · Designer · Melbourne' },
+    about_bio_1: { label: 'About Page — Bio Paragraph 1', hint: 'First paragraph on the About page', multiline: true },
+    about_bio_2: { label: 'About Page — Bio Paragraph 2', hint: 'Second paragraph on the About page', multiline: true },
+    about_bio_3: { label: 'About Page — Bio Paragraph 3', hint: 'Third paragraph on the About page', multiline: true },
+    about_skills: { label: 'About Page — Skills', hint: 'Comma-separated list of skills (e.g. AutoCAD, Revit, SketchUp)', multiline: true },
+    about_experience: { label: 'About Page — Experience', hint: 'One entry per line: Title | Company | Period | Location', multiline: true },
+    about_availability: { label: 'About Page — Availability', hint: 'e.g. Open to Projects, Currently Booked' },
     contact_email: { label: 'Contact Email', hint: 'Public email address' },
     contact_cta: { label: 'Contact CTA', hint: 'Call-to-action text for contact section' },
+    social_linkedin: { label: 'LinkedIn URL', hint: 'Full URL (e.g. https://linkedin.com/in/yourname)' },
+    social_instagram: { label: 'Instagram URL', hint: 'Full URL (e.g. https://instagram.com/yourname)' },
+    social_github: { label: 'GitHub URL', hint: 'Full URL (e.g. https://github.com/yourname)' },
 };
 
 export default function ContentPage() {
@@ -39,8 +49,7 @@ export default function ContentPage() {
 
         const { error } = await supabase
             .from('site_content')
-            .update({ value: content[key] })
-            .eq('key', key);
+            .upsert({ key, value: content[key] || '' }, { onConflict: 'key' });
 
         setSaving((prev) => ({ ...prev, [key]: false }));
 
