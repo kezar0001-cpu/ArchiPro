@@ -176,17 +176,17 @@ function HomePage() {
               <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase block mb-8">
                 003 — About
               </span>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 {/* Left — Image */}
-                <div className="relative brutal-border brutal-shadow overflow-hidden min-h-[400px] bg-grey-light">
+                <div className="brutal-border brutal-shadow bg-grey-light overflow-hidden" style={{ aspectRatio: '2/3', minHeight: '500px' }}>
                   {profilePhotoUrl ? (
                     <img
                       src={profilePhotoUrl}
                       alt="Hadil Al-Duleimi"
-                      className="w-full h-full object-cover grayscale absolute inset-0"
+                      className="w-full h-full object-cover object-top grayscale"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center absolute inset-0">
+                    <div className="w-full h-full flex items-center justify-center">
                       <span className="font-sans font-bold text-[8rem] text-black/5 leading-none tracking-[-0.04em] uppercase select-none">
                         H.A
                       </span>

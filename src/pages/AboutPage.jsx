@@ -87,17 +87,17 @@ export default function AboutPage() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
-                            className="relative overflow-hidden bg-[#111] min-h-[500px] lg:min-h-[600px]"
+                            className="overflow-hidden bg-[#111]"
+                            style={{ aspectRatio: '2/3', minHeight: '500px' }}
                         >
                             {photoUrl ? (
                                 <img
                                     src={photoUrl}
                                     alt={name}
-                                    className="absolute inset-0 w-full h-full object-cover object-top grayscale"
-                                    style={{ aspectRatio: '3/4' }}
+                                    className="w-full h-full object-cover object-top grayscale"
                                 />
                             ) : (
-                                <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="w-full h-full flex items-center justify-center">
                                     <span className="font-sans font-bold text-[10rem] text-white/5 leading-none tracking-[-0.04em] uppercase select-none">
                                         H.A
                                     </span>
