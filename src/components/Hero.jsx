@@ -121,12 +121,12 @@ export default function Hero({
                     {displaySub}
                 </motion.p>
 
-                {/* ── Title Block (Architectural Drawing Style) ── */}
+                {/* ── Title Block (Architectural Drawing Style) — desktop only ── */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 1.2 }}
-                    className="mt-10 w-full max-w-md border-[3px] border-white/80
+                    className="hidden md:block mt-10 w-full max-w-md border-[3px] border-white/80
                      backdrop-blur-sm bg-black/20"
                 >
                     {/* Title block header */}

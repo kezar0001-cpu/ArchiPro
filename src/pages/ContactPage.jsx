@@ -60,7 +60,7 @@ export default function ContactPage() {
                         </span>
                         <h1
                             className="font-sans font-bold text-white uppercase tracking-[-0.02em] mb-6"
-                            style={{ fontSize: 'clamp(48px, 7vw, 80px)' }}
+                            style={{ fontSize: 'clamp(40px, 12vw, 100px)' }}
                         >
                             CONTACT<span className="text-grey">.</span>
                         </h1>
@@ -77,7 +77,7 @@ export default function ContactPage() {
             {/* ── CONTACT CONTENT ── */}
             <section className="bg-white section-px" style={{ paddingTop: '60px', paddingBottom: '80px' }}>
                 <div className="max-w-[1100px] mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-[35%_1fr]" style={{ gap: '80px' }}>
+                    <div className="grid grid-cols-1 lg:grid-cols-[35%_1fr]" style={{ gap: 'clamp(40px, 6vw, 80px)' }}>
 
                         {/* ── LEFT: Contact Info ── */}
                         <motion.div
@@ -227,7 +227,7 @@ export default function ContactPage() {
                             ) : (
                                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
                                     {/* Name + Email row */}
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }}>
+                                    <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: '28px' }}>
                                         <div>
                                             <label className="font-mono uppercase block" style={{ fontSize: '11px', color: '#999', letterSpacing: '0.15em', marginBottom: '8px' }}>
                                                 Name *
@@ -244,7 +244,7 @@ export default function ContactPage() {
                                                     border: 'none',
                                                     borderBottom: '1px solid #ccc',
                                                     padding: '12px 0',
-                                                    fontSize: '14px',
+                                                    fontSize: '16px',
                                                     color: '#111',
                                                 }}
                                                 onFocus={e => { e.target.style.borderBottomColor = '#111'; }}
@@ -268,7 +268,7 @@ export default function ContactPage() {
                                                     border: 'none',
                                                     borderBottom: '1px solid #ccc',
                                                     padding: '12px 0',
-                                                    fontSize: '14px',
+                                                    fontSize: '16px',
                                                     color: '#111',
                                                 }}
                                                 onFocus={e => { e.target.style.borderBottomColor = '#111'; }}
@@ -294,7 +294,7 @@ export default function ContactPage() {
                                                 border: 'none',
                                                 borderBottom: '1px solid #ccc',
                                                 padding: '12px 0',
-                                                fontSize: '14px',
+                                                fontSize: '16px',
                                                 color: '#111',
                                             }}
                                             onFocus={e => { e.target.style.borderBottomColor = '#111'; }}
@@ -319,7 +319,7 @@ export default function ContactPage() {
                                                 border: 'none',
                                                 borderBottom: '1px solid #ccc',
                                                 padding: '12px 0',
-                                                fontSize: '14px',
+                                                fontSize: '16px',
                                                 color: '#111',
                                                 minHeight: '140px',
                                             }}
@@ -337,9 +337,10 @@ export default function ContactPage() {
                                             background: '#111',
                                             color: '#fff',
                                             border: 'none',
-                                            padding: '16px',
+                                            padding: '18px',
                                             fontSize: '12px',
                                             letterSpacing: '0.2em',
+                                            minHeight: '56px',
                                         }}
                                         onMouseEnter={e => { e.currentTarget.style.background = '#333'; }}
                                         onMouseLeave={e => { e.currentTarget.style.background = '#111'; }}

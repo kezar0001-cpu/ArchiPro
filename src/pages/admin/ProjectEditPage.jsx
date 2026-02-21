@@ -19,7 +19,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-function SortableImageItem({ image, onDelete, onAltChange, saveStatus }) {
+function SortableImageItem({ image, onDelete, onAltChange, saveStatus, onMoveUp, onMoveDown, isFirst, isLast }) {
     const {
         attributes,
         listeners,
@@ -38,54 +38,105 @@ function SortableImageItem({ image, onDelete, onAltChange, saveStatus }) {
         position: 'relative',
     };
 
-    const handleColor = saveStatus === 'saved'
-        ? '#22c55e'
-        : saveStatus === 'saving'
-        ? '#888'
-        : '#888';
+    const handleColor = saveStatus === 'saved' ? '#22c55e' : '#888';
 
     return (
         <div
             ref={setNodeRef}
             style={style}
-            className="flex items-start gap-3 p-3 border-[2px] border-black bg-white"
+            className="border-[2px] border-black bg-white"
         >
-            <button
-                {...attributes}
-                {...listeners}
-                className="mt-1 shrink-0 touch-none"
-                style={{ cursor: isDragging ? 'grabbing' : 'grab', color: handleColor, transition: 'color 0.3s' }}
-                title="Drag to reorder"
-                type="button"
-            >
-                <GripVertical size={16} strokeWidth={3} />
-            </button>
-            <img
-                src={image.url}
-                alt={image.alt_text}
-                className="w-20 h-16 object-cover grayscale border-[2px] border-black shrink-0"
-            />
-            <div className="flex-1 min-w-0">
-                <input
-                    type="text"
-                    defaultValue={image.alt_text}
-                    onBlur={(e) => onAltChange(image.id, e.target.value)}
-                    className="w-full px-2 py-1 border-[2px] border-black font-mono text-[10px]
-                        focus:outline-none focus:border-grey transition-colors duration-200"
-                    placeholder="Alt text..."
+            {/* Desktop row layout */}
+            <div className="hidden md:flex items-start gap-3 p-3">
+                <button
+                    {...attributes}
+                    {...listeners}
+                    className="mt-1 shrink-0 touch-none"
+                    style={{ cursor: isDragging ? 'grabbing' : 'grab', color: handleColor, transition: 'color 0.3s' }}
+                    title="Drag to reorder"
+                    type="button"
+                >
+                    <GripVertical size={16} strokeWidth={3} />
+                </button>
+                <img
+                    src={image.url}
+                    alt={image.alt_text}
+                    className="w-20 h-16 object-cover grayscale border-[2px] border-black shrink-0"
                 />
-                <p className="font-mono text-[9px] text-grey mt-1 truncate">
-                    {image.storage_path}
-                </p>
+                <div className="flex-1 min-w-0">
+                    <input
+                        type="text"
+                        defaultValue={image.alt_text}
+                        onBlur={(e) => onAltChange(image.id, e.target.value)}
+                        className="w-full px-2 py-1 border-[2px] border-black font-mono text-[10px]
+                            focus:outline-none focus:border-grey transition-colors duration-200"
+                        placeholder="Alt text..."
+                    />
+                    <p className="font-mono text-[9px] text-grey mt-1 truncate">
+                        {image.storage_path}
+                    </p>
+                </div>
+                <button
+                    onClick={() => onDelete(image)}
+                    className="p-1.5 text-grey hover:text-black transition-colors duration-200 shrink-0"
+                    title="Delete image"
+                    type="button"
+                >
+                    <Trash2 size={14} strokeWidth={3} />
+                </button>
             </div>
-            <button
-                onClick={() => onDelete(image)}
-                className="p-1.5 text-grey hover:text-black transition-colors duration-200 shrink-0"
-                title="Delete image"
-                type="button"
-            >
-                <Trash2 size={14} strokeWidth={3} />
-            </button>
+
+            {/* Mobile stacked layout */}
+            <div className="md:hidden p-3">
+                <div className="flex gap-3 mb-2">
+                    <img
+                        src={image.url}
+                        alt={image.alt_text}
+                        className="w-20 h-16 object-cover grayscale border-[2px] border-black shrink-0"
+                    />
+                    <div className="flex-1 min-w-0">
+                        <input
+                            type="text"
+                            defaultValue={image.alt_text}
+                            onBlur={(e) => onAltChange(image.id, e.target.value)}
+                            className="w-full px-2 py-1 border-[2px] border-black font-mono text-[10px]
+                                focus:outline-none focus:border-grey transition-colors duration-200"
+                            placeholder="Alt text..."
+                            style={{ fontSize: '16px' }}
+                        />
+                        <p className="font-mono text-[9px] text-grey mt-1 truncate">
+                            {image.storage_path}
+                        </p>
+                    </div>
+                </div>
+                <div className="flex items-center gap-2 pt-2 border-t border-grey/20">
+                    <button
+                        onClick={onMoveUp}
+                        disabled={isFirst}
+                        className="flex-1 flex items-center justify-center gap-1 py-2 border-[2px] border-black font-mono text-[10px] uppercase tracking-[0.1em] disabled:opacity-30"
+                        type="button"
+                    >
+                        ↑ Up
+                    </button>
+                    <button
+                        onClick={onMoveDown}
+                        disabled={isLast}
+                        className="flex-1 flex items-center justify-center gap-1 py-2 border-[2px] border-black font-mono text-[10px] uppercase tracking-[0.1em] disabled:opacity-30"
+                        type="button"
+                    >
+                        ↓ Down
+                    </button>
+                    <button
+                        onClick={() => onDelete(image)}
+                        className="flex items-center justify-center p-2 border-[2px] border-black text-grey hover:text-black transition-colors"
+                        title="Delete image"
+                        type="button"
+                        style={{ minWidth: '44px', minHeight: '44px' }}
+                    >
+                        <Trash2 size={14} strokeWidth={3} />
+                    </button>
+                </div>
+            </div>
         </div>
     );
 }
@@ -324,7 +375,7 @@ export default function ProjectEditPage() {
     }
 
     return (
-        <div className="p-8">
+        <div className="p-4 md:p-8 pb-24 md:pb-8">
             {/* Header */}
             <div className="flex items-center gap-4 mb-8">
                 <button
@@ -341,6 +392,25 @@ export default function ProjectEditPage() {
                 </div>
                 <div className="flex items-center gap-3">
                     {saved && (
+                        <span className="hidden md:inline-flex items-center gap-1.5 font-mono text-xs text-black tracking-[0.1em] uppercase">
+                            <Check size={14} strokeWidth={3} /> Saved
+                        </span>
+                    )}
+                    <button
+                        onClick={handleSave}
+                        disabled={saving || !form.title}
+                        className="hidden md:inline-flex items-center gap-2 px-6 py-3 bg-black text-white
+                            font-mono text-xs tracking-[0.15em] uppercase border-[3px] border-black
+                            brutal-shadow-sm brutal-hover disabled:opacity-50"
+                    >
+                        <Save size={14} strokeWidth={3} />
+                        {saving ? 'Saving...' : 'Save'}
+                    </button>
+                </div>
+
+                {/* Mobile sticky save bar */}
+                <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t-[3px] border-black p-3 flex items-center gap-3">
+                    {saved && (
                         <span className="inline-flex items-center gap-1.5 font-mono text-xs text-black tracking-[0.1em] uppercase">
                             <Check size={14} strokeWidth={3} /> Saved
                         </span>
@@ -348,12 +418,12 @@ export default function ProjectEditPage() {
                     <button
                         onClick={handleSave}
                         disabled={saving || !form.title}
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white
+                        className="flex-1 inline-flex items-center justify-center gap-2 py-3 bg-black text-white
                             font-mono text-xs tracking-[0.15em] uppercase border-[3px] border-black
-                            brutal-shadow-sm brutal-hover disabled:opacity-50"
+                            disabled:opacity-50"
                     >
                         <Save size={14} strokeWidth={3} />
-                        {saving ? 'Saving...' : 'Save'}
+                        {saving ? 'Saving...' : 'Save Project'}
                     </button>
                 </div>
             </div>
@@ -483,13 +553,37 @@ export default function ProjectEditPage() {
                                         strategy={verticalListSortingStrategy}
                                     >
                                         <div className="space-y-3">
-                                            {images.map((image) => (
+                                            {images.map((image, idx) => (
                                                 <SortableImageItem
                                                     key={image.id}
                                                     image={image}
                                                     onDelete={handleImageDelete}
                                                     onAltChange={handleAltTextChange}
                                                     saveStatus={orderSaveStatus}
+                                                    isFirst={idx === 0}
+                                                    isLast={idx === images.length - 1}
+                                                    onMoveUp={() => {
+                                                        if (idx === 0) return;
+                                                        setImages(prev => {
+                                                            const reordered = arrayMove(prev, idx, idx - 1);
+                                                            setOrderSaveStatus('saving');
+                                                            Promise.all(reordered.map((img, i) =>
+                                                                supabase.from('project_images').update({ sort_order: i }).eq('id', img.id)
+                                                            )).then(() => { setOrderSaveStatus('saved'); setTimeout(() => setOrderSaveStatus(null), 1500); });
+                                                            return reordered;
+                                                        });
+                                                    }}
+                                                    onMoveDown={() => {
+                                                        if (idx === images.length - 1) return;
+                                                        setImages(prev => {
+                                                            const reordered = arrayMove(prev, idx, idx + 1);
+                                                            setOrderSaveStatus('saving');
+                                                            Promise.all(reordered.map((img, i) =>
+                                                                supabase.from('project_images').update({ sort_order: i }).eq('id', img.id)
+                                                            )).then(() => { setOrderSaveStatus('saved'); setTimeout(() => setOrderSaveStatus(null), 1500); });
+                                                            return reordered;
+                                                        });
+                                                    }}
                                                 />
                                             ))}
                                         </div>

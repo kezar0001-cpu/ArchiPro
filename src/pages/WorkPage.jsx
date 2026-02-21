@@ -45,7 +45,7 @@ export default function WorkPage() {
                         </span>
                         <h1
                             className="font-sans font-bold text-white uppercase tracking-[-0.02em] mb-6"
-                            style={{ fontSize: 'clamp(48px, 7vw, 80px)' }}
+                            style={{ fontSize: 'clamp(40px, 12vw, 120px)' }}
                         >
                             WORK<span className="text-grey">.</span>
                         </h1>

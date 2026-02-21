@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
@@ -49,6 +49,15 @@ export default function ProjectPage() {
     const goPrev = useCallback(() => {
         setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
     }, [totalSlides]);
+
+    const touchStartX = useRef(0);
+    const handleTouchStart = useCallback((e) => {
+        touchStartX.current = e.touches[0].clientX;
+    }, []);
+    const handleTouchEnd = useCallback((e) => {
+        const diff = touchStartX.current - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) diff > 0 ? goNext() : goPrev();
+    }, [goNext, goPrev]);
 
     // Keyboard navigation for gallery
     useEffect(() => {
@@ -113,7 +122,7 @@ export default function ProjectPage() {
             <Nav />
 
             {/* ── SECTION 1: HERO ── */}
-            <section className="relative w-full overflow-hidden bg-black" style={{ height: '65vh', minHeight: '420px' }}>
+            <section className="relative w-full overflow-hidden bg-black" style={{ height: 'clamp(300px, 50vh, 65vh)', minHeight: '300px' }}>
                 {heroImage ? (
                     <motion.img
                         initial={{ opacity: 0, scale: 1.05 }}
@@ -136,7 +145,7 @@ export default function ProjectPage() {
                         <Link
                             to="/work"
                             className="inline-flex items-center gap-2 font-mono uppercase transition-colors duration-300"
-                            style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', letterSpacing: '0.15em' }}
+                            style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', letterSpacing: '0.15em', padding: '12px 0', minHeight: '44px' }}
                         >
                             <ArrowLeft size={14} strokeWidth={2} />
                             Back to Projects
@@ -152,7 +161,7 @@ export default function ProjectPage() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.3 }}
                             className="font-sans font-bold text-white uppercase tracking-[-0.02em]"
-                            style={{ fontSize: 'clamp(32px, 5vw, 72px)', maxWidth: '900px' }}
+                            style={{ fontSize: 'clamp(20px, 6vw, 72px)', maxWidth: '900px' }}
                         >
                             {project.title}<span style={{ color: '#888' }}>.</span>
                         </motion.h1>
@@ -166,27 +175,29 @@ export default function ProjectPage() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.4 }}
                 className="bg-white section-px"
-                style={{ borderBottom: '1px solid #ddd', paddingTop: '16px', paddingBottom: '16px' }}
+                style={{ borderBottom: '1px solid #ddd', paddingTop: '12px', paddingBottom: '12px' }}
             >
-                <div className="max-w-[1400px] mx-auto flex flex-wrap items-center gap-y-2">
+                <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row md:flex-wrap md:items-center" style={{ gap: '8px' }}>
                     {category && (
-                        <div className="flex items-center" style={{ paddingRight: '24px', marginRight: '24px', borderRight: '1px solid #ddd' }}>
-                            <span className="font-mono uppercase" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em', marginRight: '8px' }}>Type</span>
+                        <div className="flex items-center" style={{ paddingBottom: '8px', marginBottom: '0', borderBottom: '1px solid #eee' }}>
+                            <span className="font-mono uppercase" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em', marginRight: '8px', minWidth: '40px' }}>Type</span>
                             <span className="font-mono uppercase" style={{ fontSize: '11px', color: '#111', letterSpacing: '0.1em' }}>{category}</span>
                         </div>
                     )}
-                    <div className="flex items-center" style={{ paddingRight: remainingTags.length > 0 ? '24px' : 0, marginRight: remainingTags.length > 0 ? '24px' : 0, borderRight: remainingTags.length > 0 ? '1px solid #ddd' : 'none' }}>
-                        <span className="font-mono uppercase" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em', marginRight: '8px' }}>Status</span>
+                    <div className="flex items-center" style={{ paddingBottom: '8px', borderBottom: remainingTags.length > 0 ? '1px solid #eee' : 'none' }}>
+                        <span className="font-mono uppercase" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em', marginRight: '8px', minWidth: '40px' }}>Status</span>
                         <span className="font-mono uppercase" style={{ fontSize: '11px', color: '#111', letterSpacing: '0.1em' }}>Completed</span>
                     </div>
                     {remainingTags.length > 0 && (
-                        <div className="flex items-center flex-wrap" style={{ gap: '6px' }}>
-                            <span className="font-mono uppercase" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em', marginRight: '4px' }}>Tags</span>
-                            {remainingTags.map((tag, i) => (
-                                <span key={i} className="font-mono" style={{ fontSize: '11px', color: '#111', letterSpacing: '0.08em' }}>
-                                    {tag}{i < remainingTags.length - 1 ? ' ·' : ''}
-                                </span>
-                            ))}
+                        <div className="flex items-start flex-wrap" style={{ gap: '4px' }}>
+                            <span className="font-mono uppercase" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em', marginRight: '4px', minWidth: '40px', paddingTop: '1px' }}>Tags</span>
+                            <div className="flex flex-wrap" style={{ gap: '4px' }}>
+                                {remainingTags.map((tag, i) => (
+                                    <span key={i} className="font-mono" style={{ fontSize: '11px', color: '#111', letterSpacing: '0.08em' }}>
+                                        {tag}{i < remainingTags.length - 1 ? ' ·' : ''}
+                                    </span>
+                                ))}
+                            </div>
                         </div>
                     )}
                 </div>
@@ -243,7 +254,12 @@ export default function ProjectPage() {
                     </div>
 
                     {/* Main carousel */}
-                    <div className="relative w-full flex items-center justify-center overflow-hidden" style={{ height: '70vh', minHeight: '400px' }}>
+                    <div
+                        className="relative w-full flex items-center justify-center overflow-hidden"
+                        style={{ height: 'clamp(240px, 50vh, 70vh)', minHeight: '240px' }}
+                        onTouchStart={handleTouchStart}
+                        onTouchEnd={handleTouchEnd}
+                    >
                         <AnimatePresence mode="wait">
                             <motion.img
                                 key={currentSlide}
@@ -262,23 +278,23 @@ export default function ProjectPage() {
                             <>
                                 <button
                                     onClick={goPrev}
-                                    className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center transition-all duration-200"
-                                    style={{ width: '48px', height: '48px', border: '1px solid #444', background: 'rgba(0,0,0,0.6)', color: '#fff' }}
+                                    className="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center transition-all duration-200"
+                                    style={{ width: '44px', height: '44px', border: '1px solid #444', background: 'rgba(0,0,0,0.6)', color: '#fff' }}
                                     onMouseEnter={e => { e.currentTarget.style.borderColor = '#fff'; }}
                                     onMouseLeave={e => { e.currentTarget.style.borderColor = '#444'; }}
                                     aria-label="Previous image"
                                 >
-                                    <ArrowLeft size={20} strokeWidth={2} />
+                                    <ArrowLeft size={18} strokeWidth={2} />
                                 </button>
                                 <button
                                     onClick={goNext}
-                                    className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center transition-all duration-200"
-                                    style={{ width: '48px', height: '48px', border: '1px solid #444', background: 'rgba(0,0,0,0.6)', color: '#fff' }}
+                                    className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center transition-all duration-200"
+                                    style={{ width: '44px', height: '44px', border: '1px solid #444', background: 'rgba(0,0,0,0.6)', color: '#fff' }}
                                     onMouseEnter={e => { e.currentTarget.style.borderColor = '#fff'; }}
                                     onMouseLeave={e => { e.currentTarget.style.borderColor = '#444'; }}
                                     aria-label="Next image"
                                 >
-                                    <ArrowRight size={20} strokeWidth={2} />
+                                    <ArrowRight size={18} strokeWidth={2} />
                                 </button>
                             </>
                         )}
@@ -293,9 +309,10 @@ export default function ProjectPage() {
                                         <button
                                             key={img.id || idx}
                                             onClick={() => setCurrentSlide(idx)}
-                                            className="flex-shrink-0 w-20 overflow-hidden transition-all duration-200"
+                                            className="flex-shrink-0 overflow-hidden transition-all duration-200"
                                             style={{
-                                                height: '60px',
+                                                width: '72px',
+                                                height: '56px',
                                                 opacity: idx === currentSlide ? 1 : 0.45,
                                                 outline: idx === currentSlide ? '2px solid #fff' : 'none',
                                                 outlineOffset: '2px',

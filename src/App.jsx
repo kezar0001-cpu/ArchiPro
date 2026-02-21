@@ -86,7 +86,7 @@ function HomePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 2, duration: 0.8 }}
-            className="absolute -top-20 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+            className="absolute -top-20 left-1/2 -translate-x-1/2 z-10 flex-col items-center gap-2 hidden md:flex"
           >
             <span className="font-mono text-[10px] tracking-[0.2em] uppercase" style={{ color: 'rgba(0,0,0,0.4)' }}>
               Scroll
@@ -113,7 +113,7 @@ function HomePage() {
               <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase block mb-4">
                 002 — Work
               </span>
-              <h2 className="font-sans font-bold text-5xl md:text-6xl text-black tracking-[-0.02em] uppercase mb-4">
+              <h2 className="font-sans font-bold text-black tracking-[-0.02em] uppercase mb-4" style={{ fontSize: 'clamp(36px, 10vw, 96px)' }}>
                 WORK<span className="text-grey">.</span>
               </h2>
               <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase">
@@ -121,7 +121,7 @@ function HomePage() {
               </p>
             </motion.div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1px', background: '#ddd' }}>
+            <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: '1px', background: '#ddd' }}>
               {projects.map((project, idx) => (
                 <motion.div
                   key={project.id}
@@ -137,7 +137,7 @@ function HomePage() {
               ))}
               {!loading && projects.length === 1 && (
                 <div
-                  className="bg-white flex flex-col items-center justify-center px-8 relative overflow-hidden"
+                  className="bg-white flex-col items-center justify-center px-8 relative overflow-hidden hidden md:flex"
                   style={{ border: '1px dashed #bbb', minHeight: '420px' }}
                 >
                   {/* Watermark */}
@@ -205,11 +205,11 @@ function HomePage() {
               whileInView="visible"
               viewport={{ once: true, margin: '-80px' }}
             >
-              <div className="grid grid-cols-1 lg:grid-cols-[35%_1fr] items-center" style={{ gap: '60px' }}>
+              <div className="grid grid-cols-1 lg:grid-cols-[35%_1fr] items-center" style={{ gap: 'clamp(32px, 5vw, 60px)' }}>
                 {/* Left — Image */}
                 <div
                   className="brutal-border brutal-shadow bg-grey-light overflow-hidden w-full"
-                  style={{ aspectRatio: '4/5', maxHeight: '480px' }}
+                  style={{ aspectRatio: '4/3', maxHeight: '480px' }}
                 >
                   {profilePhotoUrl ? (
                     <img
@@ -243,9 +243,9 @@ function HomePage() {
                   <div style={{ marginTop: '24px' }}>
                     <a
                       href="/about"
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white
+                      className="flex md:inline-flex items-center justify-center gap-2 px-6 py-3 bg-black text-white
                         font-mono text-xs tracking-[0.15em] uppercase border-[3px] border-black
-                        brutal-shadow-sm btn-fill btn-fill-light"
+                        brutal-shadow-sm btn-fill btn-fill-light w-full md:w-auto"
                     >
                       More About Me
                       <ArrowUpRight size={14} strokeWidth={3} />
@@ -273,18 +273,18 @@ function HomePage() {
                 <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase">
                   004 — Contact
                 </span>
-                <h2 className="font-sans font-bold text-5xl md:text-7xl text-white tracking-[0.04em] uppercase text-center">
+                <h2 className="font-sans font-bold text-white tracking-[0.04em] uppercase text-center" style={{ fontSize: 'clamp(28px, 8vw, 80px)' }}>
                   LET'S WORK<br />TOGETHER<span className="text-grey">.</span>
                 </h2>
                 <p className="font-mono text-sm text-grey tracking-[0.25em] uppercase text-center max-w-lg">
                   {contactCta}
                 </p>
-                <div style={{ marginTop: '16px' }}>
+                <div style={{ marginTop: '16px' }} className="w-full md:w-auto">
                   <a
                     href={`mailto:${contactEmail}`}
-                    className="inline-flex items-center gap-3 px-10 py-5 bg-white text-black
+                    className="flex md:inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-black
                       font-mono text-sm tracking-[0.15em] uppercase border-[3px] border-white
-                      brutal-shadow btn-fill btn-fill-dark"
+                      brutal-shadow btn-fill btn-fill-dark w-full md:w-auto"
                   >
                     {contactEmail}
                     <ArrowUpRight size={18} strokeWidth={3} />
@@ -318,7 +318,7 @@ function NotFoundPage() {
       <Nav />
       <div className="pt-32 pb-20 section-px">
         <div className="max-w-[1400px] mx-auto text-center">
-          <h1 className="font-sans font-bold text-[10rem] md:text-[14rem] text-black leading-none tracking-[-0.04em]">
+          <h1 className="font-sans font-bold text-black leading-none tracking-[-0.04em]" style={{ fontSize: 'clamp(6rem, 20vw, 14rem)' }}>
             404
           </h1>
           <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase mb-8">

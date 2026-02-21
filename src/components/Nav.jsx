@@ -41,6 +41,15 @@ export default function Nav({ contactEmail }) {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    useEffect(() => {
+        if (isOpen) {
+            document.body.classList.add('menu-open');
+        } else {
+            document.body.classList.remove('menu-open');
+        }
+        return () => document.body.classList.remove('menu-open');
+    }, [isOpen]);
+
     // IntersectionObserver for active nav state on homepage
     useEffect(() => {
         if (!isHome) return;

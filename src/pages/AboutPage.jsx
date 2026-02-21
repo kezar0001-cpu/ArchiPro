@@ -157,7 +157,7 @@ export default function AboutPage() {
                         </span>
                         <h1
                             className="font-sans font-bold text-white uppercase tracking-[-0.02em] mb-6"
-                            style={{ fontSize: 'clamp(48px, 7vw, 80px)' }}
+                            style={{ fontSize: 'clamp(40px, 12vw, 100px)' }}
                         >
                             ABOUT<span className="text-grey">.</span>
                         </h1>
@@ -178,9 +178,10 @@ export default function AboutPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
                     className="max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-[33%_1fr]"
+                    style={{ alignItems: 'start' }}
                 >
                     {/* ════════ LEFT SIDEBAR ════════ */}
-                    <aside style={{ background: '#fff', borderRight: '1px solid #ddd', paddingRight: '0' }}>
+                    <aside className="order-2 lg:order-1" style={{ background: '#fff', borderRight: '1px solid #ddd', borderTop: '1px solid #ddd', paddingRight: '0' }}>
                         {/* Profile Photo */}
                         <div className="overflow-hidden" style={{ aspectRatio: '2/3' }}>
                             {photoUrl ? (
@@ -352,7 +353,7 @@ export default function AboutPage() {
                     </aside>
 
                     {/* ════════ MAIN CONTENT ════════ */}
-                    <div className="bg-white" style={{ paddingLeft: '40px', paddingRight: '24px' }}>
+                    <div className="order-1 lg:order-2 bg-white" style={{ paddingLeft: 'clamp(0px, 4vw, 40px)', paddingRight: '24px' }}>
 
                         {/* PROFILE */}
                         <div style={{ paddingTop: '40px', paddingBottom: '40px' }}>
@@ -379,16 +380,18 @@ export default function AboutPage() {
                                                 )}
                                                 <h4
                                                     className="font-sans font-bold"
-                                                    style={{ fontSize: '16px', marginBottom: '4px', color: '#111' }}
+                                                    style={{ fontSize: 'clamp(14px, 2vw, 16px)', marginBottom: '4px', color: '#111' }}
                                                 >
                                                     {exp.title}
                                                 </h4>
                                                 <div
                                                     style={{
                                                         display: 'flex',
+                                                        flexWrap: 'wrap',
                                                         justifyContent: 'space-between',
                                                         alignItems: 'baseline',
                                                         marginBottom: '12px',
+                                                        gap: '4px',
                                                     }}
                                                 >
                                                     {exp.company && (
@@ -497,18 +500,18 @@ export default function AboutPage() {
                             <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase">
                                 004 — Contact
                             </span>
-                            <h2 className="font-sans font-bold text-5xl md:text-7xl text-white tracking-[0.04em] uppercase text-center">
+                            <h2 className="font-sans font-bold text-white tracking-[0.04em] uppercase text-center" style={{ fontSize: 'clamp(28px, 8vw, 80px)' }}>
                                 LET'S WORK<br />TOGETHER<span className="text-grey">.</span>
                             </h2>
                             <p className="font-mono text-sm text-grey tracking-[0.25em] uppercase text-center max-w-lg">
                                 {sc.contact_cta || 'Ready to bring your project to life?'}
                             </p>
-                            <div style={{ marginTop: '16px' }}>
+                            <div style={{ marginTop: '16px' }} className="w-full md:w-auto">
                                 <a
                                     href={`mailto:${email}`}
-                                    className="inline-flex items-center gap-3 px-10 py-5 bg-white text-black
+                                    className="flex md:inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-black
                                         font-mono text-sm tracking-[0.15em] uppercase border-[3px] border-white
-                                        brutal-shadow btn-fill btn-fill-dark"
+                                        brutal-shadow btn-fill btn-fill-dark w-full md:w-auto"
                                 >
                                     {email}
                                     <ArrowUpRight size={18} strokeWidth={3} />
