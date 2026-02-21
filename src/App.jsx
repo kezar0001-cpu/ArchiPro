@@ -80,8 +80,8 @@ function HomePage() {
           heroStatus={heroStatus}
         />
 
-        {/* Scroll-down indicator */}
-        <div className="relative bg-grey-light">
+        {/* Scroll-down indicator + hero→work divider */}
+        <div className="relative bg-black" style={{ borderTop: '1px solid #222' }}>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -101,14 +101,14 @@ function HomePage() {
         </div>
 
         {/* ── Featured Projects ── */}
-        <section id="work" className="relative bg-black py-40 section-px">
-          <div className="max-w-[1400px] mx-auto grid grid-cols-12 gap-x-6">
+        <section id="work" className="relative bg-black section-px" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
+          <div className="max-w-[1400px] mx-auto">
             <motion.div
               variants={sectionVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: '-80px' }}
-              className="col-span-12 mb-16"
+              style={{ marginBottom: '32px' }}
             >
               <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase block mb-4">
                 002 — Work
@@ -121,7 +121,7 @@ function HomePage() {
               </p>
             </motion.div>
 
-            <div className="col-span-12" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1px', background: '#333' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1px', background: '#222' }}>
               {projects.map((project, idx) => (
                 <motion.div
                   key={project.id}
@@ -135,11 +135,21 @@ function HomePage() {
                 </motion.div>
               ))}
               {!loading && projects.length === 1 && (
-                <div className="bg-black flex flex-col items-center justify-center py-20 px-8" style={{ border: '1px solid #333' }}>
-                  <span className="font-mono text-[10px] tracking-[0.25em] uppercase block mb-4" style={{ color: '#444' }}>
+                <div
+                  className="bg-black flex flex-col items-center justify-center px-8"
+                  style={{ border: '1px solid #333', minHeight: '360px' }}
+                >
+                  <span className="font-mono mb-4" style={{ fontSize: '24px', color: '#444' }}>+</span>
+                  <span
+                    className="font-mono uppercase block mb-3"
+                    style={{ fontSize: '10px', letterSpacing: '0.2em', color: '#555' }}
+                  >
                     New Project
                   </span>
-                  <p className="font-mono text-sm uppercase tracking-[0.2em] text-center" style={{ color: '#333' }}>
+                  <p
+                    className="font-sans font-bold uppercase text-center text-white"
+                    style={{ fontSize: '18px' }}
+                  >
                     Coming Soon
                   </p>
                 </div>
@@ -147,7 +157,7 @@ function HomePage() {
             </div>
 
             {!loading && projects.length === 0 && (
-              <div className="col-span-12 text-center py-16" style={{ border: '1px solid #333' }}>
+              <div className="text-center py-16" style={{ border: '1px solid #333' }}>
                 <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase">
                   No projects yet — Check back soon
                 </p>
@@ -160,12 +170,12 @@ function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="col-span-12 mt-12 text-center"
+                className="mt-12 text-center"
               >
                 <a
                   href="/work"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white
-                    font-mono text-xs tracking-[0.15em] uppercase border-[3px] border-black
+                    font-mono text-xs tracking-[0.15em] uppercase border-[3px] border-white
                     brutal-shadow-sm btn-fill btn-fill-light"
                 >
                   View All Projects
@@ -175,8 +185,11 @@ function HomePage() {
           </div>
         </section>
 
+        {/* section divider */}
+        <div style={{ height: '1px', background: '#1a1a1a' }} />
+
         {/* ── About ── */}
-        <section id="about" className="bg-white border-y-[3px] border-black py-40 section-px">
+        <section id="about" className="bg-white section-px" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
           <div className="max-w-[1400px] mx-auto">
             <motion.div
               variants={sectionVariants}
@@ -184,10 +197,7 @@ function HomePage() {
               whileInView="visible"
               viewport={{ once: true, margin: '-80px' }}
             >
-              <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase block mb-8">
-                003 — About
-              </span>
-              <div className="grid grid-cols-1 lg:grid-cols-[40%_1fr] gap-12 items-center">
+              <div className="grid grid-cols-1 lg:grid-cols-[40%_1fr] items-center" style={{ gap: '60px' }}>
                 {/* Left — Image */}
                 <div
                   className="brutal-border brutal-shadow bg-grey-light overflow-hidden w-full"
@@ -197,7 +207,8 @@ function HomePage() {
                     <img
                       src={profilePhotoUrl}
                       alt="Hadil Al-Duleimi"
-                      className="w-full h-full object-cover object-top grayscale"
+                      className="w-full h-full object-cover grayscale"
+                      style={{ objectPosition: '50% 20%' }}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
@@ -208,17 +219,20 @@ function HomePage() {
                   )}
                 </div>
                 {/* Right — Text + CTA */}
-                <div className="flex flex-col justify-center">
-                  <h2 className="font-sans font-bold text-5xl md:text-6xl text-black tracking-[-0.02em] uppercase mb-4">
+                <div className="flex flex-col">
+                  <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase block" style={{ marginBottom: '16px' }}>
+                    003 — About
+                  </span>
+                  <h2 className="font-sans font-bold text-5xl md:text-6xl text-black tracking-[-0.02em] uppercase" style={{ marginBottom: '16px' }}>
                     ABOUT<span className="text-grey">.</span>
                   </h2>
-                  <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase mb-6">
+                  <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase" style={{ marginBottom: '16px' }}>
                     {aboutTagline}
                   </p>
-                  <p className="font-sans text-xl text-grey leading-relaxed mb-8">
+                  <p className="font-sans text-lg text-grey leading-relaxed" style={{ marginBottom: '16px' }}>
                     {aboutIntro}
                   </p>
-                  <div>
+                  <div style={{ marginTop: '24px' }}>
                     <a
                       href="/about"
                       className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white
@@ -235,34 +249,40 @@ function HomePage() {
           </div>
         </section>
 
+        {/* section divider */}
+        <div style={{ height: '1px', background: '#1a1a1a' }} />
+
         {/* ── Contact ── */}
-        <section id="contact" className="bg-black py-40 section-px">
+        <section id="contact" className="bg-black section-px" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
           <div className="max-w-[1400px] mx-auto">
             <motion.div
               variants={sectionVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: '-80px' }}
-              className="text-center"
             >
-              <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase block mb-4">
-                004 — Contact
-              </span>
-              <h2 className="font-sans font-bold text-5xl md:text-7xl text-white tracking-[0.04em] uppercase mb-6">
-                LET'S WORK<br />TOGETHER<span className="text-grey">.</span>
-              </h2>
-              <p className="font-mono text-sm text-grey tracking-[0.25em] uppercase mb-10 max-w-lg mx-auto">
-                {contactCta}
-              </p>
-              <a
-                href={`mailto:${contactEmail}`}
-                className="inline-flex items-center gap-3 px-10 py-5 bg-white text-black
-                  font-mono text-sm tracking-[0.15em] uppercase border-[3px] border-white
-                  brutal-shadow btn-fill btn-fill-dark"
-              >
-                {contactEmail}
-                <ArrowUpRight size={18} strokeWidth={3} />
-              </a>
+              <div className="flex flex-col items-center" style={{ gap: '16px' }}>
+                <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase">
+                  004 — Contact
+                </span>
+                <h2 className="font-sans font-bold text-5xl md:text-7xl text-white tracking-[0.04em] uppercase text-center">
+                  LET'S WORK<br />TOGETHER<span className="text-grey">.</span>
+                </h2>
+                <p className="font-mono text-sm text-grey tracking-[0.25em] uppercase text-center max-w-lg">
+                  {contactCta}
+                </p>
+                <div style={{ marginTop: '16px' }}>
+                  <a
+                    href={`mailto:${contactEmail}`}
+                    className="inline-flex items-center gap-3 px-10 py-5 bg-white text-black
+                      font-mono text-sm tracking-[0.15em] uppercase border-[3px] border-white
+                      brutal-shadow btn-fill btn-fill-dark"
+                  >
+                    {contactEmail}
+                    <ArrowUpRight size={18} strokeWidth={3} />
+                  </a>
+                </div>
+              </div>
             </motion.div>
           </div>
         </section>
