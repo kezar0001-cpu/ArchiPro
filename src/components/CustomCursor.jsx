@@ -1,9 +1,11 @@
 import { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 
 /**
  * CustomCursor — Minimal hollow circle that follows the mouse with lerp lag.
  * Expands to 50px on hovering links/buttons (via CSS .expanded class).
  * Hidden on touch devices via CSS media query.
+ * Rendered via portal to document.body to avoid stacking context issues.
  */
 export default function CustomCursor() {
     const cursorRef = useRef(null);
@@ -17,7 +19,10 @@ export default function CustomCursor() {
 
         // Check for touch device
         const isTouch = window.matchMedia('(hover: none)').matches;
-        if (isTouch) return;
+        if (isTouch) {
+            cursor.style.display = 'none';
+            return;
+        }
 
         function onMouseMove(e) {
             target.current.x = e.clientX;
@@ -67,5 +72,8 @@ export default function CustomCursor() {
         };
     }, []);
 
-    return <div ref={cursorRef} className="custom-cursor" />;
+    return createPortal(
+        <div ref={cursorRef} className="custom-cursor" />,
+        document.body
+    );
 }
