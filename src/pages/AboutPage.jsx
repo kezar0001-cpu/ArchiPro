@@ -145,7 +145,7 @@ export default function AboutPage() {
             <Nav />
 
             {/* ── PAGE HEADER ── */}
-            <section className="section-px bg-black" style={{ paddingTop: '160px', paddingBottom: '60px' }}>
+            <section className="section-px bg-black" style={{ paddingTop: '160px', paddingBottom: '40px' }}>
                 <div className="max-w-[1400px] mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -225,7 +225,7 @@ export default function AboutPage() {
                         {/* Contact Block */}
                         <div className="px-6 py-6">
                             <SidebarLabel>Contact</SidebarLabel>
-                            <div className="space-y-4">
+                            <div className="space-y-4" style={{ marginTop: '8px' }}>
                                 <div>
                                     <span className="font-mono uppercase block mb-1" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em' }}>
                                         Phone
@@ -256,7 +256,7 @@ export default function AboutPage() {
                         {/* Skills Block */}
                         <div className="px-6 py-6">
                             <SidebarLabel>Skills</SidebarLabel>
-                            <div className="space-y-5">
+                            <div className="space-y-5" style={{ marginTop: '8px' }}>
                                 {techSkills.length > 0 && (
                                     <div>
                                         <span className="font-mono uppercase block mb-2" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em' }}>
@@ -295,7 +295,7 @@ export default function AboutPage() {
                         {/* Interests Block */}
                         <div className="px-6 py-6">
                             <SidebarLabel>Interests</SidebarLabel>
-                            <div className="flex flex-wrap">
+                            <div className="flex flex-wrap" style={{ marginTop: '8px' }}>
                                 {interestsList.map((s, i) => <PillTag key={i}>{s}</PillTag>)}
                             </div>
                         </div>
@@ -306,7 +306,7 @@ export default function AboutPage() {
                                 <Divider />
                                 <div className="px-6 py-6">
                                     <SidebarLabel>Links</SidebarLabel>
-                                    <div className="flex gap-2">
+                                    <div className="flex gap-2" style={{ marginTop: '8px' }}>
                                         {linkedinUrl && (
                                             <a
                                                 href={linkedinUrl}
@@ -375,7 +375,7 @@ export default function AboutPage() {
                                         {experience.map((exp, idx) => (
                                             <div key={idx}>
                                                 {idx > 0 && (
-                                                    <hr className="border-0 my-6" style={{ borderTop: '1px solid #eee' }} />
+                                                    <hr className="border-0" style={{ borderTop: '1px dashed #e5e5e5', margin: '32px 0' }} />
                                                 )}
                                                 <h4
                                                     className="font-sans font-bold"
@@ -457,7 +457,7 @@ export default function AboutPage() {
 
                         {/* DOWNLOAD CV */}
                         {cvUrl && (
-                            <div style={{ paddingTop: '40px', paddingBottom: '40px' }}>
+                            <div style={{ paddingTop: '32px', paddingBottom: '40px' }}>
                                 <a
                                     href={cvUrl}
                                     download
