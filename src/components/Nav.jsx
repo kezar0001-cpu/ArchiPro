@@ -5,8 +5,8 @@ import { Menu, X, ArrowUpRight } from 'lucide-react';
 
 const navLinks = [
     { label: 'WORK', hash: 'work' },
-    { label: 'ABOUT', hash: 'about' },
-    { label: 'CONTACT', hash: 'contact' },
+    { label: 'ABOUT', href: '/about' },
+    { label: 'CONTACT', href: '/contact' },
 ];
 
 export default function Nav({ contactEmail }) {
@@ -17,15 +17,19 @@ export default function Nav({ contactEmail }) {
     const isHome = location.pathname === '/';
     const email = contactEmail || 'hello@hadilalduleimi.com';
 
-    function handleNavClick(e, hash) {
+    function handleNavClick(e, link) {
         e.preventDefault();
-        if (isHome) {
-            const el = document.getElementById(hash);
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-        } else {
-            navigate('/#' + hash);
-        }
         setIsOpen(false);
+        if (link.href) {
+            navigate(link.href);
+        } else if (link.hash) {
+            if (isHome) {
+                const el = document.getElementById(link.hash);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                navigate('/#' + link.hash);
+            }
+        }
     }
 
     useEffect(() => {
@@ -46,7 +50,7 @@ export default function Nav({ contactEmail }) {
                         : 'bg-transparent border-b-[3px] border-transparent'
                     }`}
             >
-                <div className="max-w-[1440px] mx-auto px-8 h-16 flex items-center justify-between">
+                <div className="max-w-[1440px] mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
                     {/* Logotype */}
                     <a
                         href="/"
@@ -63,8 +67,8 @@ export default function Nav({ contactEmail }) {
                         {navLinks.map((link) => (
                             <li key={link.label}>
                                 <a
-                                    href={`/#${link.hash}`}
-                                    onClick={(e) => handleNavClick(e, link.hash)}
+                                    href={link.href || `/#${link.hash}`}
+                                    onClick={(e) => handleNavClick(e, link)}
                                     className={`font-mono text-sm tracking-[0.1em] uppercase
                              relative group transition-colors duration-300
                              ${scrolled ? 'text-black' : 'text-white'}
@@ -133,8 +137,8 @@ export default function Nav({ contactEmail }) {
                         {navLinks.map((link, i) => (
                             <motion.a
                                 key={link.label}
-                                href={`/#${link.hash}`}
-                                onClick={(e) => handleNavClick(e, link.hash)}
+                                href={link.href || `/#${link.hash}`}
+                                onClick={(e) => handleNavClick(e, link)}
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.15 + i * 0.08 }}

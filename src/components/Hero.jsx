@@ -22,7 +22,7 @@ export default function Hero({
     heroStatus = null,
 }) {
     const displayHeadline = headline || 'HADIL AL-\nDULEIMI';
-    const displaySub = subheadline || 'ARCHITECT & DESIGNER — MELBOURNE, AU';
+    const displaySub = subheadline || 'ARCHITECT & DESIGNER — SYDNEY, AU';
     const displayStatus = heroStatus || 'Available for Projects';
     const headlineLines = displayHeadline.split('\n');
 
@@ -147,7 +147,7 @@ export default function Hero({
                                 </span>
                             </div>
                             <span className="font-sans text-sm font-semibold text-white">
-                                Melbourne, AU
+                                Sydney, AU
                             </span>
                         </div>
 

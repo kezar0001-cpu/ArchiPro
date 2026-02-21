@@ -15,6 +15,7 @@ import { getHeroContent, getFeaturedProjects, getAllSiteContent } from './lib/qu
 const ProjectPage = lazy(() => import('./pages/ProjectPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const WorkPage = lazy(() => import('./pages/WorkPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
 
 // Admin pages (lazy-loaded)
 const LoginPage = lazy(() => import('./pages/admin/LoginPage'));
@@ -53,8 +54,8 @@ function HomePage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const aboutIntro = siteContent.about_intro || 'Architect and designer based in Melbourne, Australia. Specializing in creating spaces that blend functionality with innovative design.';
-  const aboutTagline = siteContent.about_tagline || 'Architect · Designer · Melbourne';
+  const aboutIntro = siteContent.about_intro || 'Architect and designer based in Sydney, Australia. Specializing in creating spaces that blend functionality with innovative design.';
+  const aboutTagline = siteContent.about_tagline || 'Architect · Designer · Sydney';
   const contactEmail = siteContent.contact_email || 'hello@hadilalduleimi.com';
   const contactCta = siteContent.contact_cta || 'Ready to bring your project to life?';
   const heroStatus = siteContent.hero_status || null;
@@ -105,7 +106,7 @@ function HomePage() {
                 002 — Work
               </span>
               <h2 className="font-sans font-bold text-5xl md:text-6xl text-black tracking-[-0.02em] uppercase mb-4">
-                SELECTED<span className="text-grey">.</span>
+                WORK<span className="text-grey">.</span>
               </h2>
               <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase">
                 Featured Projects
@@ -301,6 +302,14 @@ function App() {
             element={
               <Suspense fallback={<PageLoader />}>
                 <AboutPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <ContactPage />
               </Suspense>
             }
           />

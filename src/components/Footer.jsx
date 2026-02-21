@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Github, Linkedin, Instagram, Mail } from 'lucide-react';
+import { Linkedin, Instagram, Mail } from 'lucide-react';
 import { getAllSiteContent } from '../lib/queries';
 
 /**
@@ -21,13 +21,11 @@ export default function Footer({ siteContent }) {
     const contactEmail = sc.contact_email || 'hello@hadilalduleimi.com';
     const linkedinUrl = sc.social_linkedin || 'https://linkedin.com/in/hadilalduleimi';
     const instagramUrl = sc.social_instagram || 'https://instagram.com/hadilalduleimi';
-    const githubUrl = sc.social_github || 'https://github.com/hadilalduleimi';
 
     const socialLinks = [
         { label: 'Email', href: `mailto:${contactEmail}`, icon: Mail },
         { label: 'LinkedIn', href: linkedinUrl, icon: Linkedin },
         { label: 'Instagram', href: instagramUrl, icon: Instagram },
-        { label: 'GitHub', href: githubUrl, icon: Github },
     ];
 
     return (

@@ -147,15 +147,13 @@ export default function ProjectPage() {
                     transition={{ duration: 0.6, delay: 0.4 }}
                     className="px-8 py-16"
                 >
-                    <div className="max-w-[1440px] mx-auto">
-                        <div className="max-w-3xl">
-                            <h2 className="font-sans font-bold text-2xl text-black mb-4 uppercase">
-                                Overview
-                            </h2>
-                            <p className="font-sans text-lg text-grey leading-relaxed">
-                                {project.description}
-                            </p>
-                        </div>
+                    <div className="max-w-3xl mx-auto text-center">
+                        <h2 className="font-sans font-bold text-2xl text-black mb-4 uppercase">
+                            Overview
+                        </h2>
+                        <p className="font-sans text-lg text-grey leading-relaxed">
+                            {project.description}
+                        </p>
                     </div>
                 </motion.section>
             )}
@@ -168,8 +166,8 @@ export default function ProjectPage() {
                     transition={{ duration: 0.6, delay: 0.5 }}
                     className="px-8 pb-16"
                 >
-                    <div className="max-w-[1440px] mx-auto">
-                        <div className="brutal-border brutal-shadow bg-white p-8 md:p-12">
+                    <div className="max-w-4xl mx-auto">
+                        <div className="brutal-border brutal-shadow bg-white p-8 md:p-12 text-center">
                             <h2 className="font-sans font-bold text-2xl text-black mb-6 uppercase">
                                 Project Details
                             </h2>
@@ -185,7 +183,7 @@ export default function ProjectPage() {
             {project.images && project.images.length > 0 && (
                 <section className="px-8 py-16 bg-white border-y-[3px] border-black">
                     <div className="max-w-[1440px] mx-auto">
-                        <h2 className="font-sans font-bold text-2xl text-black mb-8 uppercase">
+                        <h2 className="font-sans font-bold text-2xl text-black mb-8 uppercase text-center">
                             Gallery
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
