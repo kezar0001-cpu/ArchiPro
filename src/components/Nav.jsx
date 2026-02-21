@@ -4,7 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
 
 const navLinks = [
+    { label: 'HOME', href: '/' },
     { label: 'WORK', href: '/work' },
+    { label: 'PACKAGES', href: '/packages' },
     { label: 'ABOUT', href: '/about' },
     { label: 'CONTACT', href: '/contact' },
 ];
@@ -100,8 +102,8 @@ export default function Nav({ contactEmail }) {
                     <ul className="hidden md:flex items-center gap-8">
                         {navLinks.map((link) => {
                             const isActive = isHome
-                                ? (link.hash && activeSection === link.hash)
-                                : (link.href && location.pathname === link.href);
+                                ? (link.href === '/' && !activeSection) || (link.hash && activeSection === link.hash)
+                                : (link.href && link.href !== '/' && location.pathname === link.href);
                             return (
                                 <li key={link.label}>
                                     <a

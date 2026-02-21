@@ -19,6 +19,7 @@ const ProjectPage = lazy(() => import('./pages/ProjectPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const WorkPage = lazy(() => import('./pages/WorkPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
+const PackagesPage = lazy(() => import('./pages/PackagesPage'));
 
 // Admin pages (lazy-loaded)
 const LoginPage = lazy(() => import('./pages/admin/LoginPage'));
@@ -378,6 +379,14 @@ function App() {
             element={
               <Suspense fallback={<PageLoader />}>
                 <ContactPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/packages"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <PackagesPage />
               </Suspense>
             }
           />
