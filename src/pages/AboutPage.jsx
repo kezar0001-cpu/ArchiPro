@@ -21,7 +21,7 @@ function parseList(raw) {
 function parseExperience(raw) {
     if (!raw) return [];
     const entries = [];
-    const blocks = raw.split(/\n(?=[A-Z])/);
+    const blocks = raw.trim().split(/\n(?=[A-Za-z])/);
     blocks.forEach((block) => {
         const lines = block.trim().split('\n').filter(Boolean);
         if (lines.length === 0) return;
@@ -31,8 +31,8 @@ function parseExperience(raw) {
         const company = headerParts[2] || '';
         const bullets = lines
             .slice(1)
-            .filter((l) => l.trim().startsWith('•'))
-            .map((l) => l.replace(/^•\s*/, '').trim());
+            .map((l) => l.replace(/^[•\-]\s*/, '').trim())
+            .filter(Boolean);
         entries.push({ title, period, company, bullets });
     });
     return entries;
@@ -108,21 +108,21 @@ export default function AboutPage() {
             .finally(() => setLoading(false));
     }, []);
 
-    /* ── CMS data mapping ── */
-    const name = sc.full_name || 'Hadil Alduleimi';
-    const jobTitle = sc.job_title || 'Architectural Designer';
-    const phone = sc.phone_number || '+61 411 148 777';
-    const address = sc.address || 'Sydney, AU';
+    /* ── CMS data mapping (new keys with old-key fallbacks) ── */
+    const name = sc.full_name || sc.resume_name || 'Hadil Alduleimi';
+    const jobTitle = sc.job_title || sc.resume_title || 'Architectural Designer';
+    const phone = sc.phone_number || sc.resume_phone || '+61 411 148 777';
+    const address = sc.address || sc.resume_address || 'Sydney, AU';
     const email = sc.contact_email || 'hadilalduleimi2@gmail.com';
-    const summary = sc.professional_summary || 'Architectural Designer with experience in residential design, concept development, interior layouts, client presentations, and drafting. Skilled in Revit, Rhino, and Adobe, with strong communication skills, site experience, and a portfolio of custom homes, duplexes, and interior concepts.';
+    const summary = sc.professional_summary || sc.resume_summary || sc.about_intro || 'Architectural Designer with experience in residential design, concept development, interior layouts, client presentations, and drafting.';
 
-    const interestsList = parseList(sc.interests || 'Interior Design, Architectural Photography, Urban Design, Sustainable Concepts');
-    const techSkills = parseList(sc.technical_skills || 'Revit, Rhino, AutoCAD, SketchUp, Adobe Photoshop, Adobe InDesign, Adobe Illustrator, Lumion, Enscape');
-    const profSkills = parseList(sc.professional_skills || 'Client Presentations, Project Management, Team Collaboration, Site Analysis');
-    const designSkills = parseList(sc.design_skills || 'Residential Design, Interior Design, Urban Design, Concept Development');
+    const interestsList = parseList(sc.interests || sc.resume_interests || 'Interior Design, Architectural Photography, Urban Design, Sustainable Concepts');
+    const techSkills = parseList(sc.technical_skills || sc.resume_skills_technical || '');
+    const profSkills = parseList(sc.professional_skills || sc.resume_skills_professional || '');
+    const designSkills = parseList(sc.design_skills || sc.resume_skills_design || '');
 
-    const experience = parseExperience(sc.professional_experience);
-    const education = parseEducation(sc.education);
+    const experience = parseExperience(sc.professional_experience || sc.resume_experience || '');
+    const education = parseEducation(sc.education || sc.resume_education || '');
 
     const photoUrl = sc.profile_photo_path ? getPublicUrl('profile-photo', sc.profile_photo_path) : null;
     const cvUrl = sc.resume_file_path ? getPublicUrl('resume-documents', sc.resume_file_path) : null;
