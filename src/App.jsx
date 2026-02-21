@@ -12,6 +12,7 @@ import BackToTop from './components/BackToTop';
 import CustomCursor from './components/CustomCursor';
 import useReveal from './hooks/useReveal';
 import { getHeroContent, getFeaturedProjects, getAllSiteContent } from './lib/queries';
+import { getPublicUrl } from './lib/supabase';
 
 // Lazy-load pages to keep the main bundle small
 const ProjectPage = lazy(() => import('./pages/ProjectPage'));
@@ -61,7 +62,9 @@ function HomePage() {
   const contactEmail = siteContent.contact_email || 'hello@hadilalduleimi.com';
   const contactCta = siteContent.contact_cta || 'Ready to bring your project to life?';
   const heroStatus = siteContent.hero_status || null;
-  const profilePhotoUrl = siteContent.profile_photo_url || null;
+  const profilePhotoUrl = siteContent.profile_photo_path
+    ? getPublicUrl('profile-photo', siteContent.profile_photo_path)
+    : null;
 
   useReveal();
 
