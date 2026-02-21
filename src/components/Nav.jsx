@@ -1,16 +1,31 @@
 import { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
 
 const navLinks = [
-    { label: 'WORK', href: '#work' },
-    { label: 'ABOUT', href: '#about' },
-    { label: 'CONTACT', href: '#contact' },
+    { label: 'WORK', hash: 'work' },
+    { label: 'ABOUT', hash: 'about' },
+    { label: 'CONTACT', hash: 'contact' },
 ];
 
 export default function Nav() {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const isHome = location.pathname === '/';
+
+    function handleNavClick(e, hash) {
+        e.preventDefault();
+        if (isHome) {
+            const el = document.getElementById(hash);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            navigate('/#' + hash);
+        }
+        setIsOpen(false);
+    }
 
     useEffect(() => {
         const handleScroll = () => {
@@ -47,7 +62,8 @@ export default function Nav() {
                         {navLinks.map((link) => (
                             <li key={link.label}>
                                 <a
-                                    href={link.href}
+                                    href={`/#${link.hash}`}
+                                    onClick={(e) => handleNavClick(e, link.hash)}
                                     className={`font-mono text-sm tracking-[0.1em] uppercase
                              relative group transition-colors duration-300
                              ${scrolled ? 'text-black' : 'text-white'}
@@ -116,8 +132,8 @@ export default function Nav() {
                         {navLinks.map((link, i) => (
                             <motion.a
                                 key={link.label}
-                                href={link.href}
-                                onClick={() => setIsOpen(false)}
+                                href={`/#${link.hash}`}
+                                onClick={(e) => handleNavClick(e, link.hash)}
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.15 + i * 0.08 }}

@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
-import { urlFor } from '../lib/sanity';
 
 /**
  * ProjectCard — Neo-Brutalist Portfolio Card
@@ -13,14 +12,10 @@ import { urlFor } from '../lib/sanity';
  * - Tags and title overlay
  *
  * Props:
- *   - project: Sanity project document { _id, title, slug, description, thumbnail, tags }
+ *   - project: { id, title, slug, description, thumbnailUrl, thumbnailAlt, tags }
  */
 export default function ProjectCard({ project }) {
-    const { title, slug, description, thumbnail, tags } = project;
-
-    const thumbnailUrl = thumbnail
-        ? urlFor(thumbnail).width(800).height(600).quality(90).url()
-        : null;
+    const { title, slug, description, thumbnailUrl, thumbnailAlt, tags } = project;
 
     return (
         <motion.article
@@ -31,7 +26,7 @@ export default function ProjectCard({ project }) {
             className="group relative"
         >
             <a
-                href={`/work/${slug.current}`}
+                href={`/work/${slug}`}
                 className="block brutal-border brutal-shadow brutal-hover bg-white overflow-hidden"
             >
                 {/* Thumbnail Container (4:3 aspect ratio) */}
@@ -39,7 +34,7 @@ export default function ProjectCard({ project }) {
                     {thumbnailUrl ? (
                         <img
                             src={thumbnailUrl}
-                            alt={title}
+                            alt={thumbnailAlt || title}
                             className="w-full h-full object-cover grayscale transition-transform duration-500 group-hover:scale-105"
                             loading="lazy"
                         />

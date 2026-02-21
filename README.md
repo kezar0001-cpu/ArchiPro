@@ -1,130 +1,99 @@
 # ArchiPro — Neo-Brutalist Portfolio
 
-A grayscale monochrome portfolio built with React 19, Vite 7, Tailwind CSS v4, and Sanity.io CMS.
+A grayscale monochrome architecture portfolio with a built-in admin area, powered by React 19, Vite 7, Tailwind CSS v4, and Supabase (Auth + Postgres + Storage).
 
-## 🏗️ Architecture
+## Tech Stack
 
-This is a **monorepo** with two deployments:
+- **Frontend**: React 19, Vite 7, Tailwind CSS v4, Framer Motion
+- **Icons**: Lucide React
+- **Routing**: React Router DOM v7
+- **Backend**: Supabase (Auth, Postgres, Storage)
+- **Hosting**: Vercel
 
-1. **Main Website** (`/`) — React + Vite app deployed to [www.hadilalduleimi.com](https://www.hadilalduleimi.com)
-2. **Sanity Studio** (`/studio`) — Standalone CMS deployed to [studio.hadilalduleimi.com](https://studio.hadilalduleimi.com)
-
-## 🚀 Local Development
-
-### Main Website (Vite App)
-
-```bash
-# Install dependencies
-npm install
-
-# Start dev server
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-```
-
-Runs on `http://localhost:5173`
-
-### Sanity Studio
+## Local Development
 
 ```bash
-# Navigate to studio folder
-cd studio
-
-# Install dependencies
 npm install
-
-# Start Studio dev server
-npm run dev
-
-# Build Studio for production
-npm run build
+npm run dev        # http://localhost:5173
+npm run build      # Production build → dist/
+npm run preview    # Preview production build
 ```
 
-Runs on `http://localhost:3333`
+## Environment Variables
 
-## 📦 Deployment
+Copy `.env.example` to `.env` and fill in your Supabase credentials:
 
-### Vercel Setup — Main Website
+```
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+```
 
-- **Project Name**: `archipro` (or your choice)
-- **Root Directory**: `/` (repo root)
+## Supabase Setup
+
+1. Create a Supabase project at [supabase.com](https://supabase.com)
+2. Run `supabase/schema.sql` in the SQL Editor to create tables + RLS policies
+3. Run `supabase/storage.sql` to create storage buckets
+4. Create a user in Authentication → Users for admin access
+5. Update the user's `role` to `admin` in the `profiles` table
+
+## Project Structure
+
+```
+src/
+  components/       Nav, Hero, ProjectCard, Footer, RequireAuth
+  pages/
+    admin/          LoginPage, AdminLayout, DashboardPage,
+                    ContentPage, HeroVideoPage, ProjectsPage,
+                    ProjectEditPage
+    AboutPage.jsx   Bio, skills, CV download
+    ProjectPage.jsx Individual project detail
+    WorkPage.jsx    All published projects
+  lib/
+    supabase.js     Supabase client + helpers
+    queries.js      Data fetching functions
+    AuthContext.jsx  Auth state management
+  App.jsx           Routes (public + admin)
+  main.jsx          Entry point
+  index.css         Design system + Tailwind v4 @theme
+supabase/
+  schema.sql        Database tables, RLS, triggers
+  storage.sql       Storage buckets + policies
+public/
+  robots.txt
+  sitemap.xml
+```
+
+## Routes
+
+| Route | Access | Description |
+|-------|--------|-------------|
+| `/` | Public | Homepage: hero, featured projects, about, contact |
+| `/work` | Public | All published projects |
+| `/work/:slug` | Public | Project detail page |
+| `/about` | Public | Bio, skills, experience |
+| `/admin/login` | Public | Admin login |
+| `/admin` | Auth | Dashboard |
+| `/admin/content` | Auth | Edit site text (hero, about, contact) |
+| `/admin/hero-video` | Auth | Upload/replace hero background video |
+| `/admin/projects` | Auth | CRUD projects |
+| `/admin/projects/:id` | Auth | Edit project + manage images |
+
+## Deployment (Vercel)
+
 - **Framework Preset**: Vite
 - **Build Command**: `npm run build`
 - **Output Directory**: `dist`
-- **Environment Variables**:
-  - `VITE_SANITY_PROJECT_ID=uk1engd4`
-  - `VITE_SANITY_DATASET=production`
-- **Custom Domain**: `www.hadilalduleimi.com`
+- **Environment Variables**: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`
+- **Custom Domain**: `hadilalduleimi.com`
 
-### Vercel Setup — Sanity Studio
+## Design System
 
-- **Project Name**: `archipro-studio` (or your choice)
-- **Root Directory**: `/studio`
-- **Framework Preset**: Other
-- **Build Command**: `npm run build`
-- **Output Directory**: `dist`
-- **Environment Variables**:
-  - `SANITY_STUDIO_PROJECT_ID=uk1engd4`
-  - `SANITY_STUDIO_DATASET=production`
-- **Custom Domain**: `studio.hadilalduleimi.com`
-
-## 🎨 Tech Stack
-
-- **Frontend**: React 19, Vite 7
-- **Styling**: Tailwind CSS v4, Framer Motion
-- **Icons**: Lucide React
-- **Routing**: React Router DOM v7
-- **CMS**: Sanity.io v5
-- **Hosting**: Vercel
-
-## 📁 Project Structure
-
-```
-/
-├── src/                    # Vite app source
-│   ├── components/         # Nav, Hero, ProjectCard, Footer
-│   ├── pages/             # ProjectPage, AboutPage
-│   ├── lib/               # Sanity client, queries
-│   └── schemas/           # (moved to /studio)
-├── studio/                # Sanity Studio (standalone)
-│   ├── schemas/           # CMS content schemas
-│   ├── sanity.config.js   # Studio configuration
-│   └── package.json       # Studio dependencies
-├── public/                # Static assets
-├── package.json           # Main app dependencies
-└── vercel.json            # Vercel config for main site
-```
-
-## 🎯 Content Management
-
-- Access Sanity Studio at [studio.hadilalduleimi.com](https://studio.hadilalduleimi.com)
-- Content types:
-  - **Hero Content** (singleton) — Video background, headline, overlay
-  - **Projects** — Portfolio items with images, tags, featured flag
-
-## 🔧 Configuration
-
-### Sanity Studio Config (`/studio/sanity.config.js`)
-
-- `projectId`: `uk1engd4`
-- `dataset`: `production`
-- `apiVersion`: `2024-01-01`
-- `basePath`: `/` (root hosting, no subpath)
-- Plugins: `structureTool()`, `visionTool()`
-
-## 🎨 Design System
-
-- **Palette**: Black (#000000), White (#FFFFFF), Grey (#888888), Grey-Light (#F5F5F5)
-- **Fonts**: Space Grotesk (body), JetBrains Mono (monospace accents)
+- **Palette**: Black (#000), White (#FFF), Grey (#888), Grey-Light (#F5F5F5)
+- **Fonts**: Space Grotesk (headings/body), JetBrains Mono (accents)
 - **Borders**: 3px solid black
 - **Shadows**: Hard offset (4px 4px 0 0 #000), no blur
 - **Grid**: 12-column, 1440px max-width
 
-## 📄 License
+## License
 
 Private project. All rights reserved.

@@ -5,7 +5,6 @@ import { ArrowLeft, ExternalLink } from 'lucide-react';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import { getProjectBySlug } from '../lib/queries';
-import { urlFor } from '../lib/sanity';
 
 /**
  * ProjectPage — Individual Project Case Study
@@ -70,9 +69,7 @@ export default function ProjectPage() {
         );
     }
 
-    const thumbnailUrl = project.thumbnail
-        ? urlFor(project.thumbnail).width(1920).height(1080).quality(90).url()
-        : null;
+    const thumbnailUrl = project.images?.[0]?.url || null;
 
     return (
         <div className="min-h-screen bg-grey-light">
@@ -87,7 +84,7 @@ export default function ProjectPage() {
                         transition={{ duration: 0.6 }}
                     >
                         <Link
-                            to="/"
+                            to="/work"
                             className="inline-flex items-center gap-2 text-white hover:text-grey transition-colors duration-300 mb-8 font-mono text-xs tracking-[0.15em] uppercase"
                         >
                             <ArrowLeft size={16} strokeWidth={3} />
@@ -166,7 +163,7 @@ export default function ProjectPage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {project.images.map((image, idx) => (
                                 <motion.div
-                                    key={idx}
+                                    key={image.id || idx}
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true, margin: '-50px' }}
@@ -174,8 +171,8 @@ export default function ProjectPage() {
                                     className="brutal-border brutal-shadow overflow-hidden bg-grey-light"
                                 >
                                     <img
-                                        src={urlFor(image).width(1200).quality(90).url()}
-                                        alt={`${project.title} - Image ${idx + 1}`}
+                                        src={image.url}
+                                        alt={image.alt_text || `${project.title} - Image ${idx + 1}`}
                                         className="w-full h-auto grayscale"
                                         loading="lazy"
                                     />
