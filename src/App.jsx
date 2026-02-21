@@ -93,16 +93,16 @@ function HomePage() {
         </div>
 
         {/* ── Featured Projects ── */}
-        <section id="work" className="relative bg-grey-light py-24 px-8">
-          <div className="max-w-[1440px] mx-auto">
+        <section id="work" className="relative bg-grey-light py-40 px-8">
+          <div className="max-w-[1440px] mx-auto grid grid-cols-12 gap-x-6">
             <motion.div
               variants={sectionVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: '-80px' }}
-              className="mb-16"
+              className="col-span-12 mb-16"
             >
-              <span className="font-mono text-[10px] text-grey tracking-[0.2em] uppercase block mb-4">
+              <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase block mb-4">
                 002 — Work
               </span>
               <h2 className="font-sans font-bold text-5xl md:text-6xl text-black tracking-[-0.02em] uppercase mb-4">
@@ -113,7 +113,7 @@ function HomePage() {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {projects.map((project, idx) => (
                 <motion.div
                   key={project.id}
@@ -128,7 +128,7 @@ function HomePage() {
             </div>
 
             {!loading && projects.length === 0 && (
-              <div className="text-center py-16 border-[3px] border-black brutal-shadow bg-white">
+              <div className="col-span-12 text-center py-16 border-[3px] border-black brutal-shadow bg-white">
                 <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase">
                   No projects yet — Check back soon
                 </p>
@@ -141,7 +141,7 @@ function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="mt-12 text-center"
+                className="col-span-12 mt-12 text-center"
               >
                 <a
                   href="/work"
@@ -157,7 +157,7 @@ function HomePage() {
         </section>
 
         {/* ── About ── */}
-        <section id="about" className="bg-white border-y-[3px] border-black py-24 px-8">
+        <section id="about" className="bg-white border-y-[3px] border-black py-40 px-8">
           <div className="max-w-[1440px] mx-auto">
             <motion.div
               variants={sectionVariants}
@@ -165,9 +165,9 @@ function HomePage() {
               whileInView="visible"
               viewport={{ once: true, margin: '-80px' }}
             >
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <div>
-                  <span className="font-mono text-[10px] text-grey tracking-[0.2em] uppercase block mb-4">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-6 gap-y-10 items-start">
+                <div className="lg:col-span-4">
+                  <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase block mb-4">
                     003 — About
                   </span>
                   <h2 className="font-sans font-bold text-5xl md:text-6xl text-black tracking-[-0.02em] uppercase mb-4">
@@ -177,7 +177,7 @@ function HomePage() {
                     {aboutTagline}
                   </p>
                 </div>
-                <div className="lg:col-span-2">
+                <div className="lg:col-span-8">
                   <p className="font-sans text-xl text-grey leading-relaxed mb-8">
                     {aboutIntro}
                   </p>
@@ -197,7 +197,7 @@ function HomePage() {
         </section>
 
         {/* ── Contact ── */}
-        <section id="contact" className="bg-black py-32 px-8">
+        <section id="contact" className="bg-black py-40 px-8">
           <div className="max-w-[1440px] mx-auto">
             <motion.div
               variants={sectionVariants}
@@ -206,13 +206,13 @@ function HomePage() {
               viewport={{ once: true, margin: '-80px' }}
               className="text-center"
             >
-              <span className="font-mono text-[10px] text-grey tracking-[0.2em] uppercase block mb-4">
+              <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase block mb-4">
                 004 — Contact
               </span>
-              <h2 className="font-sans font-bold text-5xl md:text-7xl text-white tracking-[-0.02em] uppercase mb-6">
+              <h2 className="font-sans font-bold text-5xl md:text-7xl text-white tracking-[0.04em] uppercase mb-6">
                 LET'S WORK<br />TOGETHER<span className="text-grey">.</span>
               </h2>
-              <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase mb-12 max-w-lg mx-auto">
+              <p className="font-mono text-sm text-grey tracking-[0.25em] uppercase mb-10 max-w-lg mx-auto">
                 {contactCta}
               </p>
               <a

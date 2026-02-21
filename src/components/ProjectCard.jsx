@@ -63,7 +63,7 @@ export default function ProjectCard({ project }) {
                 </div>
 
                 {/* Card Content */}
-                <div className="p-5 border-t-[3px] border-black">
+                <div className="p-6 border-t-[3px] border-black">
                     {/* Tags */}
                     {tags && tags.length > 0 && (
                         <div className="flex flex-wrap gap-2 mb-3">
@@ -89,7 +89,7 @@ export default function ProjectCard({ project }) {
 
                     {/* Description */}
                     {description && (
-                        <p className="font-sans text-sm text-grey leading-relaxed line-clamp-2">
+                        <p className="font-sans text-sm text-grey leading-relaxed line-clamp-2 max-w-[60ch]">
                             {description}
                         </p>
                     )}
