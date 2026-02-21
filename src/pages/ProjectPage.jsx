@@ -38,7 +38,7 @@ export default function ProjectPage() {
         fetchProject();
     }, [slug]);
 
-    const contactEmail = sc.contact_email || 'hello@hadilalduleimi.com';
+    const contactEmail = sc.contact_email || 'hadilalduleimi2@gmail.com';
     const images = project?.images || [];
     const totalSlides = images.length;
 

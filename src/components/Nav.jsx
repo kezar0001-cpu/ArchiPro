@@ -16,7 +16,7 @@ export default function Nav({ contactEmail }) {
     const location = useLocation();
     const navigate = useNavigate();
     const isHome = location.pathname === '/';
-    const email = contactEmail || 'hello@hadilalduleimi.com';
+    const email = contactEmail || 'hadilalduleimi2@gmail.com';
 
     function handleNavClick(e, link) {
         e.preventDefault();

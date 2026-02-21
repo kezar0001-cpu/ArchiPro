@@ -18,7 +18,7 @@ export default function Footer({ siteContent }) {
         }
     }, [siteContent]);
 
-    const contactEmail = sc.contact_email || 'hello@hadilalduleimi.com';
+    const contactEmail = sc.contact_email || 'hadilalduleimi2@gmail.com';
     const linkedinUrl = sc.social_linkedin || 'https://linkedin.com/in/hadilalduleimi';
     const instagramUrl = sc.social_instagram || 'https://instagram.com/hadilalduleimi';
 

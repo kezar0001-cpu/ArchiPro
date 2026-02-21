@@ -59,7 +59,7 @@ function HomePage() {
 
   const aboutIntro = siteContent.about_intro || 'Architect and designer based in Sydney, Australia. Specializing in creating spaces that blend functionality with innovative design.';
   const aboutTagline = siteContent.about_tagline || 'Architect · Designer · Sydney';
-  const contactEmail = siteContent.contact_email || 'hello@hadilalduleimi.com';
+  const contactEmail = siteContent.contact_email || 'hadilalduleimi2@gmail.com';
   const contactCta = siteContent.contact_cta || 'Ready to bring your project to life?';
   const heroStatus = siteContent.hero_status || null;
   const profilePhotoUrl = siteContent.profile_photo_path
