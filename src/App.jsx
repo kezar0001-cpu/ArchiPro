@@ -81,27 +81,27 @@ function HomePage() {
         />
 
         {/* Scroll-down indicator + hero→work divider */}
-        <div className="relative bg-black" style={{ borderTop: '1px solid #222' }}>
+        <div className="relative bg-white" style={{ borderTop: '1px solid #ddd' }}>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 2, duration: 0.8 }}
             className="absolute -top-20 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
           >
-            <span className="font-mono text-[10px] text-white/60 tracking-[0.2em] uppercase">
+            <span className="font-mono text-[10px] tracking-[0.2em] uppercase" style={{ color: 'rgba(0,0,0,0.4)' }}>
               Scroll
             </span>
             <motion.div
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
             >
-              <ChevronDown size={16} strokeWidth={3} className="text-white/60" />
+              <ChevronDown size={16} strokeWidth={3} style={{ color: 'rgba(0,0,0,0.4)' }} />
             </motion.div>
           </motion.div>
         </div>
 
         {/* ── Featured Projects ── */}
-        <section id="work" className="relative bg-black section-px" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
+        <section id="work" className="relative bg-white section-px" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
           <div className="max-w-[1400px] mx-auto">
             <motion.div
               variants={sectionVariants}
@@ -113,7 +113,7 @@ function HomePage() {
               <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase block mb-4">
                 002 — Work
               </span>
-              <h2 className="font-sans font-bold text-5xl md:text-6xl text-white tracking-[-0.02em] uppercase mb-4">
+              <h2 className="font-sans font-bold text-5xl md:text-6xl text-black tracking-[-0.02em] uppercase mb-4">
                 WORK<span className="text-grey">.</span>
               </h2>
               <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase">
@@ -121,7 +121,7 @@ function HomePage() {
               </p>
             </motion.div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1px', background: '#222' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1px', background: '#ddd' }}>
               {projects.map((project, idx) => (
                 <motion.div
                   key={project.id}
@@ -129,25 +129,25 @@ function HomePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-50px' }}
                   transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.33, 1, 0.68, 1] }}
-                  className="bg-black"
+                  className="bg-white"
                 >
                   <ProjectCard project={project} />
                 </motion.div>
               ))}
               {!loading && projects.length === 1 && (
                 <div
-                  className="bg-black flex flex-col items-center justify-center px-8"
-                  style={{ border: '1px solid #333', minHeight: '360px' }}
+                  className="bg-white flex flex-col items-center justify-center px-8"
+                  style={{ border: '1px solid #ddd', minHeight: '360px' }}
                 >
-                  <span className="font-mono mb-4" style={{ fontSize: '24px', color: '#444' }}>+</span>
+                  <span className="font-mono mb-4" style={{ fontSize: '24px', color: '#bbb' }}>+</span>
                   <span
                     className="font-mono uppercase block mb-3"
-                    style={{ fontSize: '10px', letterSpacing: '0.2em', color: '#555' }}
+                    style={{ fontSize: '10px', letterSpacing: '0.2em', color: '#aaa' }}
                   >
                     New Project
                   </span>
                   <p
-                    className="font-sans font-bold uppercase text-center text-white"
+                    className="font-sans font-bold uppercase text-center text-black"
                     style={{ fontSize: '18px' }}
                   >
                     Coming Soon
@@ -157,7 +157,7 @@ function HomePage() {
             </div>
 
             {!loading && projects.length === 0 && (
-              <div className="text-center py-16" style={{ border: '1px solid #333' }}>
+              <div className="text-center py-16" style={{ border: '1px solid #ddd' }}>
                 <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase">
                   No projects yet — Check back soon
                 </p>
@@ -175,7 +175,7 @@ function HomePage() {
                 <a
                   href="/work"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white
-                    font-mono text-xs tracking-[0.15em] uppercase border-[3px] border-white
+                    font-mono text-xs tracking-[0.15em] uppercase border-[3px] border-black
                     brutal-shadow-sm btn-fill btn-fill-light"
                 >
                   View All Projects
@@ -184,9 +184,6 @@ function HomePage() {
             )}
           </div>
         </section>
-
-        {/* section divider */}
-        <div style={{ height: '1px', background: '#1a1a1a' }} />
 
         {/* ── About ── */}
         <section id="about" className="bg-white section-px" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
