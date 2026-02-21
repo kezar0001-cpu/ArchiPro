@@ -41,7 +41,7 @@ export default function Footer() {
                     {/* Left: Copyright + Domain */}
                     <div className="flex flex-col md:flex-row items-center gap-3 md:gap-6">
                         <span className="font-mono text-xs text-grey tracking-[0.15em] uppercase">
-                            © {currentYear} Hadi Lal Duleimi
+                            © {currentYear} Hadil Al-Duleimi
                         </span>
                         <span className="hidden md:block text-grey">·</span>
                         <a

@@ -140,7 +140,7 @@ INSERT INTO site_content (key, value) VALUES
     ('hero_subheadline', 'ARCHITECT & DESIGNER — MELBOURNE, AU'),
     ('hero_overlay_opacity', '0.55'),
     ('hero_video_path', ''),
-    ('about_intro', 'I''m Hadi Lal Duleimi, an architect and designer based in Melbourne, Australia. With over 8 years of experience in architectural design, I specialize in creating spaces that blend functionality with innovative design.'),
+    ('about_intro', 'I''m Hadil Al-Duleimi, an architect and designer based in Melbourne, Australia. With over 8 years of experience in architectural design, I specialize in creating spaces that blend functionality with innovative design.'),
     ('about_tagline', 'Architect · Designer · Melbourne'),
     ('contact_email', 'hello@hadilalduleimi.com'),
     ('contact_cta', 'Ready to bring your project to life?')

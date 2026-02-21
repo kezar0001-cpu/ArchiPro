@@ -87,7 +87,7 @@ export default function AboutPage() {
                             </h2>
                             <div className="space-y-4 font-sans text-lg text-grey leading-relaxed">
                                 <p>
-                                    I'm <strong className="text-black">Hadi Lal Duleimi</strong>, an architect and designer
+                                    I'm <strong className="text-black">Hadil Al-Duleimi</strong>, an architect and designer
                                     based in Melbourne, Australia. With over 8 years of experience in architectural design,
                                     I specialize in creating spaces that blend functionality with innovative design.
                                 </p>
