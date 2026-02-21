@@ -1,7 +1,94 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Save, ArrowLeft, Upload, Trash2, GripVertical, Check } from 'lucide-react';
 import { supabase, getPublicUrl } from '../../lib/supabase';
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from '@dnd-kit/core';
+import {
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    verticalListSortingStrategy,
+    useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+function SortableImageItem({ image, onDelete, onAltChange, saveStatus }) {
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging,
+    } = useSortable({ id: image.id });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+        boxShadow: isDragging ? '0 4px 20px rgba(0,0,0,0.15)' : 'none',
+        zIndex: isDragging ? 10 : 'auto',
+        position: 'relative',
+    };
+
+    const handleColor = saveStatus === 'saved'
+        ? '#22c55e'
+        : saveStatus === 'saving'
+        ? '#888'
+        : '#888';
+
+    return (
+        <div
+            ref={setNodeRef}
+            style={style}
+            className="flex items-start gap-3 p-3 border-[2px] border-black bg-white"
+        >
+            <button
+                {...attributes}
+                {...listeners}
+                className="mt-1 shrink-0 touch-none"
+                style={{ cursor: isDragging ? 'grabbing' : 'grab', color: handleColor, transition: 'color 0.3s' }}
+                title="Drag to reorder"
+                type="button"
+            >
+                <GripVertical size={16} strokeWidth={3} />
+            </button>
+            <img
+                src={image.url}
+                alt={image.alt_text}
+                className="w-20 h-16 object-cover grayscale border-[2px] border-black shrink-0"
+            />
+            <div className="flex-1 min-w-0">
+                <input
+                    type="text"
+                    defaultValue={image.alt_text}
+                    onBlur={(e) => onAltChange(image.id, e.target.value)}
+                    className="w-full px-2 py-1 border-[2px] border-black font-mono text-[10px]
+                        focus:outline-none focus:border-grey transition-colors duration-200"
+                    placeholder="Alt text..."
+                />
+                <p className="font-mono text-[9px] text-grey mt-1 truncate">
+                    {image.storage_path}
+                </p>
+            </div>
+            <button
+                onClick={() => onDelete(image)}
+                className="p-1.5 text-grey hover:text-black transition-colors duration-200 shrink-0"
+                title="Delete image"
+                type="button"
+            >
+                <Trash2 size={14} strokeWidth={3} />
+            </button>
+        </div>
+    );
+}
 
 export default function ProjectEditPage() {
     const { id } = useParams();
@@ -24,7 +111,13 @@ export default function ProjectEditPage() {
     const [saving, setSaving] = useState(false);
     const [saved, setSaved] = useState(false);
     const [uploading, setUploading] = useState(false);
+    const [orderSaveStatus, setOrderSaveStatus] = useState(null); // null | 'saving' | 'saved'
     const fileRef = useRef(null);
+
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+    );
 
     useEffect(() => {
         if (isNew) return;
@@ -195,6 +288,33 @@ export default function ProjectEditPage() {
             .eq('id', imageId);
     }
 
+    const handleDragEnd = useCallback((event) => {
+        const { active, over } = event;
+        if (!over || active.id === over.id) return;
+
+        setImages((prev) => {
+            const oldIndex = prev.findIndex((img) => img.id === active.id);
+            const newIndex = prev.findIndex((img) => img.id === over.id);
+            const reordered = arrayMove(prev, oldIndex, newIndex);
+
+            // Persist new order immediately
+            setOrderSaveStatus('saving');
+            Promise.all(
+                reordered.map((img, idx) =>
+                    supabase
+                        .from('project_images')
+                        .update({ sort_order: idx })
+                        .eq('id', img.id)
+                )
+            ).then(() => {
+                setOrderSaveStatus('saved');
+                setTimeout(() => setOrderSaveStatus(null), 1500);
+            });
+
+            return reordered;
+        });
+    }, []);
+
     if (loading) {
         return (
             <div className="p-8 flex items-center justify-center min-h-[50vh]">
@@ -314,9 +434,19 @@ export default function ProjectEditPage() {
                     {!isNew && (
                         <div className="brutal-border bg-white p-6">
                             <div className="flex items-center justify-between mb-4">
-                                <label className="font-mono text-xs text-black tracking-[0.15em] uppercase font-bold">
-                                    Images ({images.length})
-                                </label>
+                                <div className="flex items-center gap-3">
+                                    <label className="font-mono text-xs text-black tracking-[0.15em] uppercase font-bold">
+                                        Images ({images.length})
+                                    </label>
+                                    {orderSaveStatus === 'saving' && (
+                                        <span className="font-mono text-[10px] text-grey tracking-[0.1em] uppercase">Saving order...</span>
+                                    )}
+                                    {orderSaveStatus === 'saved' && (
+                                        <span className="inline-flex items-center gap-1 font-mono text-[10px] tracking-[0.1em] uppercase" style={{ color: '#22c55e' }}>
+                                            <Check size={10} strokeWidth={3} /> Order saved
+                                        </span>
+                                    )}
+                                </div>
                                 <label
                                     className={`inline-flex items-center gap-2 px-4 py-2 bg-black text-white
                                         font-mono text-[10px] tracking-[0.1em] uppercase border-[2px] border-black
@@ -343,41 +473,28 @@ export default function ProjectEditPage() {
                                     </p>
                                 </div>
                             ) : (
-                                <div className="space-y-3">
-                                    {images.map((image) => (
-                                        <div
-                                            key={image.id}
-                                            className="flex items-start gap-3 p-3 border-[2px] border-black"
-                                        >
-                                            <GripVertical size={16} strokeWidth={3} className="text-grey mt-1 shrink-0 cursor-grab" />
-                                            <img
-                                                src={image.url}
-                                                alt={image.alt_text}
-                                                className="w-20 h-16 object-cover grayscale border-[2px] border-black shrink-0"
-                                            />
-                                            <div className="flex-1 min-w-0">
-                                                <input
-                                                    type="text"
-                                                    value={image.alt_text}
-                                                    onChange={(e) => handleAltTextChange(image.id, e.target.value)}
-                                                    className="w-full px-2 py-1 border-[2px] border-black font-mono text-[10px]
-                                                        focus:outline-none focus:border-grey transition-colors duration-200"
-                                                    placeholder="Alt text..."
+                                <DndContext
+                                    sensors={sensors}
+                                    collisionDetection={closestCenter}
+                                    onDragEnd={handleDragEnd}
+                                >
+                                    <SortableContext
+                                        items={images.map((img) => img.id)}
+                                        strategy={verticalListSortingStrategy}
+                                    >
+                                        <div className="space-y-3">
+                                            {images.map((image) => (
+                                                <SortableImageItem
+                                                    key={image.id}
+                                                    image={image}
+                                                    onDelete={handleImageDelete}
+                                                    onAltChange={handleAltTextChange}
+                                                    saveStatus={orderSaveStatus}
                                                 />
-                                                <p className="font-mono text-[9px] text-grey mt-1 truncate">
-                                                    {image.storage_path}
-                                                </p>
-                                            </div>
-                                            <button
-                                                onClick={() => handleImageDelete(image)}
-                                                className="p-1.5 text-grey hover:text-black transition-colors duration-200 shrink-0"
-                                                title="Delete image"
-                                            >
-                                                <Trash2 size={14} strokeWidth={3} />
-                                            </button>
+                                            ))}
                                         </div>
-                                    ))}
-                                </div>
+                                    </SortableContext>
+                                </DndContext>
                             )}
                         </div>
                     )}
