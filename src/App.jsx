@@ -101,7 +101,7 @@ function HomePage() {
         </div>
 
         {/* ── Featured Projects ── */}
-        <section id="work" className="relative bg-white section-px" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
+        <section id="work" className="relative bg-white section-px" style={{ paddingTop: '80px', paddingBottom: '60px' }}>
           <div className="max-w-[1400px] mx-auto">
             <motion.div
               variants={sectionVariants}
@@ -130,27 +130,35 @@ function HomePage() {
                   viewport={{ once: true, margin: '-50px' }}
                   transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.33, 1, 0.68, 1] }}
                   className="bg-white"
+                  style={{ minHeight: '420px' }}
                 >
                   <ProjectCard project={project} />
                 </motion.div>
               ))}
               {!loading && projects.length === 1 && (
                 <div
-                  className="bg-white flex flex-col items-center justify-center px-8"
-                  style={{ border: '1px solid #ddd', minHeight: '360px' }}
+                  className="bg-white flex flex-col items-center justify-center px-8 relative overflow-hidden"
+                  style={{ border: '1px dashed #bbb', minHeight: '420px' }}
                 >
-                  <span className="font-mono mb-4" style={{ fontSize: '24px', color: '#bbb' }}>+</span>
+                  {/* Watermark */}
                   <span
-                    className="font-mono uppercase block mb-3"
-                    style={{ fontSize: '10px', letterSpacing: '0.2em', color: '#aaa' }}
+                    className="absolute font-sans font-bold select-none pointer-events-none"
+                    style={{ fontSize: '180px', color: 'rgba(0,0,0,0.06)', lineHeight: 1, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
+                    aria-hidden="true"
                   >
-                    New Project
+                    +
+                  </span>
+                  <span
+                    className="font-mono uppercase block mb-3 relative"
+                    style={{ fontSize: '10px', letterSpacing: '0.25em', color: '#bbb' }}
+                  >
+                    002
                   </span>
                   <p
-                    className="font-sans font-bold uppercase text-center text-black"
-                    style={{ fontSize: '18px' }}
+                    className="font-sans font-bold uppercase text-center text-black relative"
+                    style={{ fontSize: '18px', lineHeight: 1.3 }}
                   >
-                    Coming Soon
+                    New Project<br />Coming Soon
                   </p>
                 </div>
               )}
@@ -170,7 +178,7 @@ function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="mt-12 text-center"
+                className="mt-12 text-right"
               >
                 <a
                   href="/work"
@@ -185,8 +193,11 @@ function HomePage() {
           </div>
         </section>
 
+        {/* work→about divider */}
+        <div style={{ height: '1px', background: '#ddd' }} />
+
         {/* ── About ── */}
-        <section id="about" className="bg-white section-px" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
+        <section id="about" className="bg-white section-px" style={{ paddingTop: '60px', paddingBottom: '80px' }}>
           <div className="max-w-[1400px] mx-auto">
             <motion.div
               variants={sectionVariants}
@@ -194,18 +205,18 @@ function HomePage() {
               whileInView="visible"
               viewport={{ once: true, margin: '-80px' }}
             >
-              <div className="grid grid-cols-1 lg:grid-cols-[40%_1fr] items-center" style={{ gap: '60px' }}>
+              <div className="grid grid-cols-1 lg:grid-cols-[35%_1fr] items-center" style={{ gap: '60px' }}>
                 {/* Left — Image */}
                 <div
                   className="brutal-border brutal-shadow bg-grey-light overflow-hidden w-full"
-                  style={{ aspectRatio: '3/4', maxHeight: '480px' }}
+                  style={{ aspectRatio: '4/5', maxHeight: '480px' }}
                 >
                   {profilePhotoUrl ? (
                     <img
                       src={profilePhotoUrl}
                       alt="Hadil Al-Duleimi"
                       className="w-full h-full object-cover grayscale"
-                      style={{ objectPosition: '50% 20%' }}
+                      style={{ objectPosition: 'center 15%' }}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
@@ -220,7 +231,7 @@ function HomePage() {
                   <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase block" style={{ marginBottom: '16px' }}>
                     003 — About
                   </span>
-                  <h2 className="font-sans font-bold text-5xl md:text-6xl text-black tracking-[-0.02em] uppercase" style={{ marginBottom: '16px' }}>
+                  <h2 className="font-sans font-bold text-black tracking-[-0.02em] uppercase" style={{ fontSize: 'clamp(36px, 5vw, 56px)', marginBottom: '16px' }}>
                     ABOUT<span className="text-grey">.</span>
                   </h2>
                   <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase" style={{ marginBottom: '16px' }}>
@@ -250,7 +261,7 @@ function HomePage() {
         <div style={{ height: '1px', background: '#1a1a1a' }} />
 
         {/* ── Contact ── */}
-        <section id="contact" className="bg-black section-px" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
+        <section id="contact" className="bg-black section-px" style={{ paddingTop: '60px', paddingBottom: '60px' }}>
           <div className="max-w-[1400px] mx-auto">
             <motion.div
               variants={sectionVariants}
