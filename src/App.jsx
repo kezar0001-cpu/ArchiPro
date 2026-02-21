@@ -176,9 +176,12 @@ function HomePage() {
               <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase block mb-8">
                 003 — About
               </span>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="grid grid-cols-1 lg:grid-cols-[40%_1fr] gap-12 items-center">
                 {/* Left — Image */}
-                <div className="brutal-border brutal-shadow bg-grey-light overflow-hidden" style={{ aspectRatio: '2/3', minHeight: '500px' }}>
+                <div
+                  className="brutal-border brutal-shadow bg-grey-light overflow-hidden w-full"
+                  style={{ aspectRatio: '3/4', maxHeight: '480px' }}
+                >
                   {profilePhotoUrl ? (
                     <img
                       src={profilePhotoUrl}

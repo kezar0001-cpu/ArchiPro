@@ -24,25 +24,25 @@ const CONTENT_SECTIONS = [
     {
         title: 'Resume — Header',
         fields: {
-            resume_name: { label: 'Full Name', hint: 'Displayed at the top of the resume' },
-            resume_title: { label: 'Job Title', hint: 'e.g. Architectural Designer' },
-            resume_summary: { label: 'Professional Summary', hint: 'Short paragraph about your experience', multiline: true },
+            full_name: { label: 'Full Name', hint: 'e.g. Hadil Alduleimi' },
+            job_title: { label: 'Job Title', hint: 'e.g. Architectural Designer' },
+            professional_summary: { label: 'Professional Summary', hint: 'Short paragraph about your experience', multiline: true },
         },
     },
     {
         title: 'Resume — Contact & Interests',
         fields: {
-            resume_phone: { label: 'Phone Number', hint: 'e.g. +61 411 148 777' },
-            resume_address: { label: 'Address', hint: 'e.g. UAE, Dubai' },
-            resume_interests: { label: 'Interests', hint: 'Comma-separated (e.g. Interior design, architectural photography)' },
+            phone_number: { label: 'Phone Number', hint: 'e.g. +61 411 148 777' },
+            address: { label: 'Address', hint: 'e.g. Sydney, AU' },
+            interests: { label: 'Interests', hint: 'Comma-separated (e.g. Interior Design, Architectural Photography)' },
         },
     },
     {
         title: 'Resume — Experience',
         fields: {
-            resume_experience: {
+            professional_experience: {
                 label: 'Professional Experience',
-                hint: 'Format per entry (separate entries with ---): Title | Company | Period\\nBullet point 1\\nBullet point 2',
+                hint: 'Each entry starts on a new line beginning with a capital letter. Format: Title | Period | Company\n• Bullet point 1\n• Bullet point 2\n\nNext entry starts here automatically.',
                 multiline: true,
             },
         },
@@ -50,7 +50,7 @@ const CONTENT_SECTIONS = [
     {
         title: 'Resume — Education',
         fields: {
-            resume_education: {
+            education: {
                 label: 'Education',
                 hint: 'One entry per line: Degree | Institution | Period',
                 multiline: true,
@@ -60,9 +60,9 @@ const CONTENT_SECTIONS = [
     {
         title: 'Resume — Skills',
         fields: {
-            resume_skills_technical: { label: 'Technical Skills', hint: 'Comma-separated (e.g. Revit, Rhino, Adobe Photoshop)' },
-            resume_skills_professional: { label: 'Professional Skills', hint: 'Comma-separated (e.g. Client Presentations, Site Measurements)' },
-            resume_skills_design: { label: 'Design Skills', hint: 'Comma-separated (e.g. Residential Design, Interior Layouts)' },
+            technical_skills: { label: 'Technical Skills', hint: 'Comma-separated (e.g. Revit, Rhino, Adobe Photoshop)' },
+            professional_skills: { label: 'Professional Skills', hint: 'Comma-separated (e.g. Client Presentations, Site Measurements)' },
+            design_skills: { label: 'Design Skills', hint: 'Comma-separated (e.g. Residential Design, Interior Layouts)' },
         },
     },
     {
@@ -173,7 +173,7 @@ export default function ContentPage() {
                                         <textarea
                                             value={content[key] || ''}
                                             onChange={(e) => setContent((prev) => ({ ...prev, [key]: e.target.value }))}
-                                            rows={key === 'resume_experience' ? 12 : 4}
+                                            rows={key === 'professional_experience' ? 12 : 4}
                                             className="w-full px-4 py-3 border-[3px] border-black font-sans text-sm
                                                 focus:outline-none focus:border-grey transition-colors duration-200
                                                 resize-y"
