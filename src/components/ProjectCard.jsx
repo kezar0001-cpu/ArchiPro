@@ -16,6 +16,7 @@ import { ArrowUpRight } from 'lucide-react';
  */
 export default function ProjectCard({ project }) {
     const { title, slug, description, thumbnailUrl, thumbnailAlt, tags } = project;
+    const category = tags && tags.length > 0 ? tags[0] : null;
 
     return (
         <motion.article
@@ -23,11 +24,11 @@ export default function ProjectCard({ project }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-50px' }}
             transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
-            className="group relative"
+            className="group relative transition-transform duration-300 ease-out hover:scale-[1.02]"
         >
             <a
                 href={`/work/${slug}`}
-                className="block brutal-border brutal-shadow brutal-hover bg-white overflow-hidden"
+                className="block brutal-border brutal-shadow bg-white overflow-hidden"
             >
                 {/* Thumbnail Container (4:3 aspect ratio) */}
                 <div className="aspect-[4/3] relative overflow-hidden bg-grey-light">
@@ -46,17 +47,23 @@ export default function ProjectCard({ project }) {
                         </div>
                     )}
 
-                    {/* Hover Overlay */}
-                    <div
-                        className="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-300"
-                        aria-hidden="true"
-                    />
+                    {/* Title/Category Overlay (appears on hover) */}
+                    <div className="card-overlay" aria-hidden="true">
+                        {category && (
+                            <span className="font-mono text-[10px] text-grey tracking-[0.2em] uppercase mb-2">
+                                {category}
+                            </span>
+                        )}
+                        <span className="font-sans font-bold text-lg text-white tracking-[-0.01em]">
+                            {title}
+                        </span>
+                    </div>
 
                     {/* Arrow Icon (appears on hover) */}
                     <div
                         className="absolute top-3 right-3 w-10 h-10 bg-white border-[3px] border-black
                             flex items-center justify-center
-                            opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                            opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                     >
                         <ArrowUpRight size={20} strokeWidth={3} className="text-black" />
                     </div>

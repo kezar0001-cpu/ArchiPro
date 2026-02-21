@@ -9,6 +9,8 @@ import ProjectCard from './components/ProjectCard';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import BackToTop from './components/BackToTop';
+import CustomCursor from './components/CustomCursor';
+import useReveal from './hooks/useReveal';
 import { getHeroContent, getFeaturedProjects, getAllSiteContent } from './lib/queries';
 
 // Lazy-load pages to keep the main bundle small
@@ -59,6 +61,9 @@ function HomePage() {
   const contactEmail = siteContent.contact_email || 'hello@hadilalduleimi.com';
   const contactCta = siteContent.contact_cta || 'Ready to bring your project to life?';
   const heroStatus = siteContent.hero_status || null;
+  const profilePhotoUrl = siteContent.profile_photo_url || null;
+
+  useReveal();
 
   return (
     <>
@@ -113,7 +118,7 @@ function HomePage() {
               </p>
             </motion.div>
 
-            <div className="col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="col-span-12 grid grid-cols-1 md:grid-cols-2 gap-8 reveal-stagger">
               {projects.map((project, idx) => (
                 <motion.div
                   key={project.id}
@@ -147,7 +152,7 @@ function HomePage() {
                   href="/work"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white
                     font-mono text-xs tracking-[0.15em] uppercase border-[3px] border-black
-                    brutal-shadow-sm brutal-hover"
+                    brutal-shadow-sm btn-fill btn-fill-light"
                 >
                   View All Projects
                 </a>
@@ -165,31 +170,48 @@ function HomePage() {
               whileInView="visible"
               viewport={{ once: true, margin: '-80px' }}
             >
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-6 gap-y-10 items-start">
-                <div className="lg:col-span-4">
-                  <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase block mb-4">
-                    003 — About
-                  </span>
+              <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase block mb-8">
+                003 — About
+              </span>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+                {/* Left — Image */}
+                <div className="relative brutal-border brutal-shadow overflow-hidden min-h-[400px] bg-grey-light">
+                  {profilePhotoUrl ? (
+                    <img
+                      src={profilePhotoUrl}
+                      alt="Hadil Al-Duleimi"
+                      className="w-full h-full object-cover grayscale absolute inset-0"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center absolute inset-0">
+                      <span className="font-sans font-bold text-[8rem] text-black/5 leading-none tracking-[-0.04em] uppercase select-none">
+                        H.A
+                      </span>
+                    </div>
+                  )}
+                </div>
+                {/* Right — Text + CTA */}
+                <div className="flex flex-col justify-center">
                   <h2 className="font-sans font-bold text-5xl md:text-6xl text-black tracking-[-0.02em] uppercase mb-4">
                     ABOUT<span className="text-grey">.</span>
                   </h2>
-                  <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase">
+                  <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase mb-6">
                     {aboutTagline}
                   </p>
-                </div>
-                <div className="lg:col-span-8">
                   <p className="font-sans text-xl text-grey leading-relaxed mb-8">
                     {aboutIntro}
                   </p>
-                  <a
-                    href="/about"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white
-                      font-mono text-xs tracking-[0.15em] uppercase border-[3px] border-black
-                      brutal-shadow-sm brutal-hover"
-                  >
-                    More About Me
-                    <ArrowUpRight size={14} strokeWidth={3} />
-                  </a>
+                  <div>
+                    <a
+                      href="/about"
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white
+                        font-mono text-xs tracking-[0.15em] uppercase border-[3px] border-black
+                        brutal-shadow-sm btn-fill btn-fill-light"
+                    >
+                      More About Me
+                      <ArrowUpRight size={14} strokeWidth={3} />
+                    </a>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -219,7 +241,7 @@ function HomePage() {
                 href={`mailto:${contactEmail}`}
                 className="inline-flex items-center gap-3 px-10 py-5 bg-white text-black
                   font-mono text-sm tracking-[0.15em] uppercase border-[3px] border-white
-                  brutal-shadow brutal-hover"
+                  brutal-shadow btn-fill btn-fill-dark"
               >
                 {contactEmail}
                 <ArrowUpRight size={18} strokeWidth={3} />
@@ -230,6 +252,7 @@ function HomePage() {
       </main>
       <Footer siteContent={siteContent} />
       <BackToTop />
+      <CustomCursor />
     </>
   );
 }

@@ -73,8 +73,7 @@ export default function Hero({
                     className="flex items-center gap-3 mb-8"
                 >
                     <span className="relative flex h-3 w-3">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-white" />
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-white status-dot" />
                     </span>
                     <span className="font-mono text-sm text-white tracking-[0.2em] uppercase">
                         {displayStatus}

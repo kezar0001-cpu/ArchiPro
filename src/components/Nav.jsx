@@ -12,6 +12,7 @@ const navLinks = [
 export default function Nav({ contactEmail }) {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [activeSection, setActiveSection] = useState('');
     const location = useLocation();
     const navigate = useNavigate();
     const isHome = location.pathname === '/';
@@ -40,6 +41,30 @@ export default function Nav({ contactEmail }) {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // IntersectionObserver for active nav state on homepage
+    useEffect(() => {
+        if (!isHome) return;
+        const sectionIds = ['work', 'about', 'contact'];
+        const observers = [];
+
+        sectionIds.forEach((id) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const observer = new IntersectionObserver(
+                ([entry]) => {
+                    if (entry.isIntersecting) {
+                        setActiveSection(id);
+                    }
+                },
+                { threshold: 0.3, rootMargin: '-80px 0px -40% 0px' }
+            );
+            observer.observe(el);
+            observers.push(observer);
+        });
+
+        return () => observers.forEach((o) => o.disconnect());
+    }, [isHome]);
+
     return (
         <>
             {/* ── Desktop Nav ── */}
@@ -64,25 +89,31 @@ export default function Nav({ contactEmail }) {
 
                     {/* Desktop Links */}
                     <ul className="hidden md:flex items-center gap-8">
-                        {navLinks.map((link) => (
-                            <li key={link.label}>
-                                <a
-                                    href={link.href || `/#${link.hash}`}
-                                    onClick={(e) => handleNavClick(e, link)}
-                                    className={`font-mono text-sm tracking-[0.1em] uppercase
-                             relative group transition-colors duration-300
-                             ${scrolled ? 'text-black' : 'text-white'}
-                             hover:text-grey`}
-                                >
-                                    {link.label}
-                                    <span
-                                        className={`absolute -bottom-1 left-0 w-0 h-[3px]
-                               ${scrolled ? 'bg-black' : 'bg-white'}
-                               group-hover:w-full transition-all duration-300 ease-out`}
-                                    />
-                                </a>
-                            </li>
-                        ))}
+                        {navLinks.map((link) => {
+                            const isActive = isHome
+                                ? (link.hash && activeSection === link.hash)
+                                : (link.href && location.pathname === link.href);
+                            return (
+                                <li key={link.label}>
+                                    <a
+                                        href={link.href || `/#${link.hash}`}
+                                        onClick={(e) => handleNavClick(e, link)}
+                                        className={`font-mono text-sm tracking-[0.1em] uppercase
+                                 relative group transition-colors duration-300
+                                 ${scrolled ? 'text-black' : 'text-white'}
+                                 hover:text-grey ${isActive ? 'nav-link-active' : ''}`}
+                                    >
+                                        {link.label}
+                                        <span
+                                            className={`absolute -bottom-1 left-0 h-[3px]
+                                   ${scrolled ? 'bg-black' : 'bg-white'}
+                                   transition-all duration-300 ease-out
+                                   ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`}
+                                        />
+                                    </a>
+                                </li>
+                            );
+                        })}
                         {/* CTA */}
                         <li>
                             <a

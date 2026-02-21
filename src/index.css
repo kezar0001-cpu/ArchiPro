@@ -211,3 +211,151 @@ body {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLL REVEAL ANIMATIONS
+   ═══════════════════════════════════════════════════════════ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.33, 1, 0.68, 1),
+    transform 0.7s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-stagger > .reveal:nth-child(1) { transition-delay: 0s; }
+.reveal-stagger > .reveal:nth-child(2) { transition-delay: 0.1s; }
+.reveal-stagger > .reveal:nth-child(3) { transition-delay: 0.2s; }
+.reveal-stagger > .reveal:nth-child(4) { transition-delay: 0.3s; }
+.reveal-stagger > .reveal:nth-child(5) { transition-delay: 0.4s; }
+.reveal-stagger > .reveal:nth-child(6) { transition-delay: 0.5s; }
+
+/* ═══════════════════════════════════════════════════════════
+   STATUS PULSE (live indicator)
+   ═══════════════════════════════════════════════════════════ */
+
+@keyframes status-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.6); }
+  70%  { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+.status-dot {
+  animation: status-pulse 2s ease-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BUTTON MICRO-INTERACTION (sliding fill)
+   ═══════════════════════════════════════════════════════════ */
+
+.btn-fill {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.btn-fill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.btn-fill:hover::before {
+  transform: scaleX(1);
+}
+
+.btn-fill-light::before {
+  background: var(--color-white);
+}
+
+.btn-fill-light:hover {
+  color: var(--color-black) !important;
+}
+
+.btn-fill-dark::before {
+  background: var(--color-black);
+}
+
+.btn-fill-dark:hover {
+  color: var(--color-white) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CUSTOM CURSOR (desktop only)
+   ═══════════════════════════════════════════════════════════ */
+
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-white);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transition: width 0.3s cubic-bezier(0.33, 1, 0.68, 1),
+    height 0.3s cubic-bezier(0.33, 1, 0.68, 1),
+    border-color 0.3s ease,
+    background-color 0.3s ease;
+  mix-blend-mode: difference;
+  transform: translate(-50%, -50%);
+}
+
+.custom-cursor.expanded {
+  width: 50px;
+  height: 50px;
+  background-color: var(--color-white);
+  border-color: var(--color-white);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .custom-cursor { display: none; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body { cursor: none; }
+  a, button, [role="button"], input, textarea, select { cursor: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NAV ACTIVE STATE
+   ═══════════════════════════════════════════════════════════ */
+
+.nav-link-active > span {
+  width: 100% !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PROJECT CARD HOVER OVERLAY (title/category)
+   ═══════════════════════════════════════════════════════════ */
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.3) 50%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.group:hover .card-overlay {
+  opacity: 1;
+}
