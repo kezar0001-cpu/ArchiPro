@@ -1,44 +1,15 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Download, Mail, Phone, MapPin } from 'lucide-react';
+import { Download, Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import { getAllSiteContent } from '../lib/queries';
 import { getPublicUrl } from '../lib/supabase';
 
 /**
- * AboutPage — Canva-style Resume Layout
- * All content is CMS-driven from site_content table.
+ * AboutPage — Full-page dark brutalist layout
+ * Sections: Page Header → Hero Bio Split → Skills Bar → Interests → Contact → CTA
  */
-
-function parseExperience(raw) {
-    if (!raw) return [];
-    return raw.split('---').map((block) => {
-        const lines = block.trim().split('\n').filter(Boolean);
-        if (lines.length === 0) return null;
-        const headerParts = lines[0].split('|').map((s) => s.trim());
-        return {
-            title: headerParts[0] || '',
-            company: headerParts[1] || '',
-            period: headerParts[2] || '',
-            bullets: lines.slice(1).map((l) => l.replace(/^[-•]\s*/, '').trim()).filter(Boolean),
-        };
-    }).filter(Boolean);
-}
-
-function parseEducation(raw) {
-    if (!raw) return [];
-    return raw.split('\n').filter(Boolean).map((line) => {
-        const parts = line.split('|').map((s) => s.trim());
-        return { degree: parts[0] || '', institution: parts[1] || '', period: parts[2] || '' };
-    });
-}
-
-function parseList(raw) {
-    if (!raw) return [];
-    return raw.split(',').map((s) => s.trim()).filter(Boolean);
-}
-
 export default function AboutPage() {
     const [sc, setSc] = useState({});
     const [loading, setLoading] = useState(true);
@@ -53,252 +24,229 @@ export default function AboutPage() {
     const name = sc.resume_name || 'Hadil Alduleimi';
     const title = sc.resume_title || 'Architectural Designer';
     const summary = sc.resume_summary || 'Architectural Designer with experience in residential design, concept development, interior layouts, client presentations, and drafting. Skilled in Revit, Rhino, and Adobe, with strong communication skills, site experience, and a portfolio of custom homes, duplexes, and interior concepts.';
-    const interests = sc.resume_interests || 'Interior design, architectural photography, urban design, sustainable concepts';
+    const interests = sc.resume_interests || 'Interior Design · Architectural Photography · Urban Design · Sustainable Concepts';
     const phoneNum = sc.resume_phone || '+61 411 148 777';
-    const address = sc.resume_address || 'UAE, Dubai';
+    const address = sc.resume_address || 'Sydney, AU';
     const contactEmail = sc.contact_email || 'hadilalduleimi2@gmail.com';
-
-    const experience = parseExperience(sc.resume_experience);
-    const education = parseEducation(sc.resume_education);
-    const skillsTech = parseList(sc.resume_skills_technical);
-    const skillsProf = parseList(sc.resume_skills_professional);
-    const skillsDesign = parseList(sc.resume_skills_design);
 
     const photoUrl = sc.profile_photo_path ? getPublicUrl('profile-photo', sc.profile_photo_path) : null;
     const cvUrl = sc.resume_file_path ? getPublicUrl('resume-documents', sc.resume_file_path) : null;
 
+    const skillsData = [
+        { label: 'Location', value: 'Sydney, AU' },
+        { label: 'Experience', value: '8+ Years' },
+        { label: 'Specialisation', value: 'Residential · Interior · Urban' },
+        { label: 'Software', value: 'Revit · Rhino · Adobe Suite' },
+    ];
+
+    const contactItems = [
+        { label: 'Phone', value: phoneNum, href: `tel:${phoneNum.replace(/\s/g, '')}` },
+        { label: 'Email', value: contactEmail, href: `mailto:${contactEmail}` },
+        { label: 'Address', value: address, href: null },
+    ];
+
     if (loading) {
         return (
-            <div className="min-h-screen bg-grey-light flex items-center justify-center">
-                <div className="w-16 h-16 border-[3px] border-black border-t-transparent rounded-full animate-spin" />
+            <div className="min-h-screen bg-black flex items-center justify-center">
+                <div className="w-16 h-16 border-[3px] border-white border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-grey-light">
+        <div className="min-h-screen bg-black">
             <Nav />
 
-            <div className="pt-28 pb-16 section-px">
-                <div className="max-w-[900px] mx-auto">
-                    {/* Resume Card */}
+            {/* ── SECTION 1: PAGE HEADER ── */}
+            <section className="pt-36 pb-16 section-px bg-black">
+                <div className="max-w-[1400px] mx-auto">
                     <motion.div
-                        initial={{ opacity: 0, y: 30 }}
+                        initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
-                        className="bg-white brutal-border brutal-shadow-sm"
                     >
-                        {/* ═══ Header: Photo + Name + Summary ═══ */}
-                        <div className="p-8 md:p-12 pb-8">
-                            <div className="flex flex-col md:flex-row gap-8 items-start">
-                                {/* Profile Photo */}
-                                {photoUrl && (
-                                    <div className="w-36 h-36 md:w-44 md:h-44 rounded-full overflow-hidden border-[3px] border-black shrink-0">
-                                        <img
-                                            src={photoUrl}
-                                            alt={name}
-                                            className="w-full h-full object-cover"
-                                        />
-                                    </div>
-                                )}
-
-                                {/* Name + Title + Summary */}
-                                <div className="flex-1 min-w-0">
-                                    <h1 className="font-sans font-bold text-4xl md:text-5xl text-black tracking-[-0.02em] mb-1">
-                                        {name}
-                                    </h1>
-                                    <p className="font-sans text-lg text-grey mb-5">
-                                        {title}
-                                    </p>
-                                    <p className="font-sans text-sm text-grey leading-relaxed">
-                                        {summary}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* ═══ Interests ═══ */}
-                        {interests && (
-                            <div className="px-8 md:px-12 py-6 border-t-[2px] border-black/10">
-                                <div className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-2 md:gap-4 items-start">
-                                    <h2 className="font-sans font-bold text-sm text-black uppercase tracking-wide">
-                                        Interests
-                                    </h2>
-                                    <p className="font-sans text-sm text-grey leading-relaxed">
-                                        {interests}
-                                    </p>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* ═══ Contact ═══ */}
-                        <div className="px-8 md:px-12 py-6 border-t-[2px] border-black/10">
-                            <div className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-2 md:gap-4 items-start">
-                                <h2 className="font-sans font-bold text-sm text-black uppercase tracking-wide">
-                                    Contact
-                                </h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
-                                    <div>
-                                        <span className="font-sans font-semibold text-sm text-black">Phone: </span>
-                                        <span className="font-sans text-sm text-grey">{phoneNum}</span>
-                                    </div>
-                                    <div>
-                                        <span className="font-sans font-semibold text-sm text-black">Address: </span>
-                                        <span className="font-sans text-sm text-grey">{address}</span>
-                                    </div>
-                                    <div className="md:col-span-2">
-                                        <span className="font-sans font-semibold text-sm text-black">Email: </span>
-                                        <a href={`mailto:${contactEmail}`} className="font-sans text-sm text-grey hover:text-black transition-colors">
-                                            {contactEmail}
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* ═══ Professional Experience ═══ */}
-                        {experience.length > 0 && (
-                            <div className="px-8 md:px-12 py-6 border-t-[2px] border-black/10">
-                                <div className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-4 items-start">
-                                    <h2 className="font-sans font-bold text-sm text-black uppercase tracking-wide">
-                                        Professional Experience
-                                    </h2>
-                                    <div className="space-y-6">
-                                        {experience.map((exp, idx) => (
-                                            <div key={idx}>
-                                                <h3 className="font-sans font-bold text-base text-black">
-                                                    {exp.title}{exp.period ? ` | ${exp.period}` : ''}
-                                                </h3>
-                                                {exp.company && (
-                                                    <p className="font-sans text-sm text-grey mb-2">{exp.company}</p>
-                                                )}
-                                                {exp.bullets.length > 0 && (
-                                                    <ul className="space-y-1 ml-4">
-                                                        {exp.bullets.map((bullet, bIdx) => (
-                                                            <li key={bIdx} className="font-sans text-sm text-grey leading-relaxed flex gap-2">
-                                                                <span className="text-black mt-1.5 shrink-0">•</span>
-                                                                <span>{bullet}</span>
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* ═══ Education ═══ */}
-                        {education.length > 0 && (
-                            <div className="px-8 md:px-12 py-6 border-t-[2px] border-black/10">
-                                <div className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-4 items-start">
-                                    <h2 className="font-sans font-bold text-sm text-black uppercase tracking-wide">
-                                        Education
-                                    </h2>
-                                    <div className="space-y-4">
-                                        {education.map((edu, idx) => (
-                                            <div key={idx}>
-                                                <h3 className="font-sans font-bold text-base text-black">
-                                                    {edu.institution}{edu.period ? ` | ${edu.period}` : ''}
-                                                </h3>
-                                                <p className="font-sans text-sm text-grey">{edu.degree}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* ═══ Skills ═══ */}
-                        {(skillsTech.length > 0 || skillsProf.length > 0 || skillsDesign.length > 0) && (
-                            <div className="px-8 md:px-12 py-6 border-t-[2px] border-black/10">
-                                <div className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-4 items-start">
-                                    <h2 className="font-sans font-bold text-sm text-black uppercase tracking-wide">
-                                        Skills
-                                    </h2>
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                        {skillsTech.length > 0 && (
-                                            <div>
-                                                <h3 className="font-sans font-bold text-sm text-black mb-2">Technical Skills</h3>
-                                                <ul className="space-y-1">
-                                                    {skillsTech.map((s, i) => (
-                                                        <li key={i} className="font-sans text-sm text-grey flex gap-2">
-                                                            <span className="text-black shrink-0">•</span>{s}
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )}
-                                        {skillsProf.length > 0 && (
-                                            <div>
-                                                <h3 className="font-sans font-bold text-sm text-black mb-2">Professional Skills</h3>
-                                                <ul className="space-y-1">
-                                                    {skillsProf.map((s, i) => (
-                                                        <li key={i} className="font-sans text-sm text-grey flex gap-2">
-                                                            <span className="text-black shrink-0">•</span>{s}
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )}
-                                        {skillsDesign.length > 0 && (
-                                            <div>
-                                                <h3 className="font-sans font-bold text-sm text-black mb-2">Design Skills</h3>
-                                                <ul className="space-y-1">
-                                                    {skillsDesign.map((s, i) => (
-                                                        <li key={i} className="font-sans text-sm text-grey flex gap-2">
-                                                            <span className="text-black shrink-0">•</span>{s}
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* ═══ Download CV Button ═══ */}
-                        {cvUrl && (
-                            <div className="px-8 md:px-12 py-6 border-t-[2px] border-black/10">
-                                <a
-                                    href={cvUrl}
-                                    download
-                                    className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white
-                                        font-mono text-xs tracking-[0.15em] uppercase border-[3px] border-black
-                                        brutal-shadow-sm brutal-hover"
-                                >
-                                    <Download size={16} strokeWidth={3} />
-                                    Download CV
-                                </a>
-                            </div>
-                        )}
+                        <span className="font-mono text-[10px] text-grey tracking-[0.2em] uppercase block mb-4">
+                            003 — About
+                        </span>
+                        <h1 className="font-sans font-bold text-white uppercase text-6xl md:text-8xl tracking-[-0.02em] mb-6">
+                            ABOUT<span className="text-grey">.</span>
+                        </h1>
+                        <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase">
+                            Architect · Designer · Sydney · Dubai
+                        </p>
                     </motion.div>
                 </div>
-            </div>
+            </section>
 
-            {/* CTA */}
-            <section className="px-8 py-20 bg-black">
-                <div className="max-w-[1440px] mx-auto text-center">
+            {/* ── SECTION 2: HERO BIO SPLIT ── */}
+            <section className="bg-black border-t border-white/10">
+                <div className="max-w-[1400px] mx-auto">
+                    <div className="grid grid-cols-1 lg:grid-cols-2">
+                        {/* LEFT — Portrait Photo */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            className="relative overflow-hidden bg-[#111] min-h-[500px] lg:min-h-[600px]"
+                        >
+                            {photoUrl ? (
+                                <img
+                                    src={photoUrl}
+                                    alt={name}
+                                    className="absolute inset-0 w-full h-full object-cover object-top grayscale"
+                                    style={{ aspectRatio: '3/4' }}
+                                />
+                            ) : (
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <span className="font-sans font-bold text-[10rem] text-white/5 leading-none tracking-[-0.04em] uppercase select-none">
+                                        H.A
+                                    </span>
+                                </div>
+                            )}
+                        </motion.div>
+
+                        {/* RIGHT — Bio Content */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.3 }}
+                            className="flex flex-col justify-center section-px py-16 lg:py-20"
+                        >
+                            <h2 className="font-sans font-bold text-4xl md:text-5xl text-white tracking-[-0.02em] uppercase mb-3">
+                                {name.toUpperCase()}
+                            </h2>
+                            <p className="font-mono text-xs text-grey tracking-[0.25em] uppercase mb-8">
+                                {title.toUpperCase()}
+                            </p>
+                            <p className="font-sans text-lg text-grey leading-[1.8] mb-10 max-w-[520px]">
+                                {summary}
+                            </p>
+                            {cvUrl && (
+                                <div>
+                                    <a
+                                        href={cvUrl}
+                                        download
+                                        className="inline-flex items-center gap-3 px-8 py-4
+                                            bg-transparent text-white font-mono text-xs tracking-[0.15em] uppercase
+                                            border-[3px] border-white
+                                            transition-all duration-300
+                                            hover:bg-white hover:text-black"
+                                    >
+                                        <Download size={16} strokeWidth={3} />
+                                        Download CV
+                                    </a>
+                                </div>
+                            )}
+                        </motion.div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── SECTION 3: SKILLS & INFO BAR ── */}
+            <motion.section
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="bg-black border-y border-white/10"
+            >
+                <div className="max-w-[1400px] mx-auto section-px">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+                        {skillsData.map((item, idx) => (
+                            <div
+                                key={idx}
+                                className={`py-8 ${
+                                    idx < skillsData.length - 1
+                                        ? 'lg:border-r border-b lg:border-b-0 border-white/10'
+                                        : ''
+                                } ${idx > 0 ? 'lg:pl-8' : ''}`}
+                            >
+                                <span className="font-mono text-[10px] text-grey tracking-[0.2em] uppercase block mb-2">
+                                    {item.label}
+                                </span>
+                                <span className="font-mono text-sm text-white tracking-[0.1em] uppercase">
+                                    {item.value}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </motion.section>
+
+            {/* ── SECTION 4: INTERESTS ROW ── */}
+            <section className="bg-[#1a1a1a]">
+                <div className="max-w-[1400px] mx-auto section-px py-10">
+                    <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+                        <span className="font-mono text-[10px] text-grey tracking-[0.25em] uppercase shrink-0">
+                            Interests
+                        </span>
+                        <span className="hidden md:block text-white/20">|</span>
+                        <p className="font-mono text-sm text-white/70 tracking-[0.1em] uppercase">
+                            {interests}
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── SECTION 5: CONTACT DETAILS ── */}
+            <section className="bg-black border-t border-white/10">
+                <div className="max-w-[1400px] mx-auto section-px">
+                    <div className="grid grid-cols-1 md:grid-cols-3">
+                        {contactItems.map((item, idx) => (
+                            <div
+                                key={idx}
+                                className={`py-8 ${
+                                    idx < contactItems.length - 1
+                                        ? 'md:border-r border-b md:border-b-0 border-white/10'
+                                        : ''
+                                } ${idx > 0 ? 'md:pl-8' : ''}`}
+                            >
+                                <span className="font-mono text-[10px] text-grey tracking-[0.2em] uppercase block mb-2">
+                                    {item.label}
+                                </span>
+                                {item.href ? (
+                                    <a
+                                        href={item.href}
+                                        className="font-mono text-sm text-white tracking-[0.1em] uppercase hover:text-grey transition-colors duration-300"
+                                    >
+                                        {item.value}
+                                    </a>
+                                ) : (
+                                    <span className="font-mono text-sm text-white tracking-[0.1em] uppercase">
+                                        {item.value}
+                                    </span>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ── CTA ── */}
+            <section className="section-px py-24 bg-black border-t border-white/10">
+                <div className="max-w-[1400px] mx-auto text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        <h2 className="font-sans font-bold text-4xl md:text-5xl text-white mb-6 uppercase">
+                        <span className="font-mono text-[10px] text-grey tracking-[0.25em] uppercase block mb-4">
+                            Get in Touch
+                        </span>
+                        <h2 className="font-sans font-bold text-4xl md:text-5xl text-white mb-6 uppercase tracking-[0.02em]">
                             Let's Collaborate<span className="text-grey">.</span>
                         </h2>
-                        <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase mb-8">
+                        <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase mb-10 max-w-lg mx-auto">
                             {sc.contact_cta || 'Ready to bring your project to life?'}
                         </p>
                         <a
                             href={`mailto:${contactEmail}`}
-                            className="inline-flex items-center gap-2 px-8 py-4 bg-white text-black font-mono text-sm tracking-[0.15em] uppercase border-[3px] border-white brutal-shadow brutal-hover"
+                            className="inline-flex items-center gap-3 px-10 py-5 bg-white text-black
+                                font-mono text-sm tracking-[0.15em] uppercase border-[3px] border-white
+                                brutal-shadow btn-fill btn-fill-dark"
                         >
-                            <Mail size={16} strokeWidth={3} />
-                            Contact Me
+                            {contactEmail}
+                            <ArrowUpRight size={18} strokeWidth={3} />
                         </a>
                     </motion.div>
                 </div>
