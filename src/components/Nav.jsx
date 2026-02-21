@@ -54,7 +54,7 @@ export default function Nav() {
                        transition-colors duration-300 ${scrolled ? 'text-black' : 'text-white'
                             } hover:text-grey`}
                     >
-                        HADI<span className="text-grey">.</span>
+                        HADIL AL-DULEIMI<span className="text-grey">.</span>
                     </a>
 
                     {/* Desktop Links */}

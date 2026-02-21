@@ -8,7 +8,7 @@ import { MapPin, Clock, Activity } from 'lucide-react';
  * CSS filter. A gradient overlay (stronger at the bottom) ensures white
  * typography remains crisp and readable.
  *
- * Props are Sanity-driven:
+ * Props are CMS-driven (Supabase):
  *   - videoUrl:       CDN URL to the hero video file
  *   - headline:       Use \n for line breaks
  *   - subheadline:    Tagline text

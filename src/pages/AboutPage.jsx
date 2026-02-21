@@ -1,38 +1,42 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Download, Mail, MapPin, Briefcase } from 'lucide-react';
+import { Download, Mail, Phone, MapPin } from 'lucide-react';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import { getAllSiteContent } from '../lib/queries';
+import { getPublicUrl } from '../lib/supabase';
 
 /**
- * AboutPage — CMS-driven Bio, Skills, CV Download
+ * AboutPage — Canva-style Resume Layout
+ * All content is CMS-driven from site_content table.
  */
 
-const DEFAULT_SKILLS = [
-    'Architectural Design', 'Urban Planning', 'Interior Design',
-    'Sustainable Architecture', '3D Visualization', 'AutoCAD',
-    'Revit', 'SketchUp', 'Rhino', 'V-Ray', 'Lumion', 'Photoshop',
-];
-
-const DEFAULT_EXPERIENCE = [
-    { title: 'Senior Architect', company: 'Design Studio', period: '2020 - Present', location: 'Melbourne, AU' },
-    { title: 'Architect', company: 'Architecture Firm', period: '2017 - 2020', location: 'Melbourne, AU' },
-    { title: 'Junior Architect', company: 'Urban Design Co.', period: '2015 - 2017', location: 'Melbourne, AU' },
-];
-
 function parseExperience(raw) {
-    if (!raw) return DEFAULT_EXPERIENCE;
-    const lines = raw.split('\n').filter(Boolean);
-    return lines.map((line) => {
-        const parts = line.split('|').map((s) => s.trim());
+    if (!raw) return [];
+    return raw.split('---').map((block) => {
+        const lines = block.trim().split('\n').filter(Boolean);
+        if (lines.length === 0) return null;
+        const headerParts = lines[0].split('|').map((s) => s.trim());
         return {
-            title: parts[0] || '',
-            company: parts[1] || '',
-            period: parts[2] || '',
-            location: parts[3] || '',
+            title: headerParts[0] || '',
+            company: headerParts[1] || '',
+            period: headerParts[2] || '',
+            bullets: lines.slice(1).map((l) => l.replace(/^[-•]\s*/, '').trim()).filter(Boolean),
         };
+    }).filter(Boolean);
+}
+
+function parseEducation(raw) {
+    if (!raw) return [];
+    return raw.split('\n').filter(Boolean).map((line) => {
+        const parts = line.split('|').map((s) => s.trim());
+        return { degree: parts[0] || '', institution: parts[1] || '', period: parts[2] || '' };
     });
+}
+
+function parseList(raw) {
+    if (!raw) return [];
+    return raw.split(',').map((s) => s.trim()).filter(Boolean);
 }
 
 export default function AboutPage() {
@@ -46,15 +50,22 @@ export default function AboutPage() {
             .finally(() => setLoading(false));
     }, []);
 
-    const tagline = sc.about_tagline || 'Architect · Designer · Melbourne';
-    const bio1 = sc.about_bio_1 || "I'm Hadil Al-Duleimi, an architect and designer based in Melbourne, Australia. With over 8 years of experience in architectural design, I specialize in creating spaces that blend functionality with innovative design.";
-    const bio2 = sc.about_bio_2 || 'My approach combines sustainable practices with modern aesthetics, always focusing on how people interact with their built environment. I believe architecture should be both beautiful and purposeful.';
-    const bio3 = sc.about_bio_3 || 'Currently, I work on residential and commercial projects, from concept through to completion, ensuring every detail aligns with the client\'s vision while pushing creative boundaries.';
-    const skills = sc.about_skills ? sc.about_skills.split(',').map((s) => s.trim()).filter(Boolean) : DEFAULT_SKILLS;
-    const experience = parseExperience(sc.about_experience);
-    const availability = sc.about_availability || 'Open to Projects';
-    const contactEmail = sc.contact_email || 'hello@hadilalduleimi.com';
-    const contactCta = sc.contact_cta || 'Ready to bring your project to life?';
+    const name = sc.resume_name || 'Hadil Alduleimi';
+    const title = sc.resume_title || 'Architectural Designer';
+    const summary = sc.resume_summary || 'Architectural Designer with experience in residential design, concept development, interior layouts, client presentations, and drafting. Skilled in Revit, Rhino, and Adobe, with strong communication skills, site experience, and a portfolio of custom homes, duplexes, and interior concepts.';
+    const interests = sc.resume_interests || 'Interior design, architectural photography, urban design, sustainable concepts';
+    const phoneNum = sc.resume_phone || '+61 411 148 777';
+    const address = sc.resume_address || 'UAE, Dubai';
+    const contactEmail = sc.contact_email || 'hadilalduleimi2@gmail.com';
+
+    const experience = parseExperience(sc.resume_experience);
+    const education = parseEducation(sc.resume_education);
+    const skillsTech = parseList(sc.resume_skills_technical);
+    const skillsProf = parseList(sc.resume_skills_professional);
+    const skillsDesign = parseList(sc.resume_skills_design);
+
+    const photoUrl = sc.profile_photo_path ? getPublicUrl('profile-photo', sc.profile_photo_path) : null;
+    const cvUrl = sc.resume_file_path ? getPublicUrl('resume-documents', sc.resume_file_path) : null;
 
     if (loading) {
         return (
@@ -68,188 +79,204 @@ export default function AboutPage() {
         <div className="min-h-screen bg-grey-light">
             <Nav />
 
-            {/* Hero Section */}
-            <section className="pt-32 pb-16 px-8 bg-black">
-                <div className="max-w-[1440px] mx-auto">
+            <div className="pt-24 pb-16 px-4 md:px-8">
+                <div className="max-w-[900px] mx-auto">
+                    {/* Resume Card */}
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
+                        className="bg-white brutal-border brutal-shadow"
                     >
-                        <h1 className="font-sans font-bold text-white uppercase text-6xl md:text-8xl tracking-[-0.02em] mb-6">
-                            ABOUT<span className="text-grey">.</span>
-                        </h1>
-                        <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase">
-                            {tagline}
-                        </p>
-                    </motion.div>
-                </div>
-            </section>
+                        {/* ═══ Header: Photo + Name + Summary ═══ */}
+                        <div className="p-8 md:p-12 pb-8">
+                            <div className="flex flex-col md:flex-row gap-8 items-start">
+                                {/* Profile Photo */}
+                                {photoUrl && (
+                                    <div className="w-36 h-36 md:w-44 md:h-44 rounded-full overflow-hidden border-[3px] border-black shrink-0">
+                                        <img
+                                            src={photoUrl}
+                                            alt={name}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                )}
 
-            {/* Bio Section */}
-            <section className="px-8 py-20">
-                <div className="max-w-[1440px] mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                        {/* Left: Bio */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                            className="lg:col-span-2"
-                        >
-                            <h2 className="font-sans font-bold text-3xl text-black mb-6 uppercase">
-                                Background
-                            </h2>
-                            <div className="space-y-4 font-sans text-lg text-grey leading-relaxed">
-                                {bio1 && <p>{bio1}</p>}
-                                {bio2 && <p>{bio2}</p>}
-                                {bio3 && <p>{bio3}</p>}
+                                {/* Name + Title + Summary */}
+                                <div className="flex-1 min-w-0">
+                                    <h1 className="font-sans font-bold text-4xl md:text-5xl text-black tracking-[-0.02em] mb-1">
+                                        {name}
+                                    </h1>
+                                    <p className="font-sans text-lg text-grey mb-5">
+                                        {title}
+                                    </p>
+                                    <p className="font-sans text-sm text-grey leading-relaxed">
+                                        {summary}
+                                    </p>
+                                </div>
                             </div>
-                        </motion.div>
+                        </div>
 
-                        {/* Right: Quick Info */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.4 }}
-                            className="lg:col-span-1"
-                        >
-                            <div className="brutal-border brutal-shadow bg-white p-6 space-y-6">
-                                <div>
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <MapPin size={16} strokeWidth={3} className="text-grey" />
-                                        <span className="font-mono text-xs text-grey tracking-[0.15em] uppercase">
-                                            Location
-                                        </span>
-                                    </div>
-                                    <p className="font-sans font-semibold text-black">Melbourne, Australia</p>
+                        {/* ═══ Interests ═══ */}
+                        {interests && (
+                            <div className="px-8 md:px-12 py-6 border-t-[2px] border-black/10">
+                                <div className="grid grid-cols-[160px_1fr] gap-4 items-start">
+                                    <h2 className="font-sans font-bold text-sm text-black uppercase tracking-wide">
+                                        Interests
+                                    </h2>
+                                    <p className="font-sans text-sm text-grey leading-relaxed">
+                                        {interests}
+                                    </p>
                                 </div>
+                            </div>
+                        )}
 
-                                <div className="brutal-divider" />
-
-                                <div>
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <Briefcase size={16} strokeWidth={3} className="text-grey" />
-                                        <span className="font-mono text-xs text-grey tracking-[0.15em] uppercase">
-                                            Availability
-                                        </span>
+                        {/* ═══ Contact ═══ */}
+                        <div className="px-8 md:px-12 py-6 border-t-[2px] border-black/10">
+                            <div className="grid grid-cols-[160px_1fr] gap-4 items-start">
+                                <h2 className="font-sans font-bold text-sm text-black uppercase tracking-wide">
+                                    Contact
+                                </h2>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
+                                    <div>
+                                        <span className="font-sans font-semibold text-sm text-black">Phone: </span>
+                                        <span className="font-sans text-sm text-grey">{phoneNum}</span>
                                     </div>
-                                    <p className="font-sans font-semibold text-black">{availability}</p>
-                                </div>
-
-                                <div className="brutal-divider" />
-
-                                <div>
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <Mail size={16} strokeWidth={3} className="text-grey" />
-                                        <span className="font-mono text-xs text-grey tracking-[0.15em] uppercase">
-                                            Contact
-                                        </span>
+                                    <div>
+                                        <span className="font-sans font-semibold text-sm text-black">Address: </span>
+                                        <span className="font-sans text-sm text-grey">{address}</span>
                                     </div>
-                                    <a
-                                        href={`mailto:${contactEmail}`}
-                                        className="font-sans text-black hover:text-grey transition-colors duration-300 break-all"
-                                    >
-                                        {contactEmail}
-                                    </a>
+                                    <div className="md:col-span-2">
+                                        <span className="font-sans font-semibold text-sm text-black">Email: </span>
+                                        <a href={`mailto:${contactEmail}`} className="font-sans text-sm text-grey hover:text-black transition-colors">
+                                            {contactEmail}
+                                        </a>
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
 
-                                <div className="brutal-divider" />
+                        {/* ═══ Professional Experience ═══ */}
+                        {experience.length > 0 && (
+                            <div className="px-8 md:px-12 py-6 border-t-[2px] border-black/10">
+                                <div className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-4 items-start">
+                                    <h2 className="font-sans font-bold text-sm text-black uppercase tracking-wide">
+                                        Professional Experience
+                                    </h2>
+                                    <div className="space-y-6">
+                                        {experience.map((exp, idx) => (
+                                            <div key={idx}>
+                                                <h3 className="font-sans font-bold text-base text-black">
+                                                    {exp.title}{exp.period ? ` | ${exp.period}` : ''}
+                                                </h3>
+                                                {exp.company && (
+                                                    <p className="font-sans text-sm text-grey mb-2">{exp.company}</p>
+                                                )}
+                                                {exp.bullets.length > 0 && (
+                                                    <ul className="space-y-1 ml-4">
+                                                        {exp.bullets.map((bullet, bIdx) => (
+                                                            <li key={bIdx} className="font-sans text-sm text-grey leading-relaxed flex gap-2">
+                                                                <span className="text-black mt-1.5 shrink-0">•</span>
+                                                                <span>{bullet}</span>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
 
+                        {/* ═══ Education ═══ */}
+                        {education.length > 0 && (
+                            <div className="px-8 md:px-12 py-6 border-t-[2px] border-black/10">
+                                <div className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-4 items-start">
+                                    <h2 className="font-sans font-bold text-sm text-black uppercase tracking-wide">
+                                        Education
+                                    </h2>
+                                    <div className="space-y-4">
+                                        {education.map((edu, idx) => (
+                                            <div key={idx}>
+                                                <h3 className="font-sans font-bold text-base text-black">
+                                                    {edu.institution}{edu.period ? ` | ${edu.period}` : ''}
+                                                </h3>
+                                                <p className="font-sans text-sm text-grey">{edu.degree}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* ═══ Skills ═══ */}
+                        {(skillsTech.length > 0 || skillsProf.length > 0 || skillsDesign.length > 0) && (
+                            <div className="px-8 md:px-12 py-6 border-t-[2px] border-black/10">
+                                <div className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-4 items-start">
+                                    <h2 className="font-sans font-bold text-sm text-black uppercase tracking-wide">
+                                        Skills
+                                    </h2>
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                        {skillsTech.length > 0 && (
+                                            <div>
+                                                <h3 className="font-sans font-bold text-sm text-black mb-2">Technical Skills</h3>
+                                                <ul className="space-y-1">
+                                                    {skillsTech.map((s, i) => (
+                                                        <li key={i} className="font-sans text-sm text-grey flex gap-2">
+                                                            <span className="text-black shrink-0">•</span>{s}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                        {skillsProf.length > 0 && (
+                                            <div>
+                                                <h3 className="font-sans font-bold text-sm text-black mb-2">Professional Skills</h3>
+                                                <ul className="space-y-1">
+                                                    {skillsProf.map((s, i) => (
+                                                        <li key={i} className="font-sans text-sm text-grey flex gap-2">
+                                                            <span className="text-black shrink-0">•</span>{s}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                        {skillsDesign.length > 0 && (
+                                            <div>
+                                                <h3 className="font-sans font-bold text-sm text-black mb-2">Design Skills</h3>
+                                                <ul className="space-y-1">
+                                                    {skillsDesign.map((s, i) => (
+                                                        <li key={i} className="font-sans text-sm text-grey flex gap-2">
+                                                            <span className="text-black shrink-0">•</span>{s}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* ═══ Download CV Button ═══ */}
+                        {cvUrl && (
+                            <div className="px-8 md:px-12 py-6 border-t-[2px] border-black/10">
                                 <a
-                                    href="/cv.pdf"
+                                    href={cvUrl}
                                     download
-                                    className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-black text-white font-mono text-xs tracking-[0.15em] uppercase border-[3px] border-black brutal-shadow-sm brutal-hover"
+                                    className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white
+                                        font-mono text-xs tracking-[0.15em] uppercase border-[3px] border-black
+                                        brutal-shadow-sm brutal-hover"
                                 >
                                     <Download size={16} strokeWidth={3} />
                                     Download CV
                                 </a>
                             </div>
-                        </motion.div>
-                    </div>
+                        )}
+                    </motion.div>
                 </div>
-            </section>
-
-            {/* Skills Section */}
-            {skills.length > 0 && (
-                <section className="px-8 py-20 bg-white border-y-[3px] border-black">
-                    <div className="max-w-[1440px] mx-auto">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                        >
-                            <h2 className="font-sans font-bold text-3xl text-black mb-8 uppercase">
-                                Skills & Expertise
-                            </h2>
-                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                {skills.map((skill, idx) => (
-                                    <motion.div
-                                        key={idx}
-                                        initial={{ opacity: 0, scale: 0.9 }}
-                                        whileInView={{ opacity: 1, scale: 1 }}
-                                        viewport={{ once: true }}
-                                        transition={{ duration: 0.3, delay: idx * 0.05 }}
-                                        className="brutal-border brutal-shadow-sm bg-grey-light px-4 py-3 text-center hover:bg-black hover:text-white transition-colors duration-300 group"
-                                    >
-                                        <span className="font-mono text-xs tracking-[0.15em] uppercase">
-                                            {skill}
-                                        </span>
-                                    </motion.div>
-                                ))}
-                            </div>
-                        </motion.div>
-                    </div>
-                </section>
-            )}
-
-            {/* Experience Section */}
-            {experience.length > 0 && (
-                <section className="px-8 py-20">
-                    <div className="max-w-[1440px] mx-auto">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                        >
-                            <h2 className="font-sans font-bold text-3xl text-black mb-8 uppercase">
-                                Experience
-                            </h2>
-                            <div className="space-y-6">
-                                {experience.map((item, idx) => (
-                                    <motion.div
-                                        key={idx}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ duration: 0.5, delay: idx * 0.1 }}
-                                        className="brutal-border brutal-shadow bg-white p-6 hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all duration-300"
-                                    >
-                                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                                            <div>
-                                                <h3 className="font-sans font-bold text-xl text-black mb-1">
-                                                    {item.title}
-                                                </h3>
-                                                <p className="font-sans text-grey">{item.company}</p>
-                                            </div>
-                                            <div className="flex flex-col md:items-end gap-1">
-                                                <span className="font-mono text-xs text-grey tracking-[0.15em] uppercase">
-                                                    {item.period}
-                                                </span>
-                                                <span className="font-mono text-xs text-grey tracking-[0.15em] uppercase">
-                                                    {item.location}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </motion.div>
-                                ))}
-                            </div>
-                        </motion.div>
-                    </div>
-                </section>
-            )}
+            </div>
 
             {/* CTA */}
             <section className="px-8 py-20 bg-black">
@@ -264,7 +291,7 @@ export default function AboutPage() {
                             Let's Collaborate<span className="text-grey">.</span>
                         </h2>
                         <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase mb-8">
-                            {contactCta}
+                            {sc.contact_cta || 'Ready to bring your project to life?'}
                         </p>
                         <a
                             href={`mailto:${contactEmail}`}

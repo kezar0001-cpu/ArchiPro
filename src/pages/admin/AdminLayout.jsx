@@ -1,11 +1,12 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from '../../lib/AuthContext';
-import { FileText, FolderOpen, LogOut, Home, Video } from 'lucide-react';
+import { FileText, FolderOpen, LogOut, Home, Video, User } from 'lucide-react';
 
 const sidebarLinks = [
     { to: '/admin', label: 'Dashboard', icon: Home, end: true },
     { to: '/admin/content', label: 'Site Content', icon: FileText },
     { to: '/admin/hero-video', label: 'Hero Video', icon: Video },
+    { to: '/admin/resume', label: 'Resume & Profile', icon: User },
     { to: '/admin/projects', label: 'Projects', icon: FolderOpen },
 ];
 
@@ -19,7 +20,7 @@ export default function AdminLayout() {
                 {/* Logo */}
                 <div className="px-6 py-6 border-b-[3px] border-white/20">
                     <a href="/" className="font-sans font-bold text-lg text-white tracking-[0.15em] uppercase">
-                        HADI<span className="text-grey">.</span>
+                        HADIL AL-DULEIMI<span className="text-grey">.</span>
                     </a>
                     <p className="font-mono text-[10px] text-grey tracking-[0.15em] uppercase mt-1">
                         Admin Panel

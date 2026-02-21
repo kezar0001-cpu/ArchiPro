@@ -20,6 +20,7 @@ const ContentPage = lazy(() => import('./pages/admin/ContentPage'));
 const HeroVideoPage = lazy(() => import('./pages/admin/HeroVideoPage'));
 const ProjectsPage = lazy(() => import('./pages/admin/ProjectsPage'));
 const ProjectEditPage = lazy(() => import('./pages/admin/ProjectEditPage'));
+const ResumePage = lazy(() => import('./pages/admin/ResumePage'));
 const RequireAuth = lazy(() => import('./components/RequireAuth'));
 
 function HomePage() {
@@ -231,6 +232,7 @@ function App() {
             <Route index element={<DashboardPage />} />
             <Route path="content" element={<ContentPage />} />
             <Route path="hero-video" element={<HeroVideoPage />} />
+            <Route path="resume" element={<ResumePage />} />
             <Route path="projects" element={<ProjectsPage />} />
             <Route path="projects/:id" element={<ProjectEditPage />} />
           </Route>

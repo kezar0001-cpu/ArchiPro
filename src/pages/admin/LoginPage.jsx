@@ -31,7 +31,7 @@ export default function LoginPage() {
                 {/* Logo */}
                 <div className="text-center mb-12">
                     <a href="/" className="font-sans font-bold text-2xl text-white tracking-[0.15em] uppercase">
-                        HADI<span className="text-grey">.</span>
+                        HADIL AL-DULEIMI<span className="text-grey">.</span>
                     </a>
                     <p className="font-mono text-xs text-grey tracking-[0.2em] uppercase mt-2">
                         Admin Portal
