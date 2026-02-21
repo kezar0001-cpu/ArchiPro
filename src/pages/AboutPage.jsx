@@ -55,9 +55,9 @@ function SectionLabel({ children }) {
             className="font-mono uppercase mb-4"
             style={{
                 fontSize: '11px',
-                color: '#555',
+                color: '#888',
                 letterSpacing: '0.25em',
-                borderLeft: '2px solid #fff',
+                borderLeft: '2px solid #111',
                 paddingLeft: '10px',
                 lineHeight: 1.6,
             }}
@@ -71,7 +71,7 @@ function SidebarLabel({ children }) {
     return (
         <h3
             className="font-mono uppercase mb-3"
-            style={{ fontSize: '11px', color: '#555', letterSpacing: '0.2em' }}
+            style={{ fontSize: '11px', color: '#999', letterSpacing: '0.2em' }}
         >
             {children}
         </h3>
@@ -83,11 +83,11 @@ function PillTag({ children }) {
         <span
             className="font-mono inline-block"
             style={{
-                border: '1px solid #333',
+                border: '1px solid #ccc',
                 padding: '2px 8px',
                 fontSize: '11px',
                 margin: '2px',
-                color: '#ccc',
+                color: '#333',
             }}
         >
             {children}
@@ -96,7 +96,7 @@ function PillTag({ children }) {
 }
 
 function Divider() {
-    return <hr className="border-0" style={{ borderTop: '1px solid #222' }} />;
+    return <hr className="border-0" style={{ borderTop: '1px solid #ddd' }} />;
 }
 
 export default function AboutPage() {
@@ -145,8 +145,8 @@ export default function AboutPage() {
             <Nav />
 
             {/* ── PAGE HEADER ── */}
-            <section className="pt-36 pb-0 section-px bg-black">
-                <div className="max-w-[1400px] mx-auto" style={{ marginBottom: '48px' }}>
+            <section className="section-px bg-black" style={{ paddingTop: '160px', paddingBottom: '60px' }}>
+                <div className="max-w-[1400px] mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -155,7 +155,10 @@ export default function AboutPage() {
                         <span className="font-mono text-[10px] text-grey tracking-[0.2em] uppercase block mb-4">
                             003 — About
                         </span>
-                        <h1 className="font-sans font-bold text-white uppercase text-6xl md:text-8xl tracking-[-0.02em] mb-6">
+                        <h1
+                            className="font-sans font-bold text-white uppercase tracking-[-0.02em] mb-6"
+                            style={{ fontSize: 'clamp(48px, 7vw, 80px)' }}
+                        >
                             ABOUT<span className="text-grey">.</span>
                         </h1>
                         <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase">
@@ -165,8 +168,11 @@ export default function AboutPage() {
                 </div>
             </section>
 
+            {/* dark→light transition divider */}
+            <div style={{ height: '1px', background: '#ddd' }} />
+
             {/* ── RESUME BODY: Sidebar + Main ── */}
-            <section className="section-px pb-24 bg-black">
+            <section className="section-px bg-white" style={{ paddingTop: '60px', paddingBottom: '60px' }}>
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -174,7 +180,7 @@ export default function AboutPage() {
                     className="max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-[33%_1fr]"
                 >
                     {/* ════════ LEFT SIDEBAR ════════ */}
-                    <aside style={{ background: '#0a0a0a', borderRight: '1px solid #222', paddingRight: '0' }}>
+                    <aside style={{ background: '#fff', borderRight: '1px solid #ddd', paddingRight: '0' }}>
                         {/* Profile Photo */}
                         <div className="overflow-hidden" style={{ aspectRatio: '2/3' }}>
                             {photoUrl ? (
@@ -186,10 +192,10 @@ export default function AboutPage() {
                             ) : (
                                 <div
                                     className="w-full h-full flex items-center justify-center"
-                                    style={{ background: '#111' }}
+                                    style={{ background: '#f0f0f0' }}
                                 >
                                     <span className="font-sans font-bold text-[6rem] leading-none tracking-[-0.04em] uppercase select-none"
-                                        style={{ color: 'rgba(255,255,255,0.04)' }}>
+                                        style={{ color: 'rgba(0,0,0,0.06)' }}>
                                         H.A
                                     </span>
                                 </div>
@@ -199,16 +205,16 @@ export default function AboutPage() {
                         <Divider />
 
                         {/* Name + Title */}
-                        <div className="px-6 py-6">
+                        <div className="px-6" style={{ paddingTop: '16px', paddingBottom: '16px' }}>
                             <h2
-                                className="font-sans font-bold text-white uppercase mb-1"
-                                style={{ fontSize: '28px', lineHeight: 1.1 }}
+                                className="font-sans font-bold uppercase mb-1"
+                                style={{ fontSize: '22px', lineHeight: 1.1, color: '#000' }}
                             >
                                 {name.toUpperCase()}
                             </h2>
                             <p
                                 className="font-mono uppercase"
-                                style={{ fontSize: '11px', color: '#888', letterSpacing: '0.15em' }}
+                                style={{ fontSize: '11px', color: '#666', letterSpacing: '0.15em' }}
                             >
                                 {jobTitle.toUpperCase()}
                             </p>
@@ -221,26 +227,26 @@ export default function AboutPage() {
                             <SidebarLabel>Contact</SidebarLabel>
                             <div className="space-y-4">
                                 <div>
-                                    <span className="font-mono uppercase block mb-1" style={{ fontSize: '10px', color: '#555', letterSpacing: '0.15em' }}>
+                                    <span className="font-mono uppercase block mb-1" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em' }}>
                                         Phone
                                     </span>
-                                    <a href={`tel:${phone.replace(/\s/g, '')}`} className="font-mono text-white text-sm hover:text-grey transition-colors">
+                                    <a href={`tel:${phone.replace(/\s/g, '')}`} className="font-mono text-sm transition-colors" style={{ color: '#111' }}>
                                         {phone}
                                     </a>
                                 </div>
                                 <div>
-                                    <span className="font-mono uppercase block mb-1" style={{ fontSize: '10px', color: '#555', letterSpacing: '0.15em' }}>
+                                    <span className="font-mono uppercase block mb-1" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em' }}>
                                         Email
                                     </span>
-                                    <a href={`mailto:${email}`} className="font-mono text-white text-sm hover:text-grey transition-colors break-all">
+                                    <a href={`mailto:${email}`} className="font-mono text-sm transition-colors break-all" style={{ color: '#111' }}>
                                         {email}
                                     </a>
                                 </div>
                                 <div>
-                                    <span className="font-mono uppercase block mb-1" style={{ fontSize: '10px', color: '#555', letterSpacing: '0.15em' }}>
+                                    <span className="font-mono uppercase block mb-1" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em' }}>
                                         Address
                                     </span>
-                                    <span className="font-mono text-white text-sm">{address}</span>
+                                    <span className="font-mono text-sm" style={{ color: '#111' }}>{address}</span>
                                 </div>
                             </div>
                         </div>
@@ -253,7 +259,7 @@ export default function AboutPage() {
                             <div className="space-y-5">
                                 {techSkills.length > 0 && (
                                     <div>
-                                        <span className="font-mono uppercase block mb-2" style={{ fontSize: '10px', color: '#555', letterSpacing: '0.15em' }}>
+                                        <span className="font-mono uppercase block mb-2" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em' }}>
                                             Technical
                                         </span>
                                         <div className="flex flex-wrap">
@@ -263,7 +269,7 @@ export default function AboutPage() {
                                 )}
                                 {profSkills.length > 0 && (
                                     <div>
-                                        <span className="font-mono uppercase block mb-2" style={{ fontSize: '10px', color: '#555', letterSpacing: '0.15em' }}>
+                                        <span className="font-mono uppercase block mb-2" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em' }}>
                                             Professional
                                         </span>
                                         <div className="flex flex-wrap">
@@ -273,7 +279,7 @@ export default function AboutPage() {
                                 )}
                                 {designSkills.length > 0 && (
                                     <div>
-                                        <span className="font-mono uppercase block mb-2" style={{ fontSize: '10px', color: '#555', letterSpacing: '0.15em' }}>
+                                        <span className="font-mono uppercase block mb-2" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em' }}>
                                             Design
                                         </span>
                                         <div className="flex flex-wrap">
@@ -300,17 +306,24 @@ export default function AboutPage() {
                                 <Divider />
                                 <div className="px-6 py-6">
                                     <SidebarLabel>Links</SidebarLabel>
-                                    <div className="flex flex-col gap-3">
+                                    <div className="flex gap-2">
                                         {linkedinUrl && (
                                             <a
                                                 href={linkedinUrl}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="flex items-center gap-2 hover:text-white transition-colors"
-                                                style={{ color: '#888' }}
+                                                aria-label="LinkedIn"
+                                                className="flex items-center justify-center transition-colors"
+                                                style={{
+                                                    width: '36px',
+                                                    height: '36px',
+                                                    border: '1px solid #ccc',
+                                                    color: '#555',
+                                                }}
+                                                onMouseEnter={e => { e.currentTarget.style.borderColor = '#111'; e.currentTarget.style.color = '#111'; }}
+                                                onMouseLeave={e => { e.currentTarget.style.borderColor = '#ccc'; e.currentTarget.style.color = '#555'; }}
                                             >
                                                 <Linkedin size={16} strokeWidth={1.5} />
-                                                <span className="font-mono" style={{ fontSize: '12px', letterSpacing: '0.1em' }}>LinkedIn</span>
                                             </a>
                                         )}
                                         {instagramUrl && (
@@ -318,11 +331,18 @@ export default function AboutPage() {
                                                 href={instagramUrl}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="flex items-center gap-2 hover:text-white transition-colors"
-                                                style={{ color: '#888' }}
+                                                aria-label="Instagram"
+                                                className="flex items-center justify-center transition-colors"
+                                                style={{
+                                                    width: '36px',
+                                                    height: '36px',
+                                                    border: '1px solid #ccc',
+                                                    color: '#555',
+                                                }}
+                                                onMouseEnter={e => { e.currentTarget.style.borderColor = '#111'; e.currentTarget.style.color = '#111'; }}
+                                                onMouseLeave={e => { e.currentTarget.style.borderColor = '#ccc'; e.currentTarget.style.color = '#555'; }}
                                             >
                                                 <Instagram size={16} strokeWidth={1.5} />
-                                                <span className="font-mono" style={{ fontSize: '12px', letterSpacing: '0.1em' }}>Instagram</span>
                                             </a>
                                         )}
                                     </div>
@@ -332,14 +352,14 @@ export default function AboutPage() {
                     </aside>
 
                     {/* ════════ MAIN CONTENT ════════ */}
-                    <div className="bg-black" style={{ paddingLeft: '40px', paddingRight: '24px' }}>
+                    <div className="bg-white" style={{ paddingLeft: '40px', paddingRight: '24px' }}>
 
                         {/* PROFILE */}
                         <div style={{ paddingTop: '40px', paddingBottom: '40px' }}>
                             <SectionLabel>Profile</SectionLabel>
                             <p
                                 className="font-sans"
-                                style={{ color: '#ddd', fontSize: '15px', lineHeight: 1.8 }}
+                                style={{ color: '#444', fontSize: '15px', lineHeight: 1.8 }}
                             >
                                 {summary}
                             </p>
@@ -355,11 +375,11 @@ export default function AboutPage() {
                                         {experience.map((exp, idx) => (
                                             <div key={idx}>
                                                 {idx > 0 && (
-                                                    <hr className="border-0 my-6" style={{ borderTop: '1px solid #1a1a1a' }} />
+                                                    <hr className="border-0 my-6" style={{ borderTop: '1px solid #eee' }} />
                                                 )}
                                                 <h4
-                                                    className="font-sans font-bold text-white"
-                                                    style={{ fontSize: '16px', marginBottom: '4px' }}
+                                                    className="font-sans font-bold"
+                                                    style={{ fontSize: '16px', marginBottom: '4px', color: '#111' }}
                                                 >
                                                     {exp.title}
                                                 </h4>
@@ -372,12 +392,12 @@ export default function AboutPage() {
                                                     }}
                                                 >
                                                     {exp.company && (
-                                                        <span className="font-mono" style={{ fontSize: '13px', color: '#aaa' }}>
+                                                        <span className="font-mono" style={{ fontSize: '13px', color: '#666' }}>
                                                             {exp.company}
                                                         </span>
                                                     )}
                                                     {exp.period && (
-                                                        <span className="font-mono" style={{ fontSize: '12px', color: '#555', flexShrink: 0, marginLeft: '16px' }}>
+                                                        <span className="font-mono" style={{ fontSize: '12px', color: '#999', flexShrink: 0, marginLeft: '16px' }}>
                                                             {exp.period}
                                                         </span>
                                                     )}
@@ -388,7 +408,7 @@ export default function AboutPage() {
                                                             <p
                                                                 key={bIdx}
                                                                 className="font-sans"
-                                                                style={{ color: '#bbb', fontSize: '14px', lineHeight: 1.7 }}
+                                                                style={{ color: '#555', fontSize: '14px', lineHeight: 1.7 }}
                                                             >
                                                                 — {b}
                                                             </p>
@@ -412,17 +432,17 @@ export default function AboutPage() {
                                         {education.map((edu, idx) => (
                                             <div key={idx}>
                                                 {idx > 0 && (
-                                                    <hr className="border-0 my-4" style={{ borderTop: '1px solid #1a1a1a' }} />
+                                                    <hr className="border-0 my-4" style={{ borderTop: '1px solid #eee' }} />
                                                 )}
-                                                <h4 className="font-sans font-bold text-white mb-1" style={{ fontSize: '15px' }}>
+                                                <h4 className="font-sans font-bold mb-1" style={{ fontSize: '15px', color: '#111' }}>
                                                     {edu.degree}
                                                 </h4>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                                                    <span className="font-mono" style={{ fontSize: '13px', color: '#aaa' }}>
+                                                    <span className="font-mono" style={{ fontSize: '13px', color: '#666' }}>
                                                         {edu.institution}
                                                     </span>
                                                     {edu.period && (
-                                                        <span className="font-mono" style={{ fontSize: '13px', color: '#555', flexShrink: 0, marginLeft: '16px' }}>
+                                                        <span className="font-mono" style={{ fontSize: '13px', color: '#999', flexShrink: 0, marginLeft: '16px' }}>
                                                             {edu.period}
                                                         </span>
                                                     )}
@@ -441,15 +461,17 @@ export default function AboutPage() {
                                 <a
                                     href={cvUrl}
                                     download
-                                    className="block w-full text-center font-mono uppercase transition-all duration-300 hover:bg-white hover:text-black"
+                                    className="block w-full text-center font-mono uppercase transition-all duration-300"
                                     style={{
-                                        border: '1px solid #fff',
-                                        background: 'transparent',
+                                        background: '#111',
                                         color: '#fff',
+                                        border: 'none',
                                         padding: '14px 0',
                                         fontSize: '13px',
                                         letterSpacing: '0.15em',
                                     }}
+                                    onMouseEnter={e => { e.currentTarget.style.background = '#333'; }}
+                                    onMouseLeave={e => { e.currentTarget.style.background = '#111'; }}
                                 >
                                     ↓ Download CV
                                 </a>
