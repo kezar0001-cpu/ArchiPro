@@ -20,22 +20,27 @@ function parseList(raw) {
 
 function parseExperience(raw) {
     if (!raw) return [];
-    return raw.split('---').map((block) => {
+    const entries = [];
+    const blocks = raw.split(/\n(?=[A-Z])/);
+    blocks.forEach((block) => {
         const lines = block.trim().split('\n').filter(Boolean);
-        if (lines.length === 0) return null;
+        if (lines.length === 0) return;
         const headerParts = lines[0].split('|').map((s) => s.trim());
-        return {
-            title: headerParts[0] || '',
-            company: headerParts[1] || '',
-            period: headerParts[2] || '',
-            bullets: lines.slice(1).map((l) => l.replace(/^[-•]\s*/, '').trim()).filter(Boolean),
-        };
-    }).filter(Boolean);
+        const title = headerParts[0] || '';
+        const period = headerParts[1] || '';
+        const company = headerParts[2] || '';
+        const bullets = lines
+            .slice(1)
+            .filter((l) => l.trim().startsWith('•'))
+            .map((l) => l.replace(/^•\s*/, '').trim());
+        entries.push({ title, period, company, bullets });
+    });
+    return entries;
 }
 
 function parseEducation(raw) {
     if (!raw) return [];
-    return raw.split('\n').filter(Boolean).map((line) => {
+    return raw.trim().split('\n').filter(Boolean).map((line) => {
         const parts = line.split('|').map((s) => s.trim());
         return { degree: parts[0] || '', institution: parts[1] || '', period: parts[2] || '' };
     });
@@ -308,41 +313,36 @@ export default function AboutPage() {
                             {experience.length > 0 && (
                                 <div>
                                     <SectionLabel>Experience</SectionLabel>
-                                    <div className="space-y-6">
+                                    <div>
                                         {experience.map((exp, idx) => (
                                             <div key={idx}>
                                                 {idx > 0 && (
-                                                    <hr className="border-0 mb-6" style={{ borderTop: '1px solid #1a1a1a' }} />
+                                                    <hr className="border-0 my-6" style={{ borderTop: '1px solid #1a1a1a' }} />
                                                 )}
-                                                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-2">
-                                                    <div>
-                                                        <h4 className="font-sans font-bold text-white" style={{ fontSize: '16px' }}>
-                                                            {exp.title}
-                                                        </h4>
-                                                        {exp.company && (
-                                                            <span className="font-mono" style={{ fontSize: '13px', color: '#aaa' }}>
-                                                                {exp.company}
-                                                            </span>
-                                                        )}
-                                                    </div>
+                                                <h4 className="font-sans font-bold text-white mb-1" style={{ fontSize: '16px' }}>
+                                                    {exp.title}
+                                                </h4>
+                                                <div className="flex items-baseline justify-between mb-3">
+                                                    {exp.company && (
+                                                        <span className="font-mono" style={{ fontSize: '13px', color: '#aaa' }}>
+                                                            {exp.company}
+                                                        </span>
+                                                    )}
                                                     {exp.period && (
-                                                        <span
-                                                            className="font-mono shrink-0"
-                                                            style={{ fontSize: '12px', color: '#555' }}
-                                                        >
+                                                        <span className="font-mono shrink-0 ml-4" style={{ fontSize: '12px', color: '#555' }}>
                                                             {exp.period}
                                                         </span>
                                                     )}
                                                 </div>
                                                 {exp.bullets.length > 0 && (
-                                                    <div className="mt-3 space-y-2">
+                                                    <div className="space-y-2">
                                                         {exp.bullets.map((b, bIdx) => (
                                                             <p
                                                                 key={bIdx}
                                                                 className="font-sans"
                                                                 style={{ color: '#bbb', fontSize: '14px', lineHeight: 1.7 }}
                                                             >
-                                                                {b}
+                                                                — {b}
                                                             </p>
                                                         ))}
                                                     </div>
@@ -359,16 +359,25 @@ export default function AboutPage() {
                             {education.length > 0 && (
                                 <div>
                                     <SectionLabel>Education</SectionLabel>
-                                    <div className="space-y-4">
+                                    <div>
                                         {education.map((edu, idx) => (
                                             <div key={idx}>
-                                                <h4 className="font-sans font-bold text-white" style={{ fontSize: '15px' }}>
+                                                {idx > 0 && (
+                                                    <hr className="border-0 my-4" style={{ borderTop: '1px solid #1a1a1a' }} />
+                                                )}
+                                                <h4 className="font-sans font-bold text-white mb-1" style={{ fontSize: '15px' }}>
                                                     {edu.degree}
                                                 </h4>
-                                                <span className="font-mono" style={{ fontSize: '13px', color: '#aaa' }}>
-                                                    {edu.institution}
-                                                    {edu.period ? ` · ${edu.period}` : ''}
-                                                </span>
+                                                <div className="flex items-baseline justify-between">
+                                                    <span className="font-mono" style={{ fontSize: '13px', color: '#aaa' }}>
+                                                        {edu.institution}
+                                                    </span>
+                                                    {edu.period && (
+                                                        <span className="font-mono shrink-0 ml-4" style={{ fontSize: '13px', color: '#555' }}>
+                                                            {edu.period}
+                                                        </span>
+                                                    )}
+                                                </div>
                                             </div>
                                         ))}
                                     </div>
