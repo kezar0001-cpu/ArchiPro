@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import { getProjectBySlug, getAllSiteContent } from '../lib/queries';
@@ -62,12 +63,10 @@ export default function ProjectPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-grey-light flex items-center justify-center">
+            <div className="min-h-screen bg-black flex items-center justify-center">
                 <div className="text-center">
-                    <div className="w-16 h-16 border-[3px] border-black border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                    <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase">
-                        Loading Project...
-                    </p>
+                    <div className="w-16 h-16 border border-white border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                    <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase">Loading Project...</p>
                 </div>
             </div>
         );
@@ -75,19 +74,13 @@ export default function ProjectPage() {
 
     if (!project) {
         return (
-            <div className="min-h-screen bg-grey-light">
+            <div className="bg-black">
                 <Nav />
                 <div className="max-w-[1400px] mx-auto section-px py-32 text-center">
-                    <h1 className="font-sans font-bold text-6xl text-black mb-4">404</h1>
-                    <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase mb-8">
-                        Project Not Found
-                    </p>
-                    <Link
-                        to="/"
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white font-mono text-xs tracking-[0.15em] uppercase border-[3px] border-black brutal-shadow-sm brutal-hover"
-                    >
-                        <ArrowLeft size={16} strokeWidth={3} />
-                        Back to Home
+                    <h1 className="font-sans font-bold text-6xl text-white mb-4">404</h1>
+                    <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase mb-8">Project Not Found</p>
+                    <Link to="/work" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-mono text-xs tracking-[0.15em] uppercase">
+                        <ArrowLeft size={16} strokeWidth={2} /> Back to Projects
                     </Link>
                 </div>
                 <Footer />
@@ -97,20 +90,30 @@ export default function ProjectPage() {
 
     const heroImage = images[0]?.url || null;
     const category = project.tags?.[0] || null;
+    const remainingTags = project.tags?.slice(1) || [];
 
-    // Extract metadata from tags for info bar
-    const infoItems = [
-        { label: 'Type', value: category || '—' },
-        { label: 'Tags', value: project.tags?.slice(1).join(', ') || '—' },
-        { label: 'Status', value: 'Completed' },
-    ];
+    const mdComponents = {
+        h1: () => null,
+        h2: ({ children }) => <h2 style={{ fontSize: '11px', color: '#111', letterSpacing: '0.15em', textTransform: 'uppercase', marginTop: '32px', marginBottom: '12px', fontWeight: 600 }}>{children}</h2>,
+        h3: ({ children }) => <h3 style={{ fontSize: '11px', color: '#111', letterSpacing: '0.15em', textTransform: 'uppercase', marginTop: '32px', marginBottom: '12px', fontWeight: 600 }}>{children}</h3>,
+        p: ({ children }) => <p style={{ color: '#444', fontSize: '15px', lineHeight: 1.8, marginBottom: '16px' }}>{children}</p>,
+        strong: ({ children }) => <strong style={{ color: '#111', fontWeight: 600 }}>{children}</strong>,
+        ul: ({ children }) => <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 16px 0' }}>{children}</ul>,
+        ol: ({ children }) => <ol style={{ listStyle: 'none', padding: 0, margin: '0 0 16px 0' }}>{children}</ol>,
+        li: ({ children }) => (
+            <li style={{ paddingLeft: '16px', color: '#666', fontSize: '14px', lineHeight: 1.7, marginBottom: '8px', position: 'relative' }}>
+                <span style={{ position: 'absolute', left: 0 }}>—</span>
+                <span style={{ display: 'block', paddingLeft: '8px' }}>{children}</span>
+            </li>
+        ),
+    };
 
     return (
-        <div className="min-h-screen bg-grey-light">
+        <div className="bg-black">
             <Nav />
 
             {/* ── SECTION 1: HERO ── */}
-            <section className="relative w-full h-[60vh] min-h-[400px] overflow-hidden bg-black">
+            <section className="relative w-full overflow-hidden bg-black" style={{ height: '65vh', minHeight: '420px' }}>
                 {heroImage ? (
                     <motion.img
                         initial={{ opacity: 0, scale: 1.05 }}
@@ -119,76 +122,75 @@ export default function ProjectPage() {
                         src={heroImage}
                         alt={project.title}
                         className="absolute inset-0 w-full h-full object-cover grayscale"
+                        style={{ objectPosition: 'center' }}
                     />
                 ) : (
                     <div className="absolute inset-0 bg-black" />
                 )}
                 {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40" />
 
-                {/* Content overlay */}
-                <div className="absolute inset-0 flex flex-col justify-end section-px pb-12">
-                    <div className="max-w-[1400px] mx-auto w-full">
-                        <motion.div
+                {/* Back link — top left, below navbar */}
+                <div className="absolute top-0 left-0 right-0 section-px" style={{ paddingTop: '80px' }}>
+                    <div className="max-w-[1400px] mx-auto">
+                        <Link
+                            to="/work"
+                            className="inline-flex items-center gap-2 font-mono uppercase transition-colors duration-300"
+                            style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', letterSpacing: '0.15em' }}
+                        >
+                            <ArrowLeft size={14} strokeWidth={2} />
+                            Back to Projects
+                        </Link>
+                    </div>
+                </div>
+
+                {/* Title — bottom left */}
+                <div className="absolute bottom-0 left-0 right-0 section-px" style={{ paddingBottom: '32px' }}>
+                    <div className="max-w-[1400px] mx-auto">
+                        <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.3 }}
+                            className="font-sans font-bold text-white uppercase tracking-[-0.02em]"
+                            style={{ fontSize: 'clamp(32px, 5vw, 72px)', maxWidth: '900px' }}
                         >
-                            <Link
-                                to="/work"
-                                className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors duration-300 mb-6 font-mono text-xs tracking-[0.15em] uppercase"
-                            >
-                                <ArrowLeft size={14} strokeWidth={3} />
-                                Back to Projects
-                            </Link>
-
-                            <h1 className="font-sans font-bold text-white uppercase text-4xl md:text-6xl lg:text-7xl tracking-[-0.02em] mb-4 max-w-[900px]">
-                                {project.title}
-                                <span className="text-grey">.</span>
-                            </h1>
-
-                            {project.tags && project.tags.length > 0 && (
-                                <div className="flex flex-wrap gap-2">
-                                    {project.tags.map((tag, idx) => (
-                                        <span
-                                            key={idx}
-                                            className="font-mono text-[10px] text-white/80 tracking-[0.15em] uppercase px-3 py-1 border border-white/30"
-                                        >
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </div>
-                            )}
-                        </motion.div>
+                            {project.title}<span style={{ color: '#888' }}>.</span>
+                        </motion.h1>
                     </div>
                 </div>
             </section>
 
-            {/* ── SECTION 2: PROJECT INFO BAR ── */}
-            <motion.section
+            {/* ── SECTION 2: METADATA STRIP ── */}
+            <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="bg-black border-y-[3px] border-white/10"
+                transition={{ duration: 0.4, delay: 0.4 }}
+                className="bg-white section-px"
+                style={{ borderBottom: '1px solid #ddd', paddingTop: '16px', paddingBottom: '16px' }}
             >
-                <div className="max-w-[1400px] mx-auto section-px py-5">
-                    <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
-                        {infoItems.map((item, idx) => (
-                            <div key={idx} className="flex items-center gap-3">
-                                <span className="font-mono text-[10px] text-grey tracking-[0.2em] uppercase">
-                                    {item.label}
-                                </span>
-                                <span className="font-mono text-xs text-white tracking-[0.1em] uppercase">
-                                    {item.value}
-                                </span>
-                                {idx < infoItems.length - 1 && (
-                                    <span className="text-white/20 ml-5 hidden md:inline">·</span>
-                                )}
-                            </div>
-                        ))}
+                <div className="max-w-[1400px] mx-auto flex flex-wrap items-center gap-y-2">
+                    {category && (
+                        <div className="flex items-center" style={{ paddingRight: '24px', marginRight: '24px', borderRight: '1px solid #ddd' }}>
+                            <span className="font-mono uppercase" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em', marginRight: '8px' }}>Type</span>
+                            <span className="font-mono uppercase" style={{ fontSize: '11px', color: '#111', letterSpacing: '0.1em' }}>{category}</span>
+                        </div>
+                    )}
+                    <div className="flex items-center" style={{ paddingRight: remainingTags.length > 0 ? '24px' : 0, marginRight: remainingTags.length > 0 ? '24px' : 0, borderRight: remainingTags.length > 0 ? '1px solid #ddd' : 'none' }}>
+                        <span className="font-mono uppercase" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em', marginRight: '8px' }}>Status</span>
+                        <span className="font-mono uppercase" style={{ fontSize: '11px', color: '#111', letterSpacing: '0.1em' }}>Completed</span>
                     </div>
+                    {remainingTags.length > 0 && (
+                        <div className="flex items-center flex-wrap" style={{ gap: '6px' }}>
+                            <span className="font-mono uppercase" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em', marginRight: '4px' }}>Tags</span>
+                            {remainingTags.map((tag, i) => (
+                                <span key={i} className="font-mono" style={{ fontSize: '11px', color: '#111', letterSpacing: '0.08em' }}>
+                                    {tag}{i < remainingTags.length - 1 ? ' ·' : ''}
+                                </span>
+                            ))}
+                        </div>
+                    )}
                 </div>
-            </motion.section>
+            </motion.div>
 
             {/* ── SECTION 3: OVERVIEW ── */}
             {(project.description || project.details) && (
@@ -196,20 +198,24 @@ export default function ProjectPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.5 }}
-                    className="section-px py-20 bg-grey-light"
+                    className="bg-white section-px"
+                    style={{ paddingTop: '60px', paddingBottom: '60px' }}
                 >
-                    <div className="max-w-[720px]">
-                        <span className="font-mono text-[10px] text-grey tracking-[0.25em] uppercase block mb-6">
+                    <div style={{ maxWidth: '760px' }}>
+                        <h2
+                            className="font-mono uppercase mb-8"
+                            style={{ fontSize: '11px', color: '#888', letterSpacing: '0.25em', borderLeft: '2px solid #111', paddingLeft: '10px', lineHeight: 1.6 }}
+                        >
                             Overview
-                        </span>
+                        </h2>
                         {project.description && (
-                            <p className="font-sans text-lg text-black leading-[1.8] mb-8">
-                                {project.description}
-                            </p>
+                            <div className="font-sans">
+                                <ReactMarkdown components={mdComponents}>{project.description}</ReactMarkdown>
+                            </div>
                         )}
                         {project.details && (
-                            <div className="font-sans text-base text-grey leading-[1.8] whitespace-pre-line">
-                                {project.details}
+                            <div className="font-sans" style={{ marginTop: project.description ? '24px' : 0 }}>
+                                <ReactMarkdown components={mdComponents}>{project.details}</ReactMarkdown>
                             </div>
                         )}
                     </div>
@@ -218,15 +224,18 @@ export default function ProjectPage() {
 
             {/* ── SECTION 4: GALLERY CAROUSEL ── */}
             {images.length > 0 && (
-                <section className="bg-[#111] border-y-[3px] border-black">
-                    {/* Section label */}
-                    <div className="section-px pt-12 pb-6">
+                <section style={{ background: '#111' }}>
+                    {/* Section label + counter */}
+                    <div className="section-px" style={{ paddingTop: '48px', paddingBottom: '24px' }}>
                         <div className="max-w-[1400px] mx-auto flex items-center justify-between">
-                            <span className="font-mono text-[10px] text-grey tracking-[0.25em] uppercase">
+                            <h2
+                                className="font-mono uppercase"
+                                style={{ fontSize: '11px', color: '#fff', letterSpacing: '0.25em', borderLeft: '2px solid #fff', paddingLeft: '10px', lineHeight: 1.6 }}
+                            >
                                 Gallery
-                            </span>
+                            </h2>
                             {totalSlides > 1 && (
-                                <span className="font-mono text-xs text-grey tracking-[0.15em]">
+                                <span className="font-mono" style={{ fontSize: '12px', color: '#fff', letterSpacing: '0.15em' }}>
                                     {String(currentSlide + 1).padStart(2, '0')} / {String(totalSlides).padStart(2, '0')}
                                 </span>
                             )}
@@ -234,7 +243,7 @@ export default function ProjectPage() {
                     </div>
 
                     {/* Main carousel */}
-                    <div className="relative w-full h-[70vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+                    <div className="relative w-full flex items-center justify-center overflow-hidden" style={{ height: '70vh', minHeight: '400px' }}>
                         <AnimatePresence mode="wait">
                             <motion.img
                                 key={currentSlide}
@@ -253,23 +262,23 @@ export default function ProjectPage() {
                             <>
                                 <button
                                     onClick={goPrev}
-                                    className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10
-                                        w-12 h-12 border-[3px] border-white bg-black/60
-                                        flex items-center justify-center
-                                        hover:bg-white hover:border-white group transition-all duration-200"
+                                    className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center transition-all duration-200"
+                                    style={{ width: '48px', height: '48px', border: '1px solid #444', background: 'rgba(0,0,0,0.6)', color: '#fff' }}
+                                    onMouseEnter={e => { e.currentTarget.style.borderColor = '#fff'; }}
+                                    onMouseLeave={e => { e.currentTarget.style.borderColor = '#444'; }}
                                     aria-label="Previous image"
                                 >
-                                    <ArrowLeft size={20} strokeWidth={3} className="text-white group-hover:text-black transition-colors" />
+                                    <ArrowLeft size={20} strokeWidth={2} />
                                 </button>
                                 <button
                                     onClick={goNext}
-                                    className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10
-                                        w-12 h-12 border-[3px] border-white bg-black/60
-                                        flex items-center justify-center
-                                        hover:bg-white hover:border-white group transition-all duration-200"
+                                    className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center transition-all duration-200"
+                                    style={{ width: '48px', height: '48px', border: '1px solid #444', background: 'rgba(0,0,0,0.6)', color: '#fff' }}
+                                    onMouseEnter={e => { e.currentTarget.style.borderColor = '#fff'; }}
+                                    onMouseLeave={e => { e.currentTarget.style.borderColor = '#444'; }}
                                     aria-label="Next image"
                                 >
-                                    <ArrowRight size={20} strokeWidth={3} className="text-white group-hover:text-black transition-colors" />
+                                    <ArrowRight size={20} strokeWidth={2} />
                                 </button>
                             </>
                         )}
@@ -277,18 +286,20 @@ export default function ProjectPage() {
 
                     {/* Thumbnail strip */}
                     {totalSlides > 1 && (
-                        <div className="section-px py-4">
+                        <div className="section-px" style={{ paddingTop: '16px', paddingBottom: '16px' }}>
                             <div className="max-w-[1400px] mx-auto overflow-x-auto">
                                 <div className="flex gap-2">
                                     {images.map((img, idx) => (
                                         <button
                                             key={img.id || idx}
                                             onClick={() => setCurrentSlide(idx)}
-                                            className={`flex-shrink-0 w-20 h-[60px] overflow-hidden border-[2px] transition-all duration-200 ${
-                                                idx === currentSlide
-                                                    ? 'border-white opacity-100'
-                                                    : 'border-transparent opacity-50 hover:opacity-80'
-                                            }`}
+                                            className="flex-shrink-0 w-20 overflow-hidden transition-all duration-200"
+                                            style={{
+                                                height: '60px',
+                                                opacity: idx === currentSlide ? 1 : 0.45,
+                                                outline: idx === currentSlide ? '2px solid #fff' : 'none',
+                                                outlineOffset: '2px',
+                                            }}
                                             aria-label={`Go to image ${idx + 1}`}
                                         >
                                             <img
@@ -306,27 +317,34 @@ export default function ProjectPage() {
                 </section>
             )}
 
+            {/* section divider */}
+            <div style={{ height: '1px', background: '#1a1a1a' }} />
+
             {/* ── SECTION 5: CTA ── */}
-            <section className="section-px py-20 bg-black">
-                <div className="max-w-[1400px] mx-auto text-center">
-                    <span className="font-mono text-[10px] text-grey tracking-[0.25em] uppercase block mb-4">
-                        Get in Touch
-                    </span>
-                    <h2 className="font-sans font-bold text-4xl md:text-5xl text-white mb-6 uppercase tracking-[0.02em]">
-                        Let's Work Together<span className="text-grey">.</span>
-                    </h2>
-                    <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase mb-10">
-                        Have a project in mind?
-                    </p>
-                    <a
-                        href={`mailto:${contactEmail}`}
-                        className="inline-flex items-center gap-3 px-10 py-5 bg-white text-black
-                            font-mono text-sm tracking-[0.15em] uppercase border-[3px] border-white
-                            brutal-shadow btn-fill btn-fill-dark"
-                    >
-                        {contactEmail}
-                        <ExternalLink size={16} strokeWidth={3} />
-                    </a>
+            <section className="bg-black section-px" style={{ paddingTop: '60px', paddingBottom: '60px' }}>
+                <div className="max-w-[1400px] mx-auto">
+                    <div className="flex flex-col items-center" style={{ gap: '16px' }}>
+                        <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase">
+                            004 — Contact
+                        </span>
+                        <h2 className="font-sans font-bold text-5xl md:text-7xl text-white tracking-[0.04em] uppercase text-center">
+                            LET'S WORK<br />TOGETHER<span className="text-grey">.</span>
+                        </h2>
+                        <p className="font-mono text-sm text-grey tracking-[0.25em] uppercase text-center max-w-lg">
+                            {sc.contact_cta || 'Ready to bring your project to life?'}
+                        </p>
+                        <div style={{ marginTop: '16px' }}>
+                            <a
+                                href={`mailto:${contactEmail}`}
+                                className="inline-flex items-center gap-3 px-10 py-5 bg-white text-black
+                                    font-mono text-sm tracking-[0.15em] uppercase border-[3px] border-white
+                                    brutal-shadow btn-fill btn-fill-dark"
+                            >
+                                {contactEmail}
+                                <ArrowRight size={18} strokeWidth={3} />
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </section>
 
