@@ -97,10 +97,10 @@ serve(async (req) => {
         const plainText = `New contact message from ${name} <${email}>\n\nSubject: ${subject || 'Portfolio Enquiry'}\n\n${message}${attachmentUrl ? `\n\nAttachment: ${attachmentName}\n${attachmentUrl}` : ''}`;
 
         const resendPayload: Record<string, unknown> = {
-            from: 'Portfolio Contact <onboarding@resend.dev>',
+            from: 'Hadil Al-Duleimi <hello@hadilalduleimi.com>',
             to: [toEmail],
             reply_to: email,
-            subject: `[Portfolio] ${subject || 'New Enquiry'} — ${name}`,
+            subject: `New contact form message: ${subject || 'Portfolio Enquiry'}`,
             html: htmlBody,
             text: plainText,
         };
