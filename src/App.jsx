@@ -216,7 +216,7 @@ function HomePage() {
                     <img
                       src={profilePhotoUrl}
                       alt="Hadil Al-Duleimi"
-                      className="w-full h-full object-cover grayscale"
+                      className="w-full h-full object-cover"
                       style={{ objectPosition: 'center 15%' }}
                     />
                   ) : (

@@ -188,7 +188,7 @@ export default function AboutPage() {
                                 <img
                                     src={photoUrl}
                                     alt={name}
-                                    className="w-full h-full object-cover object-top grayscale"
+                                    className="w-full h-full object-cover object-top"
                                 />
                             ) : (
                                 <div

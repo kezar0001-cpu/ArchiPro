@@ -130,7 +130,7 @@ export default function ProjectPage() {
                         transition={{ duration: 1 }}
                         src={heroImage}
                         alt={project.title}
-                        className="absolute inset-0 w-full h-full object-cover grayscale"
+                        className="absolute inset-0 w-full h-full object-cover"
                         style={{ objectPosition: 'center' }}
                     />
                 ) : (
