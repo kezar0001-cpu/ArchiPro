@@ -14,6 +14,7 @@ export default function ContactPage() {
     const [attachment, setAttachment] = useState(null);
     const [attachError, setAttachError] = useState('');
     const [uploading, setUploading] = useState(false);
+    const [sendError, setSendError] = useState('');
     const fileInputRef = useRef(null);
 
     const ALLOWED_TYPES = [
@@ -72,7 +73,9 @@ export default function ContactPage() {
     async function handleSubmit(e) {
         e.preventDefault();
         setUploading(true);
-        let attachmentLine = '';
+        setSendError('');
+        let attachmentUrl = null;
+        let attachmentName = null;
 
         if (attachment) {
             const ext = attachment.name.split('.').pop();
@@ -82,20 +85,49 @@ export default function ContactPage() {
                 .upload(path, attachment, { cacheControl: '3600', upsert: false });
 
             if (error) {
-                setAttachError('Upload failed — please try again or email the file directly.');
+                setAttachError('Upload failed — please try again.');
                 setUploading(false);
                 return;
             }
 
             const { data } = supabase.storage.from('contact-attachments').getPublicUrl(path);
-            attachmentLine = `\n\nAttachment: ${attachment.name}\n${data.publicUrl}`;
+            attachmentUrl = data.publicUrl;
+            attachmentName = attachment.name;
         }
 
-        const body = `Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}${attachmentLine}`;
-        const mailtoLink = `mailto:${contactEmail}?subject=${encodeURIComponent(formData.subject || 'Portfolio Enquiry')}&body=${encodeURIComponent(body)}`;
-        window.location.href = mailtoLink;
+        try {
+            const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+            const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+            const res = await fetch(`${supabaseUrl}/functions/v1/send-contact-email`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': supabaseAnonKey,
+                    'Authorization': `Bearer ${supabaseAnonKey}`,
+                },
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email,
+                    subject: formData.subject,
+                    message: formData.message,
+                    attachmentUrl,
+                    attachmentName,
+                }),
+            });
+
+            const json = await res.json();
+            if (!res.ok || json.error) {
+                setSendError(json.error || 'Something went wrong. Please try again.');
+                setUploading(false);
+                return;
+            }
+
+            setSubmitted(true);
+        } catch {
+            setSendError('Network error — please check your connection and try again.');
+        }
+
         setUploading(false);
-        setSubmitted(true);
     }
 
     if (loading) {
@@ -267,19 +299,13 @@ export default function ContactPage() {
                                     <div className="w-12 h-12 border border-black mx-auto mb-6 flex items-center justify-center">
                                         <Send size={20} strokeWidth={2} className="text-black" />
                                     </div>
-                                    <h3 className="font-sans font-bold text-lg text-black mb-2 text-center">Message Ready</h3>
+                                    <h3 className="font-sans font-bold text-lg text-black mb-2 text-center">Message Sent</h3>
                                     <p className="font-sans text-sm text-grey mb-6 text-center">
-                                        Your email client should have opened. If not, email directly:
+                                        Thanks {formData.name.split(' ')[0]} — I'll be in touch soon.
                                     </p>
-                                    <a
-                                        href={`mailto:${contactEmail}`}
-                                        className="font-mono text-sm text-black hover:text-grey transition-colors block text-center"
-                                    >
-                                        {contactEmail}
-                                    </a>
                                     <div className="mt-8 text-center">
                                         <button
-                                            onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', subject: '', message: '' }); clearAttachment(); }}
+                                            onClick={() => { setSubmitted(false); setSendError(''); setFormData({ name: '', email: '', subject: '', message: '' }); clearAttachment(); }}
                                             className="font-mono text-xs tracking-[0.15em] uppercase transition-colors"
                                             style={{ color: '#999' }}
                                         >
@@ -478,10 +504,16 @@ export default function ContactPage() {
                                         {uploading ? (
                                             <>
                                                 <span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                                Uploading...
+                                                {attachment ? 'Uploading...' : 'Sending...'}
                                             </>
                                         ) : 'Send Message'}
                                     </button>
+
+                                    {sendError && (
+                                        <p className="font-mono text-center" style={{ fontSize: '12px', color: '#c00', letterSpacing: '0.05em' }}>
+                                            {sendError}
+                                        </p>
+                                    )}
                                 </form>
                             )}
                         </motion.div>
