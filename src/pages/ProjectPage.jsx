@@ -160,10 +160,10 @@ export default function ProjectPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.3 }}
-                            className="font-sans font-bold text-white uppercase tracking-[-0.02em]"
-                            style={{ fontSize: 'clamp(20px, 6vw, 72px)', maxWidth: '900px' }}
+                            className="heading-lg text-white"
+                            style={{ maxWidth: '900px' }}
                         >
-                            {project.title}<span style={{ color: '#888' }}>.</span>
+                            {project.title}<span className="text-grey">.</span>
                         </motion.h1>
                     </div>
                 </div>
@@ -175,25 +175,25 @@ export default function ProjectPage() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.4 }}
                 className="bg-white section-px"
-                style={{ borderBottom: '1px solid #ddd', paddingTop: '12px', paddingBottom: '12px' }}
+                style={{ borderBottom: '1px solid #ddd', paddingTop: '16px', paddingBottom: '16px' }}
             >
-                <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row md:flex-wrap md:items-center" style={{ gap: '8px' }}>
+                <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-6 sm:gap-8">
                     {category && (
-                        <div className="flex items-center" style={{ paddingBottom: '8px', marginBottom: '0', borderBottom: '1px solid #eee' }}>
-                            <span className="font-mono uppercase" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em', marginRight: '8px', minWidth: '40px' }}>Type</span>
-                            <span className="font-mono uppercase" style={{ fontSize: '11px', color: '#111', letterSpacing: '0.1em' }}>{category}</span>
+                        <div className="flex items-center gap-3">
+                            <span className="label-xs">Type</span>
+                            <span className="caption-sm text-black">{category}</span>
                         </div>
                     )}
-                    <div className="flex items-center" style={{ paddingBottom: '8px', borderBottom: remainingTags.length > 0 ? '1px solid #eee' : 'none' }}>
-                        <span className="font-mono uppercase" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em', marginRight: '8px', minWidth: '40px' }}>Status</span>
-                        <span className="font-mono uppercase" style={{ fontSize: '11px', color: '#111', letterSpacing: '0.1em' }}>Completed</span>
+                    <div className="flex items-center gap-3">
+                        <span className="label-xs">Status</span>
+                        <span className="caption-sm text-black">Completed</span>
                     </div>
                     {remainingTags.length > 0 && (
-                        <div className="flex items-start flex-wrap" style={{ gap: '4px' }}>
-                            <span className="font-mono uppercase" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em', marginRight: '4px', minWidth: '40px', paddingTop: '1px' }}>Tags</span>
-                            <div className="flex flex-wrap" style={{ gap: '4px' }}>
+                        <div className="flex items-center gap-3 flex-wrap">
+                            <span className="label-xs">Tags</span>
+                            <div className="flex flex-wrap gap-2">
                                 {remainingTags.map((tag, i) => (
-                                    <span key={i} className="font-mono" style={{ fontSize: '11px', color: '#111', letterSpacing: '0.08em' }}>
+                                    <span key={i} className="caption-sm text-black">
                                         {tag}{i < remainingTags.length - 1 ? ' ·' : ''}
                                     </span>
                                 ))}

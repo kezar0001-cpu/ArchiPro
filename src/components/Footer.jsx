@@ -59,10 +59,11 @@ export default function Footer({ siteContent }) {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label={link.label}
-                                    className="w-10 h-10 border-[3px] border-white bg-transparent
+                                    className="w-12 h-12 border-[3px] border-white bg-transparent
                                         flex items-center justify-center
                                         transition-all duration-300
-                                        hover:bg-white hover:border-white group"
+                                        hover:bg-white hover:border-white group
+                                        min-h-[44px] min-w-[44px]"
                                 >
                                     <Icon
                                         size={18}

@@ -19,6 +19,7 @@ const ProjectPage = lazy(() => import('./pages/ProjectPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const WorkPage = lazy(() => import('./pages/WorkPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
+const StudioPage = lazy(() => import('./pages/StudioPage'));
 
 // Admin pages (lazy-loaded)
 const LoginPage = lazy(() => import('./pages/admin/LoginPage'));
@@ -101,7 +102,7 @@ function HomePage() {
         </div>
 
         {/* ── Featured Projects ── */}
-        <section id="work" className="relative bg-white section-px" style={{ paddingTop: '80px', paddingBottom: '60px' }}>
+        <section id="work" className="relative bg-white section-px section-py-lg">
           <div className="max-w-[1400px] mx-auto">
             <motion.div
               variants={sectionVariants}
@@ -110,18 +111,18 @@ function HomePage() {
               viewport={{ once: true, margin: '-80px' }}
               style={{ marginBottom: '32px' }}
             >
-              <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase block mb-4">
+              <span className="caption-xs text-grey block mb-4">
                 002 — Work
               </span>
-              <h2 className="font-sans font-bold text-black tracking-[-0.02em] uppercase mb-4" style={{ fontSize: 'clamp(36px, 10vw, 96px)' }}>
+              <h2 className="heading-lg text-black mb-4">
                 WORK<span className="text-grey">.</span>
               </h2>
-              <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase">
+              <p className="caption-md text-grey">
                 Featured Projects
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: '1px', background: '#ddd' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: '1px', background: '#ddd' }}>
               {projects.map((project, idx) => (
                 <motion.div
                   key={project.id}
@@ -197,7 +198,7 @@ function HomePage() {
         <div style={{ height: '1px', background: '#ddd' }} />
 
         {/* ── About ── */}
-        <section id="about" className="bg-white section-px" style={{ paddingTop: '60px', paddingBottom: '80px' }}>
+        <section id="about" className="bg-white section-px section-py-lg">
           <div className="max-w-[1400px] mx-auto">
             <motion.div
               variants={sectionVariants}
@@ -228,24 +229,24 @@ function HomePage() {
                 </div>
                 {/* Right — Text + CTA */}
                 <div className="flex flex-col">
-                  <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase block" style={{ marginBottom: '16px' }}>
+                  <span className="caption-xs text-grey block mb-4">
                     003 — About
                   </span>
-                  <h2 className="font-sans font-bold text-black tracking-[-0.02em] uppercase" style={{ fontSize: 'clamp(36px, 5vw, 56px)', marginBottom: '16px' }}>
+                  <h2 className="heading-lg text-black mb-4">
                     ABOUT<span className="text-grey">.</span>
                   </h2>
-                  <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase" style={{ marginBottom: '16px' }}>
+                  <p className="caption-md text-grey mb-4">
                     {aboutTagline}
                   </p>
-                  <p className="font-sans text-lg text-grey leading-relaxed" style={{ marginBottom: '16px' }}>
+                  <p className="body-base text-grey leading-relaxed mb-8">
                     {aboutIntro}
                   </p>
-                  <div style={{ marginTop: '24px' }}>
+                  <div>
                     <a
                       href="/about"
-                      className="flex md:inline-flex items-center justify-center gap-2 px-6 py-3 bg-black text-white
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-black text-white
                         font-mono text-xs tracking-[0.15em] uppercase border-[3px] border-black
-                        brutal-shadow-sm btn-fill btn-fill-light w-full md:w-auto"
+                        brutal-shadow-sm btn-fill btn-fill-light min-h-[44px]"
                     >
                       More About Me
                       <ArrowUpRight size={14} strokeWidth={3} />
@@ -261,7 +262,7 @@ function HomePage() {
         <div style={{ height: '1px', background: '#1a1a1a' }} />
 
         {/* ── Contact ── */}
-        <section id="contact" className="bg-black section-px" style={{ paddingTop: '60px', paddingBottom: '60px' }}>
+        <section id="contact" className="bg-black section-px section-py-lg">
           <div className="max-w-[1400px] mx-auto">
             <motion.div
               variants={sectionVariants}
@@ -269,22 +270,22 @@ function HomePage() {
               whileInView="visible"
               viewport={{ once: true, margin: '-80px' }}
             >
-              <div className="flex flex-col items-center" style={{ gap: '16px' }}>
-                <span className="font-mono text-[10px] font-medium text-grey tracking-[0.25em] uppercase">
+              <div className="flex flex-col items-center text-center gap-8">
+                <span className="caption-xs text-grey">
                   004 — Contact
                 </span>
-                <h2 className="font-sans font-bold text-white tracking-[0.04em] uppercase text-center" style={{ fontSize: 'clamp(28px, 8vw, 80px)' }}>
+                <h2 className="heading-lg text-white">
                   LET'S WORK<br />TOGETHER<span className="text-grey">.</span>
                 </h2>
-                <p className="font-mono text-sm text-grey tracking-[0.25em] uppercase text-center max-w-lg">
+                <p className="caption-md text-grey max-w-lg">
                   {contactCta}
                 </p>
-                <div style={{ marginTop: '16px' }} className="w-full md:w-auto">
+                <div className="w-full sm:w-auto">
                   <a
                     href={`mailto:${contactEmail}`}
-                    className="flex md:inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-black
+                    className="flex sm:inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-black
                       font-mono text-sm tracking-[0.15em] uppercase border-[3px] border-white
-                      brutal-shadow btn-fill btn-fill-dark w-full md:w-auto"
+                      brutal-shadow btn-fill btn-fill-dark w-full sm:w-auto min-h-[56px]"
                   >
                     {contactEmail}
                     <ArrowUpRight size={18} strokeWidth={3} />
@@ -378,6 +379,14 @@ function App() {
             element={
               <Suspense fallback={<PageLoader />}>
                 <ContactPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/studio"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <StudioPage />
               </Suspense>
             }
           />
