@@ -238,7 +238,7 @@ function HomePage() {
                   <p className="caption-md text-grey mb-4">
                     {aboutTagline}
                   </p>
-                  <p className="body-base text-grey leading-relaxed mb-8">
+                  <p className="body-base text-black/70 leading-relaxed mb-8">
                     {aboutIntro}
                   </p>
                   <div>

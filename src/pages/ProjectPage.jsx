@@ -101,20 +101,9 @@ export default function ProjectPage() {
     const category = project.tags?.[0] || null;
     const remainingTags = project.tags?.slice(1) || [];
 
+    // Custom components to ensure consistent styling for CMS/pasted content
     const mdComponents = {
-        h1: () => null,
-        h2: ({ children }) => <h2 style={{ fontSize: '11px', color: '#111', letterSpacing: '0.15em', textTransform: 'uppercase', marginTop: '32px', marginBottom: '12px', fontWeight: 600 }}>{children}</h2>,
-        h3: ({ children }) => <h3 style={{ fontSize: '11px', color: '#111', letterSpacing: '0.15em', textTransform: 'uppercase', marginTop: '32px', marginBottom: '12px', fontWeight: 600 }}>{children}</h3>,
-        p: ({ children }) => <p style={{ color: '#444', fontSize: '15px', lineHeight: 1.8, marginBottom: '16px' }}>{children}</p>,
-        strong: ({ children }) => <strong style={{ color: '#111', fontWeight: 600 }}>{children}</strong>,
-        ul: ({ children }) => <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 16px 0' }}>{children}</ul>,
-        ol: ({ children }) => <ol style={{ listStyle: 'none', padding: 0, margin: '0 0 16px 0' }}>{children}</ol>,
-        li: ({ children }) => (
-            <li style={{ paddingLeft: '16px', color: '#666', fontSize: '14px', lineHeight: 1.7, marginBottom: '8px', position: 'relative' }}>
-                <span style={{ position: 'absolute', left: 0 }}>—</span>
-                <span style={{ display: 'block', paddingLeft: '8px' }}>{children}</span>
-            </li>
-        ),
+        h1: () => null, // Hide H1s as titles are handled by page hero
     };
 
     return (
@@ -220,12 +209,12 @@ export default function ProjectPage() {
                             Overview
                         </h2>
                         {project.description && (
-                            <div className="font-sans">
+                            <div className="markdown-body">
                                 <ReactMarkdown components={mdComponents}>{project.description}</ReactMarkdown>
                             </div>
                         )}
                         {project.details && (
-                            <div className="font-sans" style={{ marginTop: project.description ? '24px' : 0 }}>
+                            <div className="markdown-body mt-8">
                                 <ReactMarkdown components={mdComponents}>{project.details}</ReactMarkdown>
                             </div>
                         )}

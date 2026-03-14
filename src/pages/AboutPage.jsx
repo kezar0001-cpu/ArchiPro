@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Linkedin, Instagram } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import { getAllSiteContent } from '../lib/queries';
@@ -358,12 +359,9 @@ export default function AboutPage() {
                         {/* PROFILE */}
                         <div style={{ paddingTop: '40px', paddingBottom: '40px' }}>
                             <SectionLabel>Profile</SectionLabel>
-                            <p
-                                className="font-sans"
-                                style={{ color: '#444', fontSize: '15px', lineHeight: 1.8 }}
-                            >
-                                {summary}
-                            </p>
+                            <div className="markdown-body">
+                                <ReactMarkdown>{summary}</ReactMarkdown>
+                            </div>
                         </div>
                         <Divider />
 
