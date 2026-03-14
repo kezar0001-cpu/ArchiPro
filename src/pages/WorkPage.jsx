@@ -33,27 +33,24 @@ export default function WorkPage() {
             <Nav />
 
             {/* ── PAGE HEADER ── */}
-            <section className="section-px bg-black" style={{ paddingTop: '160px', paddingBottom: '40px' }}>
+            <section className="section-px bg-black" style={{ paddingTop: 'clamp(80px, 15vw, 160px)', paddingBottom: '40px' }}>
                 <div className="max-w-[1400px] mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <span className="font-mono text-[10px] text-grey tracking-[0.2em] uppercase block mb-4">
+                        <span className="caption-xs text-grey block mb-4">
                             002 — Work
                         </span>
-                        <h1
-                            className="font-sans font-bold text-white uppercase tracking-[-0.02em] mb-6"
-                            style={{ fontSize: 'clamp(40px, 12vw, 120px)' }}
-                        >
+                        <h1 className="heading-xl text-white mb-6">
                             WORK<span className="text-grey">.</span>
                         </h1>
-                        <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase mb-3">
+                        <p className="caption-md text-grey mb-3">
                             All Projects
                         </p>
                         {!loading && (
-                            <p className="font-mono" style={{ fontSize: '11px', color: '#999', letterSpacing: '0.15em' }}>
+                            <p className="caption-sm text-grey opacity-75">
                                 SHOWING {projects.length} OF {projects.length} PROJECT{projects.length !== 1 ? 'S' : ''}
                             </p>
                         )}
@@ -65,20 +62,20 @@ export default function WorkPage() {
             <div style={{ height: '1px', background: '#ddd' }} />
 
             {/* ── PROJECTS GRID ── */}
-            <section className="bg-white section-px" style={{ paddingTop: '60px', paddingBottom: '80px' }}>
-                <div className="max-w-[1100px] mx-auto">
+            <section className="bg-white section-px section-py-lg">
+                <div className="max-w-[1400px] mx-auto">
                     {loading ? (
                         <div className="flex items-center justify-center py-16">
                             <div className="w-12 h-12 border border-black border-t-transparent rounded-full animate-spin" />
                         </div>
                     ) : projects.length === 0 ? (
                         <div className="text-center py-16" style={{ border: '1px solid #ddd' }}>
-                            <p className="font-mono text-sm tracking-[0.2em] uppercase" style={{ color: '#999' }}>
+                            <p className="caption-sm text-grey">
                                 No projects yet — Check back soon
                             </p>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: '1px', background: '#ddd' }}>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{ gap: '1px', background: '#ddd' }}>
                             {projects.map((project) => (
                                 <div key={project.id} className="bg-white">
                                     <ProjectCard project={project} />

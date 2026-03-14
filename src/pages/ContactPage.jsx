@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Send, Linkedin, Instagram, Paperclip, X } from 'lucide-react';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
+import Button from '../components/Button';
 import { getAllSiteContent } from '../lib/queries';
 import { supabase } from '../lib/supabase';
 
@@ -143,23 +144,20 @@ export default function ContactPage() {
             <Nav contactEmail={contactEmail} />
 
             {/* ── PAGE HEADER ── */}
-            <section className="section-px bg-black" style={{ paddingTop: '160px', paddingBottom: '40px' }}>
+            <section className="section-px bg-black" style={{ paddingTop: 'clamp(80px, 15vw, 160px)', paddingBottom: '40px' }}>
                 <div className="max-w-[1400px] mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <span className="font-mono text-[10px] text-grey tracking-[0.2em] uppercase block mb-4">
+                        <span className="caption-xs text-grey block mb-4">
                             004 — Contact
                         </span>
-                        <h1
-                            className="font-sans font-bold text-white uppercase tracking-[-0.02em] mb-6"
-                            style={{ fontSize: 'clamp(40px, 12vw, 100px)' }}
-                        >
+                        <h1 className="heading-xl text-white mb-6">
                             CONTACT<span className="text-grey">.</span>
                         </h1>
-                        <p className="font-mono text-sm text-grey tracking-[0.2em] uppercase">
+                        <p className="caption-md text-grey">
                             Let's discuss your next project
                         </p>
                     </motion.div>
@@ -170,7 +168,7 @@ export default function ContactPage() {
             <div style={{ height: '1px', background: '#ddd' }} />
 
             {/* ── CONTACT CONTENT ── */}
-            <section className="bg-white section-px" style={{ paddingTop: '60px', paddingBottom: '80px' }}>
+            <section className="bg-white section-px section-py-lg">
                 <div className="max-w-[1100px] mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-[35%_1fr]" style={{ gap: 'clamp(40px, 6vw, 80px)' }}>
 
@@ -181,50 +179,26 @@ export default function ContactPage() {
                             transition={{ duration: 0.6, delay: 0.2 }}
                         >
                             {/* Section label */}
-                            <h2
-                                className="font-mono uppercase mb-6"
-                                style={{
-                                    fontSize: '11px',
-                                    color: '#888',
-                                    letterSpacing: '0.25em',
-                                    borderLeft: '2px solid #111',
-                                    paddingLeft: '10px',
-                                    lineHeight: 1.6,
-                                }}
-                            >
+                            <h2 className="caption-md text-black mb-6" style={{ borderLeft: '2px solid #111', paddingLeft: '10px' }}>
                                 Contact Information
                             </h2>
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                                 <div>
-                                    <span className="font-mono uppercase block" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em', marginBottom: '4px' }}>
-                                        Email
-                                    </span>
-                                    <a
-                                        href={`mailto:${contactEmail}`}
-                                        className="font-mono text-sm transition-colors hover:text-grey"
-                                        style={{ color: '#111' }}
-                                    >
+                                    <span className="label-xs block mb-2">Email</span>
+                                    <a href={`mailto:${contactEmail}`} className="body-sm text-black hover:text-grey transition-colors">
                                         {contactEmail}
                                     </a>
                                 </div>
                                 <div>
-                                    <span className="font-mono uppercase block" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em', marginBottom: '4px' }}>
-                                        Phone
-                                    </span>
-                                    <a
-                                        href={`tel:${phoneNum.replace(/\s/g, '')}`}
-                                        className="font-mono text-sm transition-colors hover:text-grey"
-                                        style={{ color: '#111' }}
-                                    >
+                                    <span className="label-xs block mb-2">Phone</span>
+                                    <a href={`tel:${phoneNum.replace(/\s/g, '')}`} className="body-sm text-black hover:text-grey transition-colors">
                                         {phoneNum}
                                     </a>
                                 </div>
                                 <div>
-                                    <span className="font-mono uppercase block" style={{ fontSize: '10px', color: '#999', letterSpacing: '0.15em', marginBottom: '4px' }}>
-                                        Location
-                                    </span>
-                                    <span className="font-mono text-sm" style={{ color: '#111' }}>{address}</span>
+                                    <span className="label-xs block mb-2">Location</span>
+                                    <span className="body-sm text-black">{address}</span>
                                 </div>
                             </div>
 
@@ -232,17 +206,7 @@ export default function ContactPage() {
                             <div style={{ height: '1px', background: '#ddd', margin: '32px 0' }} />
 
                             {/* Social Links */}
-                            <h3
-                                className="font-mono uppercase mb-4"
-                                style={{
-                                    fontSize: '11px',
-                                    color: '#888',
-                                    letterSpacing: '0.25em',
-                                    borderLeft: '2px solid #111',
-                                    paddingLeft: '10px',
-                                    lineHeight: 1.6,
-                                }}
-                            >
+                            <h3 className="caption-md text-black mb-4" style={{ borderLeft: '2px solid #111', paddingLeft: '10px' }}>
                                 Follow
                             </h3>
                             <div className="flex gap-2" style={{ marginTop: '8px' }}>
@@ -280,17 +244,7 @@ export default function ContactPage() {
                             transition={{ duration: 0.6, delay: 0.4 }}
                         >
                             {/* Section label */}
-                            <h2
-                                className="font-mono uppercase mb-8"
-                                style={{
-                                    fontSize: '11px',
-                                    color: '#888',
-                                    letterSpacing: '0.25em',
-                                    borderLeft: '2px solid #111',
-                                    paddingLeft: '10px',
-                                    lineHeight: 1.6,
-                                }}
-                            >
+                            <h2 className="caption-md text-black mb-8" style={{ borderLeft: '2px solid #111', paddingLeft: '10px' }}>
                                 Send a Message
                             </h2>
 
@@ -318,9 +272,7 @@ export default function ContactPage() {
                                     {/* Name + Email row */}
                                     <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: '28px' }}>
                                         <div>
-                                            <label className="font-mono uppercase block" style={{ fontSize: '11px', color: '#999', letterSpacing: '0.15em', marginBottom: '8px' }}>
-                                                Name *
-                                            </label>
+                                            <label className="label-xs block mb-2">Name *</label>
                                             <input
                                                 type="text"
                                                 name="name"
@@ -342,9 +294,7 @@ export default function ContactPage() {
                                             />
                                         </div>
                                         <div>
-                                            <label className="font-mono uppercase block" style={{ fontSize: '11px', color: '#999', letterSpacing: '0.15em', marginBottom: '8px' }}>
-                                                Email *
-                                            </label>
+                                            <label className="label-xs block mb-2">Email *</label>
                                             <input
                                                 type="email"
                                                 name="email"
@@ -369,9 +319,7 @@ export default function ContactPage() {
 
                                     {/* Subject */}
                                     <div>
-                                        <label className="font-mono uppercase block" style={{ fontSize: '11px', color: '#999', letterSpacing: '0.15em', marginBottom: '8px' }}>
-                                            Subject
-                                        </label>
+                                        <label className="label-xs block mb-2">Subject</label>
                                         <input
                                             type="text"
                                             name="subject"
@@ -394,7 +342,7 @@ export default function ContactPage() {
 
                                     {/* Attachment */}
                                     <div>
-                                        <label className="font-mono uppercase block" style={{ fontSize: '11px', color: '#999', letterSpacing: '0.15em', marginBottom: '8px' }}>
+                                        <label className="label-xs block mb-2">
                                             Attachment <span style={{ color: '#bbb' }}>(optional — max 10MB)</span>
                                         </label>
                                         {attachment ? (
@@ -459,9 +407,7 @@ export default function ContactPage() {
 
                                     {/* Message */}
                                     <div>
-                                        <label className="font-mono uppercase block" style={{ fontSize: '11px', color: '#999', letterSpacing: '0.15em', marginBottom: '8px' }}>
-                                            Message *
-                                        </label>
+                                        <label className="label-xs block mb-2">Message *</label>
                                         <textarea
                                             name="message"
                                             value={formData.message}
@@ -487,15 +433,14 @@ export default function ContactPage() {
                                     <button
                                         type="submit"
                                         disabled={uploading}
-                                        className="w-full font-mono uppercase transition-all duration-300 flex items-center justify-center gap-3"
+                                        className="w-full font-mono uppercase transition-all duration-300 flex items-center justify-center gap-3 min-h-[56px]"
                                         style={{
-                                            background: uploading ? '#555' : '#111',
+                                            background: uploading ? '#999' : '#111',
                                             color: '#fff',
-                                            border: 'none',
+                                            border: '3px solid #111',
                                             padding: '18px',
                                             fontSize: '12px',
                                             letterSpacing: '0.2em',
-                                            minHeight: '56px',
                                             cursor: uploading ? 'not-allowed' : 'pointer',
                                         }}
                                         onMouseEnter={e => { if (!uploading) e.currentTarget.style.background = '#333'; }}
@@ -510,7 +455,7 @@ export default function ContactPage() {
                                     </button>
 
                                     {sendError && (
-                                        <p className="font-mono text-center" style={{ fontSize: '12px', color: '#c00', letterSpacing: '0.05em' }}>
+                                        <p className="caption-sm text-center text-red-600">
                                             {sendError}
                                         </p>
                                     )}

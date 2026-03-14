@@ -70,15 +70,14 @@ export default function ProjectCard({ project }) {
                 </div>
 
                 {/* Card Content */}
-                <div className="p-6 border-t-[3px] border-black">
+                <div className="p-6 border-t-[3px] border-black flex flex-col flex-1">
                     {/* Tags */}
                     {tags && tags.length > 0 && (
                         <div className="flex flex-wrap gap-2 mb-3">
                             {tags.slice(0, 3).map((tag, idx) => (
                                 <span
                                     key={idx}
-                                    className="font-mono text-[10px] text-grey tracking-[0.15em] uppercase
-                                        px-2 py-1 border-[2px] border-grey"
+                                    className="label-xs px-2 py-1 border-[2px] border-grey"
                                 >
                                     {tag}
                                 </span>
@@ -87,16 +86,13 @@ export default function ProjectCard({ project }) {
                     )}
 
                     {/* Title */}
-                    <h3
-                        className="font-sans font-bold text-xl text-black tracking-[-0.01em] mb-2
-                            group-hover:text-grey transition-colors duration-300"
-                    >
+                    <h3 className="heading-sm text-black mb-2 group-hover:text-grey transition-colors duration-300 flex-grow">
                         {title}
                     </h3>
 
                     {/* Description */}
                     {description && (
-                        <p className="font-sans text-sm text-grey leading-relaxed line-clamp-2 max-w-[60ch]">
+                        <p className="body-sm text-grey leading-relaxed line-clamp-2 max-w-[60ch]">
                             {description}
                         </p>
                     )}

@@ -91,9 +91,7 @@ export default function Hero({
                                 ease: [0.33, 1, 0.68, 1],
                                 delay: 0.3 + idx * 0.15,
                             }}
-                            className="font-sans font-bold text-white uppercase leading-[0.9]
-                         text-[clamp(3rem,8vw,8rem)] tracking-[-0.02em]
-                         drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
+                            className="heading-xl text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
                         >
                             {line}
                             {idx === headlineLines.length - 1 && (
@@ -116,7 +114,7 @@ export default function Hero({
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 1 }}
-                    className="font-mono text-base md:text-lg text-grey tracking-[0.25em] uppercase mt-6"
+                    className="caption-md text-grey mt-6"
                 >
                     {displaySub}
                 </motion.p>
