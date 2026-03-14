@@ -32,17 +32,16 @@ export default function Footer({ siteContent }) {
         <footer className="bg-black text-white border-t-[3px] border-black">
             <div className="max-w-[1400px] mx-auto section-px py-8">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                    {/* Left: Copyright + Domain */}
-                    <div className="flex flex-col md:flex-row items-center gap-3 md:gap-6">
-                        <span className="font-mono text-xs text-grey tracking-[0.15em] uppercase">
+                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-4 gap-y-2">
+                        <span className="font-mono text-[11px] text-grey tracking-[0.15em] uppercase whitespace-nowrap">
                             © {currentYear} Hadil Al-Duleimi
                         </span>
-                        <span className="hidden md:block text-grey">·</span>
+                        <span className="text-grey select-none">.</span>
                         <a
                             href="https://hadilalduleimi.com"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="font-mono text-xs text-white hover:text-grey transition-colors duration-300 tracking-[0.15em] uppercase"
+                            className="font-mono text-[11px] text-white hover:text-grey transition-colors duration-300 tracking-[0.15em] uppercase whitespace-nowrap"
                         >
                             hadilalduleimi.com
                         </a>
